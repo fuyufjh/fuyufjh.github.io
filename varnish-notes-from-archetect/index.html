@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OS,服务器," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don’t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
+<meta name="keywords" content="OS,服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译：Varnish 架构师笔记">
+<meta property="og:url" content="https://ericfu.me/varnish-notes-from-archetect/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don’t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-08-19T07:31:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="译：Varnish 架构师笔记">
+<meta name="twitter:description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don’t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/varnish-notes-from-archetect/"/>
+
+
+
+
+
+  <title>译：Varnish 架构师笔记 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/varnish-notes-from-archetect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">译：Varnish 架构师笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-01T06:06:55+08:00">
+                2017-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="external">名为 “Don’t fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
+<ul>
+<li>因为操作系统 PageCache 的存在，磁盘操作可能很快</li>
+<li>虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快</li>
+<li>CPU Cache 常常被忽略了，了解 CPU Cache 对提升内存读写性能至关重要</li>
+</ul>
+<p><a href="http://varnish-cache.org/docs/trunk/phk/notes.html" target="_blank" rel="external">原文链接</a></p>
+</blockquote>
+<p>当你开始深入 Varnish 的源代码后，应该会发觉它与你日常所见的一般应用软件有着明显不同，而这绝非偶然。</p>
+<p>多年以来我的绝大部分时间花费在 FreeBSD 的内核开发上，而每每涉足用户空间编程，却总是毫无例外地发现那里的人们还在以1975年的方式工作。</p>
+<p>所以 Varnish 这个项目一开始并没能激起我很大的兴趣。但我渐渐意识到 Varnish 虽然是一个用户态应用，但却也是一个能充分发挥我长久以来积累的关于硬件和内核的经验知识的理想场所。目前 Varnish 的开发已经进展到alpha版本的阶段，而我觉得应当承认自己相当享受这一段历程。</p>
+<h3 id="1975的编程方式到底出了什么问题？"><a href="#1975的编程方式到底出了什么问题？" class="headerlink" title="1975的编程方式到底出了什么问题？"></a>1975的编程方式到底出了什么问题？</h3><p>简而言之：计算机系统再也不应该被看作是由两个存储层次构成的了。</p>
+<p>首先是主存：从水银延迟线，磁芯存储器，到现在可供随机访问的RAM。</p>
+<p>然后是辅存：从纸带，磁带，到磁盘。最早的磁盘有一屋子大，然后缩小到洗衣机的尺寸，到今天硬盘可以被放进随身携带的 MP3 播放器中。</p>
+<p>于是大家就按照这样的划分，在内存中分配变量，在磁盘中存取数据，以这样的方式进行编程工作。</p>
+<p>还是拿 Squid 这个1975年风格的系统为例：你事先配置它的内存和硬盘用量，然后它会花费大把时间来追踪哪些HTTP对象驻留内存中，哪些存放在硬盘上，并且根据不同情况来调整它们的放置策略。</p>
+<p>然而实际上呢，现今的计算机应被视为只使用一种统一的存储系统，这个系统完全基于硬盘（磁盘，固态硬盘或者其他什么东西），而传统的内存呢，在操作系统内核和虚拟内存硬件机制的帮助下可以被看作是硬盘的缓存。</p>
+<p>回过头来看 Squid 的策略，它精心设计的存储管理机制实际上却陷入了与操作系统内核同样精巧的管理策略的激烈冲突。而就像所有内战一样，这样的冲突必然一事无成。</p>
+<p>我们可以尝试从细节角度来看整个流程：一开始 Squid 会请求内存用来创建了一个 HTTP 对象，它往往会在创建之初被频繁访问多次，然后闲置一段时间。而后当内核接收到其他内存分配请求时，会将这些它认为闲置的内存数据放到硬盘交换分区去，而把这些回收的内存页用于更活跃的任务。在Squid下一次访问这一对象时，操作系统又会把暂存在交换分区的数据取回来供它使用。 这些内核对于内存的操作对于 Squid 是透明的，在它看来这个 HTTP 对象就像从没离开过内存一样，而实际上物理内存页得到了更有效的使用。</p>
+<p>这就是虚拟内存机制。</p>
+<p>如果事情到此为止的话就好了，但接下来1975年式的编程风格就出现了。</p>
+<p>一段时间之后，Squid 也和内核一样注意到了这个对象闲置了，于是打算把它放到硬盘上去，省出一些内存来给更频繁访问的数据使用。所以它打开一个文件把这个对象写了进去。</p>
+<p>打开慢镜头来看这个写入的过程：</p>
+<p>Squid 通过系统调用 write 将 HTTP 对象的虚拟内存地址传递给内核。<br>由于物理页已经被内核交换出去，这个内存访问将引发一个缺页中断。<br>为了重新载入这个内存页，内核不得不交换出另一个正在使用的内存页（很可能包含另一 Squid 的对象），修复页表，然后继续执行系统调用。<br>Squid 对这些一无所知，它自以为只是进行了一次再普通不过的访存操作而已。</p>
+<p>接下来 Squid 可以终于拿这块内存放别的数据了。而当这个对象再次被访问到时，Squid 又不得不把它从硬盘中取回来。首先它需要空闲的内存来存放这个对象，于是它根据某种淘汰算法选中另一个最近不常用的对象，把它写到硬盘上去（上面那些步骤重演了一遍）。然后打开文件读出这次所需的那个对象，最后通过网络套接字发送出去。</p>
+<p>这一切显然充满了各种无用功。</p>
+<p>让我们看看 Varnish 是怎么做的</p>
+<p>Varnish 会直接请求大块虚拟内存，并由操作系统将这个内存空间映射到一个硬盘文件。当需要访问某个 HTTP 对象时，只需要正确索引这个对象相应的虚拟内存地址，剩下的交给操作系统就好了。当内核需要回收一些内存页时，它会自行决定将一些 Varnish 的内存数据写回到映射的文件中。而当 Varnish 再次访问这一块虚拟内存时，内核自然会腾出内存页来将文件中的数据读回使用。</p>
+<p>仅此而已。</p>
+<p>Varnish 不去尝试控制哪些数据应该被缓存在内存中，哪些应该放到硬盘上去。内核代码和硬件会处理这些事情，而且处理得很漂亮。</p>
+<p>此外，与 Squid 不同的是 Varnish 只需要一个文件而不是为每个 HTTP 对象创建单独的文件。没有任何理由需要在 HTTP 对象和文件系统对象间建立一一对应的关系，也没有理由把时间浪费在文件系统的命名空间处理上。Varnish 需要处理的只是虚拟内存的指针和所需对象的长度值而已。</p>
+<p>虚拟内存的出现为数据大于物理内存的场景提供了一种便利的机制，但人们似乎并没有领悟这一点。</p>
+<h3 id="更多的缓存"><a href="#更多的缓存" class="headerlink" title="更多的缓存"></a>更多的缓存</h3><p>CPU 的时钟频率目前看来基本止步于4GHz了。即便如此，为了避免内存读写的瓶颈，硬件工程师们不得不使用使用一级，二级，有时候甚至是三级 CPU cache（现在我们可以认为 RAM 是第四级缓存了），此外还有写缓冲，流水线，页模式读取等各种技术，而这些都是为了加快访存来匹配CPU的处理速度。</p>
+<p>虽然时钟频率方面受限，但硅工艺的进步缩小了器件尺寸，集成了更多的晶体管。所以多核 CPU 的设计逐渐成为主流，但这从编程模型角度看来实在是很糟糕的一件事。</p>
+<p>虽然多核系统存在已久，但编写能够利用上多个 CPU 的代码依然是一件棘手的事。而要在多核系统上写出高性能的程序就更是如此了。</p>
+<p>比如我们有两个计数器：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">unsigned</span> n_foo;</div><div class="line"><span class="keyword">unsigned</span> n_bar;</div></pre></td></tr></table></figure>
+<p>在一个 CPU 上执行了 <code>n_foo++</code> 的操作会使得CPU读取 <code>n_foo</code> 的值然后写回。</p>
+<p>读取一个内存位置首先会检查它是否在 CPU L1 cache 中命中，这挺难的除非它刚刚被使用过。接下来是 L2 cache，我们不妨假设依然没有命中吧。</p>
+<p>如果是在一个单核系统上，CPU 会去内存读取数据然后就完事。但在多核系统中，我们必须去检查其他CPU核心是否缓存并修改了 <code>n_foo</code> 的数值。我们会发起一个特殊的总线事务做这种检查，如果其他 CPU 答复说它确实持有这样一份拷贝，它就需要将它写回到内存中。如果硬件设计良好，我们可能可以通过总线监听获得这份新数据，不然的话就需要去内存里读取它。</p>
+<p>我们终于可以修改 <code>n_foo</code> 的值了，但其实修改完了之后一般不会直接将它写回到内存中。为了之后操作的快速存取，很可能我们会把它缓存起来。</p>
+<p>现在假设另一个 CPU 需要执行 <code>n_bar++</code> 的操作，它能够直接进行吗？答案是否定的。因为缓存的单位并不是字节而是 cache-line（典型值是 8-128 个字节）。所以当第一个 CPU 忙着处理 <code>n_foo</code> 时，第二个 CPU 必须等待，因为虽然它想获取的是另一个变量，但却不幸落在了同一个 cache-line 中。</p>
+<p>明白了吧？没错，这有点丑。</p>
+<h3 id="我们该怎么办"><a href="#我们该怎么办" class="headerlink" title="我们该怎么办"></a>我们该怎么办</h3><p><strong>尽一切可能，减少内存操作。</strong></p>
+<p>下面是 Varnish 的一些做法。</p>
+<p>当需要处理一个 HTTP 请求或响应时，我们会持有一组指针和一个内存工作区。我们并不需要在处理每个 HTTP 报头时都调用 malloc，而是一次性分配整个工作区的内存，然后按需从中获取所需空间。而当我们一次性释放全部报头时，只要将指针重置到工作区的起始位置即可。</p>
+<p>当需要将 HTTP 报头从一个请求拷贝到另一个请求（或从从一个响应复制到另一个响应）时，并不需要进行字符串拷贝，而只要拷贝指针。如果源报头在这个过程中不会被不释放或改写，这样做是非常安全的。比如从客户端请求到后台请求的拷贝就是这样一个例子。</p>
+<p>但在一些新构建的报头生命周期长于源报头的场景中，就需要另外分配内存了。例如当我们会缓存新 HTTP 对象时，首先就计算整个报头所需空间，然后通过一次 malloc 调用来获取内存。</p>
+<p>另外我们会尽可能重用那些正被缓存的内存数据。</p>
+<p>比如 Varnish 的 worker 线程是以<em>最近最忙的</em>方式调度的，也即是说一个 worker 线程空闲后会被放回到队列的最前端，使得它更有机会马上去处理下一个新请求，这样它的数据，栈空间和变量等很可能可以在 CPU 缓存中被重用，而不是再次从RAM中读取。</p>
+<p>同时对于 worker 线程经常使用的数据，我们会把它们分配在每个线程的栈变量中，并且确保它们占据完整的内存页。这样我们就可以尽可能避免 cache-line 的竞争。</p>
+<p>如果对你来说这些听起来都很陌生，我可以告诉你它们是确实有效的：Varnish 处理一个命中缓存的请求最多只需18个系统调用，而且其中不少只是为了获得时间戳来满足统计的需要。</p>
+<p>这些技术并不新鲜，我们已经在内核开发中使用了10多年，现在该轮到你们来学习了:-)</p>
+<p>如此，欢迎进入 Varnish，一个 2006风格架构的程序。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OS/" rel="tag"># OS</a>
+          
+            <a href="/tags/服务器/" rel="tag"># 服务器</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hackerrank-spanning-tree-fraction/" rel="next" title="HackerRank: Spanning Tree Fraction 题解">
+                <i class="fa fa-chevron-left"></i> HackerRank: Spanning Tree Fraction 题解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/aws-solution-architect-cert-associate/" rel="prev" title="获得了 AWS Solution Architect 证书（附笔记）">
+                获得了 AWS Solution Architect 证书（附笔记） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1975的编程方式到底出了什么问题？"><span class="nav-number">1.</span> <span class="nav-text">1975的编程方式到底出了什么问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多的缓存"><span class="nav-number">2.</span> <span class="nav-text">更多的缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我们该怎么办"><span class="nav-number">3.</span> <span class="nav-text">我们该怎么办</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

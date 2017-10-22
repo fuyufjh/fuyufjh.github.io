@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数学," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基本计数 $$\left({n\choose k}\right)={n+k-1\choose k}$$ 生成函数$$G(x)=a_0+a_1x+a_2x^2+\cdots$$ 生成函数的运算Let $G(x)=\sum_{n\ge 0}g_nx^n$ and $F(x)=\sum_{n\ge 0}f_nx^n$, $$\begin{align}&amp;amp;\text{shift:}&amp;amp;x^k">
+<meta name="keywords" content="数学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组合数学常用公式汇总">
+<meta property="og:url" content="https://ericfu.me/useful-formula-in-combinators/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="基本计数 $$\left({n\choose k}\right)={n+k-1\choose k}$$ 生成函数$$G(x)=a_0+a_1x+a_2x^2+\cdots$$ 生成函数的运算Let $G(x)=\sum_{n\ge 0}g_nx^n$ and $F(x)=\sum_{n\ge 0}f_nx^n$, $$\begin{align}&amp;amp;\text{shift:}&amp;amp;x^k">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://ericfu.me/images/2015/12/basic_formula.png">
+<meta property="og:updated_time" content="2017-08-20T23:15:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="组合数学常用公式汇总">
+<meta name="twitter:description" content="基本计数 $$\left({n\choose k}\right)={n+k-1\choose k}$$ 生成函数$$G(x)=a_0+a_1x+a_2x^2+\cdots$$ 生成函数的运算Let $G(x)=\sum_{n\ge 0}g_nx^n$ and $F(x)=\sum_{n\ge 0}f_nx^n$, $$\begin{align}&amp;amp;\text{shift:}&amp;amp;x^k">
+<meta name="twitter:image" content="https://ericfu.me/images/2015/12/basic_formula.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/useful-formula-in-combinators/"/>
+
+
+
+
+
+  <title>组合数学常用公式汇总 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/useful-formula-in-combinators/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">组合数学常用公式汇总</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-28T12:26:10+08:00">
+                2015-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基本计数"><a href="#基本计数" class="headerlink" title="基本计数"></a>基本计数</h2><p><img src="/images/2015/12/basic_formula.png" alt="BasicFormula"></p>
+<p>$$<br>\left({n\choose k}\right)={n+k-1\choose k}<br>$$</p>
+<h2 id="生成函数"><a href="#生成函数" class="headerlink" title="生成函数"></a>生成函数</h2><p>$$<br>G(x)=a_0+a_1x+a_2x^2+\cdots<br>$$</p>
+<h3 id="生成函数的运算"><a href="#生成函数的运算" class="headerlink" title="生成函数的运算"></a>生成函数的运算</h3><p>Let $G(x)=\sum_{n\ge 0}g_nx^n$ and $F(x)=\sum_{n\ge 0}f_nx^n$,</p>
+<p>$$<br>\begin{align}<br>&amp;\text{shift:}<br>&amp;x^k G(x)<br>&amp;= \sum_{n\ge k}g_{n-k}x^n, &amp;\qquad (\mbox{integer }k\ge 0)\\<br>&amp;\text{addition:}<br>&amp; F(x)+G(x)<br>&amp;= \sum_{n\ge 0} (f_n+ g_n)x^n\\<br>&amp;\text{convolution:}<br>&amp;F(x)G(x)<br>&amp;= \sum_{n\ge 0}\sum_{k=0}^nf_kg_{n-k}x^n\\<br>&amp;\text{differentiation:}<br>&amp;G’(x)<br>&amp;=\sum_{n\ge 0}(n+1)g_{n+1}x^n<br>\end{align}<br>$$</p>
+<h3 id="按项展开"><a href="#按项展开" class="headerlink" title="按项展开"></a>按项展开</h3><p>泰勒级数：$G(x)=\sum_{n\ge 0}\frac{G^{(n)}(0)}{n!}x^n$</p>
+<p>等比数列级数：$\frac{1}{1-x}=\sum_{n\ge 0}x^n$</p>
+<p>牛顿公式：$(1+x)^\alpha=\sum_{n\ge 0}{\alpha\choose n}x^{n}$ where ${\alpha\choose n}=\frac{\alpha(\alpha-1)(\alpha-2)\cdots(\alpha-n+1)}{n!}$</p>
+<h3 id="卡特兰数"><a href="#卡特兰数" class="headerlink" title="卡特兰数"></a>卡特兰数</h3><p>$$<br>C_n=\sum_{k=0}^{n-1}C_kC_{n-1-k}<br>$$</p>
+<p>闭式解：<br>$$<br>C_n=\frac{1}{n+1}{2n\choose n}<br>$$</p>
+<h2 id="容斥原理"><a href="#容斥原理" class="headerlink" title="容斥原理"></a>容斥原理</h2><p>$$<br>\begin{align}<br>\left|\bigcup_{i=1}^nA_i\right|<br>&amp;=<br>\sum_{I\subseteq{1,\ldots,n}}(-1)^{|I|-1}\left|\bigcap_{i\in I}A_i\right|.<br>\end{align}<br>$$</p>
+<p>通常使用它的补集形式</p>
+<p>$$<br>\sum_{I\subseteq{1,\ldots, n}}(-1)^{|I|}|A_I|<br>$$</p>
+<h2 id="Cayley-公式"><a href="#Cayley-公式" class="headerlink" title="Cayley 公式"></a>Cayley 公式</h2><p>$n$ 个顶点可以构成 $n^{n-2}$ 棵不同的树。</p>
+<h2 id="Polya-计数定理"><a href="#Polya-计数定理" class="headerlink" title="Pólya 计数定理"></a>Pólya 计数定理</h2><p>在排列集 $X$ 上给定一个操作群 $G$，则轨道数：<br>$$|Y^X/G| = \frac{1}{|G|}\sum_{g \in G} m^{c(g)}<br>$$其中 $m= \left| Y \right|$  是颜色的个数，$c(g)$ 是 $g$ 中包含的环的个数。</p>
+<h2 id="鸽巢原理"><a href="#鸽巢原理" class="headerlink" title="鸽巢原理"></a>鸽巢原理</h2><p>把 $N&gt;mn$ 只鸽子放在 $n$ 个笼子里，存在一个笼子里有<strong>多于</strong> $m$ 只鸽子。</p>
+<h2 id="概率方法"><a href="#概率方法" class="headerlink" title="概率方法"></a>概率方法</h2><ul>
+<li>如果某个 object 被选中的概率 $p&gt;0$，那它就存在；互补地，如果某个 object <strong>没</strong>被选中的概率 $p&lt;1$，那它就存在。</li>
+<li>如果某个随机变量的期望（均值）为 $\bar{x}$，至少存在一个取值不小于 $\bar{x}$，至少有一个取值不大于 $\bar{x}$ 。</li>
+</ul>
+<h3 id="Lovasz-局部定理"><a href="#Lovasz-局部定理" class="headerlink" title="Lovász 局部定理"></a>Lovász 局部定理</h3><p>定义 $A_1,A_2,\ldots,A_n$ 是一系列的“坏”事件（我们希望它不发生），并且</p>
+<ol>
+<li>对于所有 $1\le i\le n$，$\Pr[A_i]\le p$</li>
+<li>依赖图的最大度数 $d$ 满足 $ep(d+1)\le 1$</li>
+</ol>
+<p>那么：<br>$$\Pr\left[\bigwedge_{i=1}^n\overline{A_i}\right]&gt;0$$</p>
+<p>即，有可能所有“坏”事件都不发生。</p>
+<h2 id="极值图论"><a href="#极值图论" class="headerlink" title="极值图论 *"></a>极值图论 *</h2><ul>
+<li><strong>Mantel 定理</strong>：如果图 $G(V,E)$ 中没有三角形，则<br>$$|E|\le\frac{n^2}{4}$$</li>
+<li><strong>Turán 定理</strong>：如果图 $G(V,E)$ 中没有 $r$-clique，$r\ge 2$，那么<br>$$|E|\le\frac{r-2}{2(r-1)}n^2$$</li>
+<li><strong>Erdős–Stone 定理</strong>：记 $ex(n,H)$ 为：一个定点数为 $n$ 的图 $G(V,E)$ 如果要满足 $H\not\subseteq G$，最多可能有多少条边。则<br>$$\mathrm{ex}(n,K_r)\le\frac{r-2}{2(r-1)}n^2$$</li>
+</ul>
+<h2 id="极值集合论"><a href="#极值集合论" class="headerlink" title="极值集合论 *"></a>极值集合论 *</h2><ul>
+<li><strong>Erdős–Ko–Rado 定理</strong>：记 $\mathcal{F}\subseteq {X\choose k}$ ，其中$| X | = n$ 且 $n\ge 2k$ 。 如果 $\mathcal{F}$ 中的各集合两两有（非空）交集, 那么 $|\mathcal{F}|\le{n-1\choose k-1}$</li>
+<li><strong>Sperner 系统</strong>：记 $\mathcal{F}\subseteq 2^X$ ，其中 $| X | = n$ 。如果 $\mathcal{F}$ 是一个 antichain，那么 $|\mathcal{F}|\le{n\choose \lfloor n/2\rfloor}$</li>
+</ul>
+<h2 id="Ramsey-定理"><a href="#Ramsey-定理" class="headerlink" title="Ramsey 定理 *"></a>Ramsey 定理 *</h2><p>（图论版本）定义 $k,\ell$ 为正整数。存在一个数 $R(k,\ell)$ 满足：当 $n\ge R(k,\ell)$ 时，无论怎样着色（红色和蓝色），必然存在一个红色的 $K<em>k$ <strong>或</strong> 蓝色的 $K</em>\ell$</p>
+<h2 id="匹配论"><a href="#匹配论" class="headerlink" title="匹配论"></a>匹配论</h2><h3 id="Hall-定理"><a href="#Hall-定理" class="headerlink" title="Hall 定理"></a>Hall 定理</h3><p>集合 $S_1,S_2,\ldots,S_m$ ，每个集合都能选出唯一代表，当且仅当，$\left|\bigcup_{i\in I}S_i\right|\ge |I|$ for all $I\subseteq{1,2,\ldots,m}$</p>
+<p>这个充要条件 $\left|\bigcup_{i\in I}S_i\right|\ge |I|$ for all $I\subseteq{1,2,\ldots,m}$ 被称为 Hall’s condition。</p>
+<p>相关定理：</p>
+<ul>
+<li><strong>König-Egerváry 定理</strong>：二部图中，最大匹配的大小等于最小点覆盖集的大小。</li>
+<li><strong>Menger 定理</strong>：在图上分开两个点至少要去掉几个点？等于这两点间不相交的路径的个数。</li>
+<li><strong>Dilworth 定理</strong>：一个偏序集分成多少个 chian？等于最大 antichain 的大小。</li>
+</ul>
+<h3 id="最大流最小切定理"><a href="#最大流最小切定理" class="headerlink" title="最大流最小切定理"></a>最大流最小切定理</h3><p>流网络中，最大流等于最小切。</p>
+<hr>
+<p>Ref.</p>
+<ol>
+<li><a href="http://tcs.nju.edu.cn/wiki/index.php/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6_(Fall_2015" target="_blank" rel="external">尹一通老师的组合数学课程（Fall 2015）</a>)</li>
+<li><a href="https://zh.wikipedia.org/wiki/%E6%B3%A2%E5%88%A9%E4%BA%9E%E8%A8%88%E6%95%B8%E5%AE%9A%E7%90%86" target="_blank" rel="external">波利亞計數定理 - 维基百科</a></li>
+</ol>
+<p>P.S.</p>
+<ul>
+<li>给 Ref.1 做了个<a href="https://onedrive.live.com/redir?resid=C096782552F3ECA6!9274&amp;authkey=!ADWElf9zgeJjGZc&amp;ithint=file%2czip" target="_blank" rel="external">备份</a>。版权归原作者所有。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数学/" rel="tag"># 数学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/fight-with-greatwall-conclusion/" rel="next" title="GFW 近期斗争总结">
+                <i class="fa fa-chevron-left"></i> GFW 近期斗争总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xiaomi-market-puzzle-game-solution/" rel="prev" title="给小米商城的拼图游戏写了个外挂">
+                给小米商城的拼图游戏写了个外挂 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本计数"><span class="nav-number">1.</span> <span class="nav-text">基本计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成函数"><span class="nav-number">2.</span> <span class="nav-text">生成函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成函数的运算"><span class="nav-number">2.1.</span> <span class="nav-text">生成函数的运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按项展开"><span class="nav-number">2.2.</span> <span class="nav-text">按项展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡特兰数"><span class="nav-number">2.3.</span> <span class="nav-text">卡特兰数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容斥原理"><span class="nav-number">3.</span> <span class="nav-text">容斥原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cayley-公式"><span class="nav-number">4.</span> <span class="nav-text">Cayley 公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polya-计数定理"><span class="nav-number">5.</span> <span class="nav-text">Pólya 计数定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鸽巢原理"><span class="nav-number">6.</span> <span class="nav-text">鸽巢原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概率方法"><span class="nav-number">7.</span> <span class="nav-text">概率方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lovasz-局部定理"><span class="nav-number">7.1.</span> <span class="nav-text">Lovász 局部定理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极值图论"><span class="nav-number">8.</span> <span class="nav-text">极值图论 *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极值集合论"><span class="nav-number">9.</span> <span class="nav-text">极值集合论 *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ramsey-定理"><span class="nav-number">10.</span> <span class="nav-text">Ramsey 定理 *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配论"><span class="nav-number">11.</span> <span class="nav-text">匹配论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hall-定理"><span class="nav-number">11.1.</span> <span class="nav-text">Hall 定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大流最小切定理"><span class="nav-number">11.2.</span> <span class="nav-text">最大流最小切定理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

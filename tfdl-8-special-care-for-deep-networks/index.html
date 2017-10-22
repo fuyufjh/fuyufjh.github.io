@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="TensorFlow," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="随着层数的增加，神经网络越来越难以收敛。但现在我们知道如何控制它们的行为了。这里是一些只用一行就可以实现的改进，这些小技巧会帮到你，当你看到准确度曲线出现如下情况的时候：  RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多问题。它把所有的值都挤到了 0 到 1 之间，而且当你重复做的时候，神经元的输出和它们的梯度可能会完全消失。值得一提的是，出于历史原因，一些现代神经网络使">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 与深度学习 (8) 特别注意之处">
+<meta property="og:url" content="https://ericfu.me/tfdl-8-special-care-for-deep-networks/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="随着层数的增加，神经网络越来越难以收敛。但现在我们知道如何控制它们的行为了。这里是一些只用一行就可以实现的改进，这些小技巧会帮到你，当你看到准确度曲线出现如下情况的时候：  RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多问题。它把所有的值都挤到了 0 到 1 之间，而且当你重复做的时候，神经元的输出和它们的梯度可能会完全消失。值得一提的是，出于历史原因，一些现代神经网络使">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5cb4bd133cd34337.png">
+<meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/56ac913e3330c484.png">
+<meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/60cac06459b3cc08.png">
+<meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/796280524370a9b5.png">
+<meta property="og:updated_time" content="2017-02-18T01:23:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow 与深度学习 (8) 特别注意之处">
+<meta name="twitter:description" content="随着层数的增加，神经网络越来越难以收敛。但现在我们知道如何控制它们的行为了。这里是一些只用一行就可以实现的改进，这些小技巧会帮到你，当你看到准确度曲线出现如下情况的时候：  RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多问题。它把所有的值都挤到了 0 到 1 之间，而且当你重复做的时候，神经元的输出和它们的梯度可能会完全消失。值得一提的是，出于历史原因，一些现代神经网络使">
+<meta name="twitter:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5cb4bd133cd34337.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/tfdl-8-special-care-for-deep-networks/"/>
+
+
+
+
+
+  <title>TensorFlow 与深度学习 (8) 特别注意之处 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-8-special-care-for-deep-networks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TensorFlow 与深度学习 (8) 特别注意之处</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:17:52+08:00">
+                2017-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5cb4bd133cd34337.png" alt=""></p>
+<p>随着层数的增加，神经网络越来越难以收敛。但现在我们知道如何控制它们的行为了。这里是一些只用一行就可以实现的改进，这些小技巧会帮到你，当你看到准确度曲线出现如下情况的时候：</p>
+<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/56ac913e3330c484.png" alt=""></p>
+<h3 id="RELU-激活函数"><a href="#RELU-激活函数" class="headerlink" title="RELU 激活函数"></a>RELU 激活函数</h3><p>在深度网络里，sigmoid 激活函数确实能带来很多问题。它把所有的值都挤到了 0 到 1 之间，而且当你重复做的时候，神经元的输出和它们的梯度可能会完全消失。值得一提的是，出于历史原因，一些现代神经网络使用了 RELU（Rectified Linear Unit，修正线性单元，俗称斜坡函数——译者注），它大致是如下这个样子：</p>
+<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/60cac06459b3cc08.png" alt=""></p>
+<blockquote>
+<p>Update 1/4：用 RELU 替换你所有的 sigmoid，然后你会得到一个更快的初始收敛，并且也避免了继续增加 layer 时产生的一些后续问题。仅仅在代码中简单地用 <code>tf.nn.relu</code> 来替换 <code>tf.nn.sigmoid</code> 即可。</p>
+</blockquote>
+<h3 id="更好的-optimizer"><a href="#更好的-optimizer" class="headerlink" title="更好的 optimizer"></a>更好的 optimizer</h3><p>在一个维度很高的空间里，就像现在这个情况——我们有 10K 量级的权值和偏置值——<strong>鞍点 (saddle points）</strong>会频繁出现。这些点不是局部最小值，但它的梯度却是零，那么梯度降的优化会卡在这里。TensorFlow 有一系列可以用的优化器，包括一些带有一定的惯性、能够安全越过鞍点的优化器。</p>
+<blockquote>
+<p>Update 2/4: 现在将你的 <code>tf.train.GradientDescentOptimiser</code> 替换为 <code>tf.train.AdamOptimizer</code>。</p>
+</blockquote>
+<h3 id="随机初始化"><a href="#随机初始化" class="headerlink" title="随机初始化"></a>随机初始化</h3><p>精确度一直卡在 0.1？你的权值初始化成随机值了吗？对于偏置，如果用 ReLU 的话，最好的办法就是把它们都初始化成小的正值，这样神经元一开始就会工作在 ReLU 的非零区域内。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W = tf.Variable(tf.truncated_normal([K, L], stddev=<span class="number">0.1</span>))</div><div class="line">B = tf.Variable(tf.ones([L])/<span class="number">10</span>)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Update 3/4: 检查是否你所有的权值和偏置值都被正确地初始化了。上图所示，0.1 对偏置是一个合适的初始值。</p>
+</blockquote>
+<h3 id="NaN-？？？"><a href="#NaN-？？？" class="headerlink" title="NaN ？？？"></a>NaN ？？？</h3><p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/796280524370a9b5.png" alt=""></p>
+<p>如果你看到你的精确曲线陡然下滑并且命令行输出的交叉熵是 NaN，别慌，你其实是正在尝试计算 log(0)，而这肯定是个非数（NaN, Not a Number）。还记得吗，交叉熵的计算涉及到对 softmax 层的输出取对数。鉴于 softmax 基本上是一个指数，它肯定不是 0，我们如果用 32 位精度的浮点运算就还好，exp(-100) 基本上可以算作是 0 了。</p>
+<p>幸运的是，TensorFlow 有一个方便的函数可以在一步内计算 softmax 和交叉熵，它是以一种数值上较为稳定的方式实现的。如果要使用它，你需要在应用 softmax 之前将原始的权重和加上你最后一层的偏置隔离开来（在神经网络的术语里叫 <strong>logits</strong>）。</p>
+<p>如果你模型的最后一行是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Y = tf.nn.softmax(tf.matmul(Y4, W5) + B5)</div></pre></td></tr></table></figure>
+<p>你需要把它替换成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Ylogits = tf.matmul(Y4, W5) + B5</div><div class="line">Y = tf.nn.softmax(Ylogits)</div></pre></td></tr></table></figure>
+<p>你现在能以一种安全的方式计算交叉熵了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cross_entropy = tf.nn.softmax_cross_entropy_with_logits(Ylogits, Y_)</div></pre></td></tr></table></figure>
+<p>同样地，加上这行代码使得测试和训练的交叉熵能够显示在统一尺度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cross_entropy = tf.reduce_mean(cross_entropy)*<span class="number">100</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>Update 4/4: 请把 <code>tf.nn.softmax_cross_entropy_with_logits</code> 加到你的代码里。你也可以跳过这一步，等你遇到 NaN 以后再来做这步。</p>
+</blockquote>
+<p>你现在可以进入更深入的学习了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tfdl-7-add-layers/" rel="next" title="TensorFlow 和深度学习 (7) 增加 Layer">
+                <i class="fa fa-chevron-left"></i> TensorFlow 和深度学习 (7) 增加 Layer
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tfdl-9-learning-rate-decay/" rel="prev" title="TensorFlow 与深度学习 (9) 学习率衰减">
+                TensorFlow 与深度学习 (9) 学习率衰减 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RELU-激活函数"><span class="nav-number">1.</span> <span class="nav-text">RELU 激活函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更好的-optimizer"><span class="nav-number">2.</span> <span class="nav-text">更好的 optimizer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机初始化"><span class="nav-number">3.</span> <span class="nav-text">随机初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NaN-？？？"><span class="nav-number">4.</span> <span class="nav-text">NaN ？？？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

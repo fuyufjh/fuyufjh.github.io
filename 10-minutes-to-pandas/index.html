@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文是 pandas documentation 中的 10 Minutes to pandas 十分钟你妹啊！！  导入 pandas、numpy、matplotlib 12345In [1]: import pandas as pdIn [2]: import numpy as npIn [3]: import matplotlib.pyplot as plt 创造对象Series 是一个值">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十分钟的 pandas 入门教程（中文翻译）">
+<meta property="og:url" content="https://ericfu.me/10-minutes-to-pandas/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="原文是 pandas documentation 中的 10 Minutes to pandas 十分钟你妹啊！！  导入 pandas、numpy、matplotlib 12345In [1]: import pandas as pdIn [2]: import numpy as npIn [3]: import matplotlib.pyplot as plt 创造对象Series 是一个值">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://pandas.pydata.org/pandas-docs/stable/_images/series_plot_basic.png">
+<meta property="og:image" content="http://pandas.pydata.org/pandas-docs/stable/_images/frame_plot_basic.png">
+<meta property="og:updated_time" content="2017-08-22T00:40:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="十分钟的 pandas 入门教程（中文翻译）">
+<meta name="twitter:description" content="原文是 pandas documentation 中的 10 Minutes to pandas 十分钟你妹啊！！  导入 pandas、numpy、matplotlib 12345In [1]: import pandas as pdIn [2]: import numpy as npIn [3]: import matplotlib.pyplot as plt 创造对象Series 是一个值">
+<meta name="twitter:image" content="http://pandas.pydata.org/pandas-docs/stable/_images/series_plot_basic.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/10-minutes-to-pandas/"/>
+
+
+
+
+
+  <title>十分钟的 pandas 入门教程（中文翻译） | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/10-minutes-to-pandas/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">十分钟的 pandas 入门教程（中文翻译）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-02-05T07:06:57+08:00">
+                2016-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>原文是 pandas documentation 中的 <a href="http://pandas.pydata.org/pandas-docs/stable/10min.html" target="_blank" rel="external">10 Minutes to pandas</a></p>
+<p>十分钟你妹啊！！</p>
+</blockquote>
+<p>导入 pandas、numpy、matplotlib</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">In [1]: import pandas as pd</div><div class="line"></div><div class="line">In [2]: import numpy as np</div><div class="line"></div><div class="line">In [3]: import matplotlib.pyplot as plt</div></pre></td></tr></table></figure>
+<h2 id="创造对象"><a href="#创造对象" class="headerlink" title="创造对象"></a>创造对象</h2><p>Series 是一个值的序列，它只有一个列，以及索引。下面的例子中，就用默认的整数索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">In [4]: s = pd.Series([1,3,5,np.nan,6,8])</div><div class="line"></div><div class="line">In [5]: s</div><div class="line">Out[5]: </div><div class="line">0     1</div><div class="line">1     3</div><div class="line">2     5</div><div class="line">3   NaN</div><div class="line">4     6</div><div class="line">5     8</div><div class="line">dtype: float64</div></pre></td></tr></table></figure>
+<p>DataFrame 是有多个列的数据表，每个列拥有一个 label，当然，DataFrame 也有索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">In [6]: dates = pd.date_range(&apos;20130101&apos;, periods=6)</div><div class="line"></div><div class="line">In [7]: dates</div><div class="line">Out[7]: </div><div class="line">DatetimeIndex([&apos;2013-01-01&apos;, &apos;2013-01-02&apos;, &apos;2013-01-03&apos;, &apos;2013-01-04&apos;,</div><div class="line">               &apos;2013-01-05&apos;, &apos;2013-01-06&apos;],</div><div class="line">              dtype=&apos;datetime64[ns]&apos;, freq=&apos;D&apos;)</div><div class="line"></div><div class="line">In [8]: df = pd.DataFrame(np.random.randn(6,4), index=dates, columns=list(&apos;ABCD&apos;))</div><div class="line"></div><div class="line">In [9]: df</div><div class="line">Out[9]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-01  0.469112 -0.282863 -1.509059 -1.135632</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860</div><div class="line">2013-01-05 -0.424972  0.567020  0.276232 -1.087401</div><div class="line">2013-01-06 -0.673690  0.113648 -1.478427  0.524988</div></pre></td></tr></table></figure>
+<p>如果参数是一个 dict，每个 dict 的 value 会被转化成一个 Series</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">In [10]: df2 = pd.DataFrame(&#123; &apos;A&apos; : 1.,</div><div class="line">   ....:                      &apos;B&apos; : pd.Timestamp(&apos;20130102&apos;),</div><div class="line">   ....:                      &apos;C&apos; : pd.Series(1,index=list(range(4)),dtype=&apos;float32&apos;),</div><div class="line">   ....:                      &apos;D&apos; : np.array([3] * 4,dtype=&apos;int32&apos;),</div><div class="line">   ....:                      &apos;E&apos; : pd.Categorical([&quot;test&quot;,&quot;train&quot;,&quot;test&quot;,&quot;train&quot;]),</div><div class="line">   ....:                      &apos;F&apos; : &apos;foo&apos; &#125;)</div><div class="line">   ....: </div><div class="line"></div><div class="line">In [11]: df2</div><div class="line">Out[11]: </div><div class="line">   A          B  C  D      E    F</div><div class="line">0  1 2013-01-02  1  3   test  foo</div><div class="line">1  1 2013-01-02  1  3  train  foo</div><div class="line">2  1 2013-01-02  1  3   test  foo</div><div class="line">3  1 2013-01-02  1  3  train  foo</div></pre></td></tr></table></figure>
+<p>每列的格式用 dtypes 查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [12]: df2.dtypes</div><div class="line">Out[12]: </div><div class="line">A           float64</div><div class="line">B    datetime64[ns]</div><div class="line">C           float32</div><div class="line">D             int32</div><div class="line">E          category</div><div class="line">F            object</div><div class="line">dtype: object</div></pre></td></tr></table></figure>
+<p>你可以认为，DataFrame 是由 Series 组成的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">In [13]: df2.A</div><div class="line">Out[13]: </div><div class="line">0    1</div><div class="line">1    1</div><div class="line">2    1</div><div class="line">3    1</div><div class="line">Name: A, dtype: float64</div></pre></td></tr></table></figure>
+<h2 id="查看数据"><a href="#查看数据" class="headerlink" title="查看数据"></a>查看数据</h2><p>用 head 和 tail 查看顶端和底端的几列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">In [14]: df.head()</div><div class="line">Out[14]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-01  0.469112 -0.282863 -1.509059 -1.135632</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860</div><div class="line">2013-01-05 -0.424972  0.567020  0.276232 -1.087401</div><div class="line"></div><div class="line">In [15]: df.tail(3)</div><div class="line">Out[15]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860</div><div class="line">2013-01-05 -0.424972  0.567020  0.276232 -1.087401</div><div class="line">2013-01-06 -0.673690  0.113648 -1.478427  0.524988</div></pre></td></tr></table></figure>
+<p>实际上，DataFrame 内部用 numpy 格式存储数据。你也可以单独查看 index 和 columns</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">In [16]: df.index</div><div class="line">Out[16]: </div><div class="line">DatetimeIndex([&apos;2013-01-01&apos;, &apos;2013-01-02&apos;, &apos;2013-01-03&apos;, &apos;2013-01-04&apos;,</div><div class="line">               &apos;2013-01-05&apos;, &apos;2013-01-06&apos;],</div><div class="line">              dtype=&apos;datetime64[ns]&apos;, freq=&apos;D&apos;)</div><div class="line"></div><div class="line">In [17]: df.columns</div><div class="line">Out[17]: Index([&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;], dtype=&apos;object&apos;)</div><div class="line"></div><div class="line">In [18]: df.values</div><div class="line">Out[18]: </div><div class="line">array([[ 0.4691, -0.2829, -1.5091, -1.1356],</div><div class="line">       [ 1.2121, -0.1732,  0.1192, -1.0442],</div><div class="line">       [-0.8618, -2.1046, -0.4949,  1.0718],</div><div class="line">       [ 0.7216, -0.7068, -1.0396,  0.2719],</div><div class="line">       [-0.425 ,  0.567 ,  0.2762, -1.0874],</div><div class="line">       [-0.6737,  0.1136, -1.4784,  0.525 ]])</div></pre></td></tr></table></figure>
+<p><code>describe()</code> 显示数据的概要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">In [19]: df.describe()</div><div class="line">Out[19]: </div><div class="line">              A         B         C         D</div><div class="line">count  6.000000  6.000000  6.000000  6.000000</div><div class="line">mean   0.073711 -0.431125 -0.687758 -0.233103</div><div class="line">std    0.843157  0.922818  0.779887  0.973118</div><div class="line">min   -0.861849 -2.104569 -1.509059 -1.135632</div><div class="line">25%   -0.611510 -0.600794 -1.368714 -1.076610</div><div class="line">50%    0.022070 -0.228039 -0.767252 -0.386188</div><div class="line">75%    0.658444  0.041933 -0.034326  0.461706</div><div class="line">max    1.212112  0.567020  0.276232  1.071804</div></pre></td></tr></table></figure>
+<p>和 numpy 一样，可以方便的得到转置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">In [20]: df.T</div><div class="line">Out[20]: </div><div class="line">   2013-01-01  2013-01-02  2013-01-03  2013-01-04  2013-01-05  2013-01-06</div><div class="line">A    0.469112    1.212112   -0.861849    0.721555   -0.424972   -0.673690</div><div class="line">B   -0.282863   -0.173215   -2.104569   -0.706771    0.567020    0.113648</div><div class="line">C   -1.509059    0.119209   -0.494929   -1.039575    0.276232   -1.478427</div><div class="line">D   -1.135632   -1.044236    1.071804    0.271860   -1.087401    0.524988</div></pre></td></tr></table></figure>
+<p>对 axis 按照 index 排序（<code>axis=1</code> 是指第二个维度，即：列）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [21]: df.sort_index(axis=1, ascending=False)</div><div class="line">Out[21]: </div><div class="line">                   D         C         B         A</div><div class="line">2013-01-01 -1.135632 -1.509059 -0.282863  0.469112</div><div class="line">2013-01-02 -1.044236  0.119209 -0.173215  1.212112</div><div class="line">2013-01-03  1.071804 -0.494929 -2.104569 -0.861849</div><div class="line">2013-01-04  0.271860 -1.039575 -0.706771  0.721555</div><div class="line">2013-01-05 -1.087401  0.276232  0.567020 -0.424972</div><div class="line">2013-01-06  0.524988 -1.478427  0.113648 -0.673690</div></pre></td></tr></table></figure>
+<p>按值排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [22]: df.sort_values(by=&apos;B&apos;)</div><div class="line">Out[22]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860</div><div class="line">2013-01-01  0.469112 -0.282863 -1.509059 -1.135632</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-06 -0.673690  0.113648 -1.478427  0.524988</div><div class="line">2013-01-05 -0.424972  0.567020  0.276232 -1.087401</div></pre></td></tr></table></figure>
+<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><blockquote>
+<p>注意，以下这些对交互式环境很友好，但是作为 production code 请用优化过的 <code>.at</code>, <code>.iat</code>, <code>.loc</code>, <code>.iloc</code> 和 <code>.ix</code></p>
+</blockquote>
+<h2 id="获取行-列"><a href="#获取行-列" class="headerlink" title="获取行/列"></a>获取行/列</h2><p>从 DataFrame 选择一个列，就得到了 Series</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [23]: df[&apos;A&apos;]</div><div class="line">Out[23]: </div><div class="line">2013-01-01    0.469112</div><div class="line">2013-01-02    1.212112</div><div class="line">2013-01-03   -0.861849</div><div class="line">2013-01-04    0.721555</div><div class="line">2013-01-05   -0.424972</div><div class="line">2013-01-06   -0.673690</div><div class="line">Freq: D, Name: A, dtype: float64</div></pre></td></tr></table></figure>
+<p>和 numpy 类似，这里也能用 <code>[]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">In [24]: df[0:3]</div><div class="line">Out[24]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-01  0.469112 -0.282863 -1.509059 -1.135632</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804</div><div class="line"></div><div class="line">In [25]: df[&apos;20130102&apos;:&apos;20130104&apos;]</div><div class="line">Out[25]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860</div></pre></td></tr></table></figure>
+<h3 id="通过-label-选择"><a href="#通过-label-选择" class="headerlink" title="通过 label 选择"></a>通过 label 选择</h3><p>刚刚那个 DataFrame 可以通过时间戳的下标（<code>dates[0] = Timestamp(&#39;20130101&#39;)</code>）来访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">In [26]: df.loc[dates[0]]</div><div class="line">Out[26]: </div><div class="line">A    0.469112</div><div class="line">B   -0.282863</div><div class="line">C   -1.509059</div><div class="line">D   -1.135632</div><div class="line">Name: 2013-01-01 00:00:00, dtype: float64</div></pre></td></tr></table></figure>
+<p>还可以多选</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [27]: df.loc[:,[&apos;A&apos;,&apos;B&apos;]]</div><div class="line">Out[27]: </div><div class="line">                   A         B</div><div class="line">2013-01-01  0.469112 -0.282863</div><div class="line">2013-01-02  1.212112 -0.173215</div><div class="line">2013-01-03 -0.861849 -2.104569</div><div class="line">2013-01-04  0.721555 -0.706771</div><div class="line">2013-01-05 -0.424972  0.567020</div><div class="line">2013-01-06 -0.673690  0.113648</div></pre></td></tr></table></figure>
+<p>注意那个冒号，用法和 MATLAB 或 NumPy 是一样的！所以也可以这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">In [28]: df.loc[&apos;20130102&apos;:&apos;20130104&apos;,[&apos;A&apos;,&apos;B&apos;]]</div><div class="line">Out[28]: </div><div class="line">                   A         B</div><div class="line">2013-01-02  1.212112 -0.173215</div><div class="line">2013-01-03 -0.861849 -2.104569</div><div class="line">2013-01-04  0.721555 -0.706771</div></pre></td></tr></table></figure>
+<p>依旧和 MATLAB 一样，当有一个维度是标量（而不是范围或序列）的时候，选择出的矩阵维度会减少</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">In [29]: df.loc[&apos;20130102&apos;,[&apos;A&apos;,&apos;B&apos;]]</div><div class="line">Out[29]: </div><div class="line">A    1.212112</div><div class="line">B   -0.173215</div><div class="line">Name: 2013-01-02 00:00:00, dtype: float64</div></pre></td></tr></table></figure>
+<p>如果对所有的维度都写了标量，不就是选出一个元素吗？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">In [30]: df.loc[dates[0],&apos;A&apos;]</div><div class="line">Out[30]: 0.46911229990718628</div></pre></td></tr></table></figure>
+<p>这种情况通常用 <code>at</code> ，速度更快</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">In [31]: df.at[dates[0],&apos;A&apos;]</div><div class="line">Out[31]: 0.46911229990718628</div></pre></td></tr></table></figure>
+<h3 id="通过整数下标选择"><a href="#通过整数下标选择" class="headerlink" title="通过整数下标选择"></a>通过整数下标选择</h3><blockquote>
+<p>和 MATLAB 完全一样</p>
+</blockquote>
+<p>这个就和数组类似啦，直接看例子。选出第3行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">In [32]: df.iloc[3]</div><div class="line">Out[32]: </div><div class="line">A    0.721555</div><div class="line">B   -0.706771</div><div class="line">C   -1.039575</div><div class="line">D    0.271860</div><div class="line">Name: 2013-01-04 00:00:00, dtype: float64</div></pre></td></tr></table></figure>
+<p>选出3~4行，0~1列：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">In [33]: df.iloc[3:5,0:2]</div><div class="line">Out[33]: </div><div class="line">                   A         B</div><div class="line">2013-01-04  0.721555 -0.706771</div><div class="line">2013-01-05 -0.424972  0.567020</div></pre></td></tr></table></figure>
+<p>也能用 list 选择</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">In [34]: df.iloc[[1,2,4],[0,2]]</div><div class="line">Out[34]: </div><div class="line">                   A         C</div><div class="line">2013-01-02  1.212112  0.119209</div><div class="line">2013-01-03 -0.861849 -0.494929</div><div class="line">2013-01-05 -0.424972  0.276232</div></pre></td></tr></table></figure>
+<p>也能用 slice</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">In [35]: df.iloc[1:3,:]</div><div class="line">Out[35]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [36]: df.iloc[:,1:3]</div><div class="line">Out[36]: </div><div class="line">                   B         C</div><div class="line">2013-01-01 -0.282863 -1.509059</div><div class="line">2013-01-02 -0.173215  0.119209</div><div class="line">2013-01-03 -2.104569 -0.494929</div><div class="line">2013-01-04 -0.706771 -1.039575</div><div class="line">2013-01-05  0.567020  0.276232</div><div class="line">2013-01-06  0.113648 -1.478427</div></pre></td></tr></table></figure>
+<p>对应单个元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">In [37]: df.iloc[1,1]</div><div class="line">Out[37]: -0.17321464905330858</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">In [38]: df.iat[1,1]</div><div class="line">Out[38]: -0.17321464905330858</div></pre></td></tr></table></figure>
+<h3 id="布尔值下标"><a href="#布尔值下标" class="headerlink" title="布尔值下标"></a>布尔值下标</h3><blockquote>
+<p>和 MATLAB 类似</p>
+</blockquote>
+<p>基本用法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">In [39]: df[df.A &gt; 0]</div><div class="line">Out[39]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-01  0.469112 -0.282863 -1.509059 -1.135632</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860</div></pre></td></tr></table></figure>
+<p>没有填充的值等于 NaN</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [40]: df[df &gt; 0]</div><div class="line">Out[40]: </div><div class="line">                   A         B         C         D</div><div class="line">2013-01-01  0.469112       NaN       NaN       NaN</div><div class="line">2013-01-02  1.212112       NaN  0.119209       NaN</div><div class="line">2013-01-03       NaN       NaN       NaN  1.071804</div><div class="line">2013-01-04  0.721555       NaN       NaN  0.271860</div><div class="line">2013-01-05       NaN  0.567020  0.276232       NaN</div><div class="line">2013-01-06       NaN  0.113648       NaN  0.524988</div></pre></td></tr></table></figure>
+<p><code>isin()</code> 函数：是否在集合中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">In [41]: df2 = df.copy()</div><div class="line"></div><div class="line">In [42]: df2[&apos;E&apos;] = [&apos;one&apos;, &apos;one&apos;,&apos;two&apos;,&apos;three&apos;,&apos;four&apos;,&apos;three&apos;]</div><div class="line"></div><div class="line">In [43]: df2</div><div class="line">Out[43]: </div><div class="line">                   A         B         C         D      E</div><div class="line">2013-01-01  0.469112 -0.282863 -1.509059 -1.135632    one</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209 -1.044236    one</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804    two</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  0.271860  three</div><div class="line">2013-01-05 -0.424972  0.567020  0.276232 -1.087401   four</div><div class="line">2013-01-06 -0.673690  0.113648 -1.478427  0.524988  three</div><div class="line"></div><div class="line">In [44]: df2[df2[&apos;E&apos;].isin([&apos;two&apos;,&apos;four&apos;])]</div><div class="line">Out[44]: </div><div class="line">                   A         B         C         D     E</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  1.071804   two</div><div class="line">2013-01-05 -0.424972  0.567020  0.276232 -1.087401  four</div></pre></td></tr></table></figure>
+<h3 id="Setting"><a href="#Setting" class="headerlink" title="Setting"></a>Setting</h3><p>为 DataFrame 增加新的列，按 index 对应</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">In [45]: s1 = pd.Series([1,2,3,4,5,6], index=pd.date_range(&apos;20130102&apos;, periods=6))</div><div class="line"></div><div class="line">In [46]: s1</div><div class="line">Out[46]: </div><div class="line">2013-01-02    1</div><div class="line">2013-01-03    2</div><div class="line">2013-01-04    3</div><div class="line">2013-01-05    4</div><div class="line">2013-01-06    5</div><div class="line">2013-01-07    6</div><div class="line">Freq: D, dtype: int64</div><div class="line"></div><div class="line">In [47]: df[&apos;F&apos;] = s1</div></pre></td></tr></table></figure>
+<p>通过 label 设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In [48]: df.at[dates[0],&apos;A&apos;] = 0</div></pre></td></tr></table></figure>
+<p>通过下标设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In [49]: df.iat[0,1] = 0</div></pre></td></tr></table></figure>
+<p>用 numpy 数组设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df.loc[:,&apos;D&apos;] = np.array([5] * len(df))</div></pre></td></tr></table></figure>
+<p>用布尔值作下标的 set</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In [53]: df2[df2 &gt; 0] = -df2</div></pre></td></tr></table></figure>
+<h2 id="缺失值"><a href="#缺失值" class="headerlink" title="缺失值"></a>缺失值</h2><p>pandas 用 <code>np.nan</code> 表示缺失值。通常它不会被计算。</p>
+<p>Reindexing 允许你改变某个轴的 index（以下代码制造一个示例用的 DataFrame）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">In [55]: df1 = df.reindex(index=dates[0:4], columns=list(df.columns) + [&apos;E&apos;])</div><div class="line"></div><div class="line">In [56]: df1.loc[dates[0]:dates[1],&apos;E&apos;] = 1</div><div class="line"></div><div class="line">In [57]: df1</div><div class="line">Out[57]: </div><div class="line">                   A         B         C  D   F   E</div><div class="line">2013-01-01  0.000000  0.000000 -1.509059  5 NaN   1</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209  5   1   1</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  5   2 NaN</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  5   3 NaN</div></pre></td></tr></table></figure>
+<p>丢弃有 NaN 的行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">In [58]: df1.dropna()</div><div class="line">Out[58]: </div><div class="line">                   A         B         C  D  F  E</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209  5  1  1</div></pre></td></tr></table></figure>
+<p>填充缺失值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">In [59]: df1.fillna(value=5)</div><div class="line">Out[59]: </div><div class="line">                   A         B         C  D  F  E</div><div class="line">2013-01-01  0.000000  0.000000 -1.509059  5  5  1</div><div class="line">2013-01-02  1.212112 -0.173215  0.119209  5  1  1</div><div class="line">2013-01-03 -0.861849 -2.104569 -0.494929  5  2  5</div><div class="line">2013-01-04  0.721555 -0.706771 -1.039575  5  3  5</div></pre></td></tr></table></figure>
+<p>获取布尔值的 mask：哪些值是 NaN</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">In [60]: pd.isnull(df1)</div><div class="line">Out[60]: </div><div class="line">                A      B      C      D      F      E</div><div class="line">2013-01-01  False  False  False  False   True  False</div><div class="line">2013-01-02  False  False  False  False  False  False</div><div class="line">2013-01-03  False  False  False  False  False   True</div><div class="line">2013-01-04  False  False  False  False  False   True</div></pre></td></tr></table></figure>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="统计"><a href="#统计" class="headerlink" title="统计"></a>统计</h3><blockquote>
+<p>通常，操作都会把 NaN 排除在外</p>
+</blockquote>
+<p>平均值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">In [61]: df.mean()</div><div class="line">Out[61]: </div><div class="line">A   -0.004474</div><div class="line">B   -0.383981</div><div class="line">C   -0.687758</div><div class="line">D    5.000000</div><div class="line">F    3.000000</div><div class="line">dtype: float64</div></pre></td></tr></table></figure>
+<p>对另一个维度做平均值，只要加个参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [62]: df.mean(1)</div><div class="line">Out[62]: </div><div class="line">2013-01-01    0.872735</div><div class="line">2013-01-02    1.431621</div><div class="line">2013-01-03    0.707731</div><div class="line">2013-01-04    1.395042</div><div class="line">2013-01-05    1.883656</div><div class="line">2013-01-06    1.592306</div><div class="line">Freq: D, dtype: float64</div></pre></td></tr></table></figure>
+<h3 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h3><p>对数据（行或列） Apply 函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">In [66]: df.apply(np.cumsum)</div><div class="line">Out[66]: </div><div class="line">                   A         B         C   D   F</div><div class="line">2013-01-01  0.000000  0.000000 -1.509059   5 NaN</div><div class="line">2013-01-02  1.212112 -0.173215 -1.389850  10   1</div><div class="line">2013-01-03  0.350263 -2.277784 -1.884779  15   3</div><div class="line">2013-01-04  1.071818 -2.984555 -2.924354  20   6</div><div class="line">2013-01-05  0.646846 -2.417535 -2.648122  25  10</div><div class="line">2013-01-06 -0.026844 -2.303886 -4.126549  30  15</div><div class="line"></div><div class="line">In [67]: df.apply(lambda x: x.max() - x.min())</div><div class="line">Out[67]: </div><div class="line">A    2.073961</div><div class="line">B    2.671590</div><div class="line">C    1.785291</div><div class="line">D    0.000000</div><div class="line">F    4.000000</div><div class="line">dtype: float64</div></pre></td></tr></table></figure>
+<h3 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">In [68]: s = pd.Series(np.random.randint(0, 7, size=10))</div><div class="line"></div><div class="line">In [69]: s</div><div class="line">Out[69]: </div><div class="line">0    4</div><div class="line">1    2</div><div class="line">2    1</div><div class="line">3    2</div><div class="line">4    6</div><div class="line">5    4</div><div class="line">6    4</div><div class="line">7    6</div><div class="line">8    4</div><div class="line">9    4</div><div class="line">dtype: int32</div><div class="line"></div><div class="line">In [70]: s.value_counts()</div><div class="line">Out[70]: </div><div class="line">4    5</div><div class="line">6    2</div><div class="line">2    2</div><div class="line">1    1</div><div class="line">dtype: int64</div></pre></td></tr></table></figure>
+<h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3><p>Series 自带了很多字符串处理函数，在 <code>str</code> 属性中，下面是一个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">In [71]: s = pd.Series([&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;Aaba&apos;, &apos;Baca&apos;, np.nan, &apos;CABA&apos;, &apos;dog&apos;, &apos;cat&apos;])</div><div class="line"></div><div class="line">In [72]: s.str.lower()</div><div class="line">Out[72]: </div><div class="line">0       a</div><div class="line">1       b</div><div class="line">2       c</div><div class="line">3    aaba</div><div class="line">4    baca</div><div class="line">5     NaN</div><div class="line">6    caba</div><div class="line">7     dog</div><div class="line">8     cat</div><div class="line">dtype: object</div></pre></td></tr></table></figure>
+<h2 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h2><h3 id="Concat"><a href="#Concat" class="headerlink" title="Concat"></a>Concat</h3><p>简单地按行拼接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">In [73]: df = pd.DataFrame(np.random.randn(10, 4))</div><div class="line"></div><div class="line">In [74]: df</div><div class="line">Out[74]: </div><div class="line">          0         1         2         3</div><div class="line">0 -0.582002  0.066403  0.917236 -0.214155</div><div class="line">1  2.063923  1.930796  0.139574  0.449368</div><div class="line">2 -1.348962  0.228120  0.323906  1.280778</div><div class="line">3  0.689536 -0.083717  1.436075  0.663250</div><div class="line">4 -1.895829 -0.726235 -0.770739  0.192482</div><div class="line">5  0.302074  0.228735  1.390550  0.196159</div><div class="line">6  0.672059 -1.576747  0.154820  1.218892</div><div class="line">7  2.378061  0.280385  1.055607 -0.469225</div><div class="line">8 -0.997102 -0.533977  0.311215  0.940570</div><div class="line">9 -1.381892 -1.450002  0.562337 -1.195926</div><div class="line"></div><div class="line"># break it into pieces</div><div class="line">In [75]: pieces = [df[3:7], df[:3], df[7:]]</div><div class="line"></div><div class="line">In [76]: pd.concat(pieces)</div><div class="line">Out[76]: </div><div class="line">          0         1         2         3</div><div class="line">3  0.689536 -0.083717  1.436075  0.663250</div><div class="line">4 -1.895829 -0.726235 -0.770739  0.192482</div><div class="line">5  0.302074  0.228735  1.390550  0.196159</div><div class="line">6  0.672059 -1.576747  0.154820  1.218892</div><div class="line">0 -0.582002  0.066403  0.917236 -0.214155</div><div class="line">1  2.063923  1.930796  0.139574  0.449368</div><div class="line">2 -1.348962  0.228120  0.323906  1.280778</div><div class="line">7  2.378061  0.280385  1.055607 -0.469225</div><div class="line">8 -0.997102 -0.533977  0.311215  0.940570</div><div class="line">9 -1.381892 -1.450002  0.562337 -1.195926</div></pre></td></tr></table></figure>
+<h3 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h3><p>和 SQL 的 join 是一个意思</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">In [77]: left = pd.DataFrame(&#123;&apos;key&apos;: [&apos;foo&apos;, &apos;foo&apos;], &apos;lval&apos;: [1, 2]&#125;)</div><div class="line"></div><div class="line">In [78]: right = pd.DataFrame(&#123;&apos;key&apos;: [&apos;foo&apos;, &apos;foo&apos;], &apos;rval&apos;: [4, 5]&#125;)</div><div class="line"></div><div class="line">In [79]: left</div><div class="line">Out[79]: </div><div class="line">   key  lval</div><div class="line">0  foo     1</div><div class="line">1  foo     2</div><div class="line"></div><div class="line">In [80]: right</div><div class="line">Out[80]: </div><div class="line">   key  rval</div><div class="line">0  foo     4</div><div class="line">1  foo     5</div><div class="line"></div><div class="line">In [81]: pd.merge(left, right, on=&apos;key&apos;)</div><div class="line">Out[81]: </div><div class="line">   key  lval  rval</div><div class="line">0  foo     1     4</div><div class="line">1  foo     1     5</div><div class="line">2  foo     2     4</div><div class="line">3  foo     2     5</div></pre></td></tr></table></figure>
+<h3 id="Append"><a href="#Append" class="headerlink" title="Append"></a>Append</h3><p>向 DataFrame 增加新的数据行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">In [82]: df = pd.DataFrame(np.random.randn(8, 4), columns=[&apos;A&apos;,&apos;B&apos;,&apos;C&apos;,&apos;D&apos;])</div><div class="line"></div><div class="line">In [83]: df</div><div class="line">Out[83]: </div><div class="line">          A         B         C         D</div><div class="line">0  1.346061  1.511763  1.627081 -0.990582</div><div class="line">1 -0.441652  1.211526  0.268520  0.024580</div><div class="line">2 -1.577585  0.396823 -0.105381 -0.532532</div><div class="line">3  1.453749  1.208843 -0.080952 -0.264610</div><div class="line">4 -0.727965 -0.589346  0.339969 -0.693205</div><div class="line">5 -0.339355  0.593616  0.884345  1.591431</div><div class="line">6  0.141809  0.220390  0.435589  0.192451</div><div class="line">7 -0.096701  0.803351  1.715071 -0.708758</div><div class="line"></div><div class="line">In [84]: s = df.iloc[3]</div><div class="line"></div><div class="line">In [85]: df.append(s, ignore_index=True)</div><div class="line">Out[85]: </div><div class="line">          A         B         C         D</div><div class="line">0  1.346061  1.511763  1.627081 -0.990582</div><div class="line">1 -0.441652  1.211526  0.268520  0.024580</div><div class="line">2 -1.577585  0.396823 -0.105381 -0.532532</div><div class="line">3  1.453749  1.208843 -0.080952 -0.264610</div><div class="line">4 -0.727965 -0.589346  0.339969 -0.693205</div><div class="line">5 -0.339355  0.593616  0.884345  1.591431</div><div class="line">6  0.141809  0.220390  0.435589  0.192451</div><div class="line">7 -0.096701  0.803351  1.715071 -0.708758</div><div class="line">8  1.453749  1.208843 -0.080952 -0.264610</div></pre></td></tr></table></figure>
+<h2 id="Grouping"><a href="#Grouping" class="headerlink" title="Grouping"></a>Grouping</h2><p>和 SQL 中的 <code>GROUP BY</code> 类似，包括以下这几步：</p>
+<ul>
+<li>根据某些规则，把数据<strong>分组</strong></li>
+<li>对每组应用一个聚集函数，把结果放在一个数据结构中</li>
+</ul>
+<p>准备一下测试用的数据集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">In [86]: df = pd.DataFrame(&#123;&apos;A&apos; : [&apos;foo&apos;, &apos;bar&apos;, &apos;foo&apos;, &apos;bar&apos;,</div><div class="line">   ....:                           &apos;foo&apos;, &apos;bar&apos;, &apos;foo&apos;, &apos;foo&apos;],</div><div class="line">   ....:                    &apos;B&apos; : [&apos;one&apos;, &apos;one&apos;, &apos;two&apos;, &apos;three&apos;,</div><div class="line">   ....:                           &apos;two&apos;, &apos;two&apos;, &apos;one&apos;, &apos;three&apos;],</div><div class="line">   ....:                    &apos;C&apos; : np.random.randn(8),</div><div class="line">   ....:                    &apos;D&apos; : np.random.randn(8)&#125;)</div><div class="line">   ....: </div><div class="line"></div><div class="line">In [87]: df</div><div class="line">Out[87]: </div><div class="line">     A      B         C         D</div><div class="line">0  foo    one -1.202872 -0.055224</div><div class="line">1  bar    one -1.814470  2.395985</div><div class="line">2  foo    two  1.018601  1.552825</div><div class="line">3  bar  three -0.595447  0.166599</div><div class="line">4  foo    two  1.395433  0.047609</div><div class="line">5  bar    two -0.392670 -0.136473</div><div class="line">6  foo    one  0.007207 -0.561757</div><div class="line">7  foo  three  1.928123 -1.623033</div></pre></td></tr></table></figure>
+<p>做 Group 操作并对每组求和</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">In [88]: df.groupby(&apos;A&apos;).sum()</div><div class="line">Out[88]: </div><div class="line">            C        D</div><div class="line">A                     </div><div class="line">bar -2.802588  2.42611</div><div class="line">foo  3.146492 -0.63958</div></pre></td></tr></table></figure>
+<p>可以对两列进行 Group by 并求和</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">In [89]: df.groupby([&apos;A&apos;,&apos;B&apos;]).sum()</div><div class="line">Out[89]: </div><div class="line">                  C         D</div><div class="line">A   B                        </div><div class="line">bar one   -1.814470  2.395985</div><div class="line">    three -0.595447  0.166599</div><div class="line">    two   -0.392670 -0.136473</div><div class="line">foo one   -1.195665 -0.616981</div><div class="line">    three  1.928123 -1.623033</div><div class="line">    two    2.414034  1.600434</div></pre></td></tr></table></figure>
+<h2 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h2><h3 id="Stack-层叠"><a href="#Stack-层叠" class="headerlink" title="Stack 层叠"></a>Stack 层叠</h3><p>准备一下数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">In [90]: tuples = list(zip(*[[&apos;bar&apos;, &apos;bar&apos;, &apos;baz&apos;, &apos;baz&apos;,</div><div class="line">   ....:                      &apos;foo&apos;, &apos;foo&apos;, &apos;qux&apos;, &apos;qux&apos;],</div><div class="line">   ....:                     [&apos;one&apos;, &apos;two&apos;, &apos;one&apos;, &apos;two&apos;,</div><div class="line">   ....:                      &apos;one&apos;, &apos;two&apos;, &apos;one&apos;, &apos;two&apos;]]))</div><div class="line">   ....: </div><div class="line"></div><div class="line">In [91]: index = pd.MultiIndex.from_tuples(tuples, names=[&apos;first&apos;, &apos;second&apos;])</div><div class="line"></div><div class="line">In [92]: df = pd.DataFrame(np.random.randn(8, 2), index=index, columns=[&apos;A&apos;, &apos;B&apos;])</div><div class="line"></div><div class="line">In [93]: df2 = df[:4]</div><div class="line"></div><div class="line">In [94]: df2</div><div class="line">Out[94]: </div><div class="line">                     A         B</div><div class="line">first second                    </div><div class="line">bar   one     0.029399 -0.542108</div><div class="line">      two     0.282696 -0.087302</div><div class="line">baz   one    -1.575170  1.771208</div><div class="line">      two     0.816482  1.100230</div></pre></td></tr></table></figure>
+<p><code>stack()</code> 把 DataFrame 的列“压缩”到 index 里去</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">In [95]: stacked = df2.stack()</div><div class="line"></div><div class="line">In [96]: stacked</div><div class="line">Out[96]: </div><div class="line">first  second   </div><div class="line">bar    one     A    0.029399</div><div class="line">               B   -0.542108</div><div class="line">       two     A    0.282696</div><div class="line">               B   -0.087302</div><div class="line">baz    one     A   -1.575170</div><div class="line">               B    1.771208</div><div class="line">       two     A    0.816482</div><div class="line">               B    1.100230</div><div class="line">dtype: float64</div></pre></td></tr></table></figure>
+<p>反之，只要是 <code>MultiIndex</code> 都可以用 <code>unstack()</code> 恢复出列，默认把最后一个 index 解开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">In [97]: stacked.unstack()</div><div class="line">Out[97]: </div><div class="line">                     A         B</div><div class="line">first second                    </div><div class="line">bar   one     0.029399 -0.542108</div><div class="line">      two     0.282696 -0.087302</div><div class="line">baz   one    -1.575170  1.771208</div><div class="line">      two     0.816482  1.100230</div><div class="line"></div><div class="line">In [98]: stacked.unstack(1)</div><div class="line">Out[98]: </div><div class="line">second        one       two</div><div class="line">first                      </div><div class="line">bar   A  0.029399  0.282696</div><div class="line">      B -0.542108 -0.087302</div><div class="line">baz   A -1.575170  0.816482</div><div class="line">      B  1.771208  1.100230</div><div class="line"></div><div class="line">In [99]: stacked.unstack(0)</div><div class="line">Out[99]: </div><div class="line">first          bar       baz</div><div class="line">second                      </div><div class="line">one    A  0.029399 -1.575170</div><div class="line">       B -0.542108  1.771208</div><div class="line">two    A  0.282696  0.816482</div><div class="line">       B -0.087302  1.100230</div></pre></td></tr></table></figure>
+<h3 id="Pivot-Table-旋转"><a href="#Pivot-Table-旋转" class="headerlink" title="Pivot Table 旋转"></a>Pivot Table 旋转</h3><p>准备一下数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">In [100]: df = pd.DataFrame(&#123;&apos;A&apos; : [&apos;one&apos;, &apos;one&apos;, &apos;two&apos;, &apos;three&apos;] * 3,</div><div class="line">   .....:                    &apos;B&apos; : [&apos;A&apos;, &apos;B&apos;, &apos;C&apos;] * 4,</div><div class="line">   .....:                    &apos;C&apos; : [&apos;foo&apos;, &apos;foo&apos;, &apos;foo&apos;, &apos;bar&apos;, &apos;bar&apos;, &apos;bar&apos;] * 2,</div><div class="line">   .....:                    &apos;D&apos; : np.random.randn(12),</div><div class="line">   .....:                    &apos;E&apos; : np.random.randn(12)&#125;)</div><div class="line">   .....: </div><div class="line"></div><div class="line">In [101]: df</div><div class="line">Out[101]: </div><div class="line">        A  B    C         D         E</div><div class="line">0     one  A  foo  1.418757 -0.179666</div><div class="line">1     one  B  foo -1.879024  1.291836</div><div class="line">2     two  C  foo  0.536826 -0.009614</div><div class="line">3   three  A  bar  1.006160  0.392149</div><div class="line">4     one  B  bar -0.029716  0.264599</div><div class="line">5     one  C  bar -1.146178 -0.057409</div><div class="line">6     two  A  foo  0.100900 -1.425638</div><div class="line">7   three  B  foo -1.035018  1.024098</div><div class="line">8     one  C  foo  0.314665 -0.106062</div><div class="line">9     one  A  bar -0.773723  1.824375</div><div class="line">10    two  B  bar -1.170653  0.595974</div><div class="line">11  three  C  bar  0.648740  1.167115</div></pre></td></tr></table></figure>
+<p>pivot 是把原来的数据(values)作为新表的行(index)、列(columns)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">In [102]: pd.pivot_table(df, values=&apos;D&apos;, index=[&apos;A&apos;, &apos;B&apos;], columns=[&apos;C&apos;])</div><div class="line">Out[102]: </div><div class="line">C             bar       foo</div><div class="line">A     B                    </div><div class="line">one   A -0.773723  1.418757</div><div class="line">      B -0.029716 -1.879024</div><div class="line">      C -1.146178  0.314665</div><div class="line">three A  1.006160       NaN</div><div class="line">      B       NaN -1.035018</div><div class="line">      C  0.648740       NaN</div><div class="line">two   A       NaN  0.100900</div><div class="line">      B -1.170653       NaN</div><div class="line">      C       NaN  0.536826</div></pre></td></tr></table></figure>
+<h2 id="时间序列"><a href="#时间序列" class="headerlink" title="时间序列"></a>时间序列</h2><p>pandas 的时间序列功能在金融应用中很有用。</p>
+<p>resample 功能：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [103]: rng = pd.date_range(&apos;1/1/2012&apos;, periods=100, freq=&apos;S&apos;)</div><div class="line"></div><div class="line">In [104]: ts = pd.Series(np.random.randint(0, 500, len(rng)), index=rng)</div><div class="line"></div><div class="line">In [105]: ts.resample(&apos;T&apos;, how=&apos;sum&apos;)</div><div class="line">Out[105]: </div><div class="line">2012-01-01 00:00:00    14833</div><div class="line">2012-01-01 00:01:00     9246</div><div class="line">Freq: T, dtype: int32</div></pre></td></tr></table></figure>
+<p>时区表示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">In [106]: rng = pd.date_range(&apos;3/6/2012 00:00&apos;, periods=5, freq=&apos;D&apos;)</div><div class="line"></div><div class="line">In [107]: ts = pd.Series(np.random.randn(len(rng)), rng)</div><div class="line"></div><div class="line">In [108]: ts</div><div class="line">Out[108]: </div><div class="line">2012-03-06    0.464000</div><div class="line">2012-03-07    0.227371</div><div class="line">2012-03-08   -0.496922</div><div class="line">2012-03-09    0.306389</div><div class="line">2012-03-10   -2.290613</div><div class="line">Freq: D, dtype: float64</div><div class="line"></div><div class="line">In [109]: ts_utc = ts.tz_localize(&apos;UTC&apos;)</div><div class="line"></div><div class="line">In [110]: ts_utc</div><div class="line">Out[110]: </div><div class="line">2012-03-06 00:00:00+00:00    0.464000</div><div class="line">2012-03-07 00:00:00+00:00    0.227371</div><div class="line">2012-03-08 00:00:00+00:00   -0.496922</div><div class="line">2012-03-09 00:00:00+00:00    0.306389</div><div class="line">2012-03-10 00:00:00+00:00   -2.290613</div><div class="line">Freq: D, dtype: float64</div></pre></td></tr></table></figure>
+<p>时区的转换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">In [111]: ts_utc.tz_convert(&apos;US/Eastern&apos;)</div><div class="line">Out[111]: </div><div class="line">2012-03-05 19:00:00-05:00    0.464000</div><div class="line">2012-03-06 19:00:00-05:00    0.227371</div><div class="line">2012-03-07 19:00:00-05:00   -0.496922</div><div class="line">2012-03-08 19:00:00-05:00    0.306389</div><div class="line">2012-03-09 19:00:00-05:00   -2.290613</div><div class="line">Freq: D, dtype: float64</div></pre></td></tr></table></figure>
+<p>从 Timestamp index 转换成 TimePeriod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">In [112]: rng = pd.date_range(&apos;1/1/2012&apos;, periods=5, freq=&apos;M&apos;)</div><div class="line"></div><div class="line">In [113]: ts = pd.Series(np.random.randn(len(rng)), index=rng)</div><div class="line"></div><div class="line">In [114]: ts</div><div class="line">Out[114]: </div><div class="line">2012-01-31   -1.134623</div><div class="line">2012-02-29   -1.561819</div><div class="line">2012-03-31   -0.260838</div><div class="line">2012-04-30    0.281957</div><div class="line">2012-05-31    1.523962</div><div class="line">Freq: M, dtype: float64</div><div class="line"></div><div class="line">In [115]: ps = ts.to_period()</div><div class="line"></div><div class="line">In [116]: ps</div><div class="line">Out[116]: </div><div class="line">2012-01   -1.134623</div><div class="line">2012-02   -1.561819</div><div class="line">2012-03   -0.260838</div><div class="line">2012-04    0.281957</div><div class="line">2012-05    1.523962</div><div class="line">Freq: M, dtype: float64</div><div class="line"></div><div class="line">In [117]: ps.to_timestamp()</div><div class="line">Out[117]: </div><div class="line">2012-01-01   -1.134623</div><div class="line">2012-02-01   -1.561819</div><div class="line">2012-03-01   -0.260838</div><div class="line">2012-04-01    0.281957</div><div class="line">2012-05-01    1.523962</div><div class="line">Freq: MS, dtype: float64</div></pre></td></tr></table></figure>
+<h2 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In [122]: df = pd.DataFrame(&#123;&quot;id&quot;:[1,2,3,4,5,6], &quot;raw_grade&quot;:[&apos;a&apos;, &apos;b&apos;, &apos;b&apos;, &apos;a&apos;, &apos;a&apos;, &apos;e&apos;]&#125;)</div></pre></td></tr></table></figure>
+<p>把上述的文本类型的 raw_grade 转化成类别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">In [123]: df[&quot;grade&quot;] = df[&quot;raw_grade&quot;].astype(&quot;category&quot;)</div><div class="line"></div><div class="line">In [124]: df[&quot;grade&quot;]</div><div class="line">Out[124]: </div><div class="line">0    a</div><div class="line">1    b</div><div class="line">2    b</div><div class="line">3    a</div><div class="line">4    a</div><div class="line">5    e</div><div class="line">Name: grade, dtype: category</div><div class="line">Categories (3, object): [a, b, e]</div></pre></td></tr></table></figure>
+<p>类别可以 inplace 地赋值：（只是改一下对应的字符串嘛，类别是用 Index 对象存储的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In [125]: df[&quot;grade&quot;].cat.categories = [&quot;very good&quot;, &quot;good&quot;, &quot;very bad&quot;]</div></pre></td></tr></table></figure>
+<p>修改类别时，如果有新的类别，会自动加进去</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">In [126]: df[&quot;grade&quot;] = df[&quot;grade&quot;].cat.set_categories([&quot;very bad&quot;, &quot;bad&quot;, &quot;medium&quot;, &quot;good&quot;, &quot;very good&quot;])</div><div class="line"></div><div class="line">In [127]: df[&quot;grade&quot;]</div><div class="line">Out[127]: </div><div class="line">0    very good</div><div class="line">1         good</div><div class="line">2         good</div><div class="line">3    very good</div><div class="line">4    very good</div><div class="line">5     very bad</div><div class="line">Name: grade, dtype: category</div><div class="line">Categories (5, object): [very bad, bad, medium, good, very good]</div></pre></td></tr></table></figure>
+<p>做 <code>group by</code> 的时候，空的类别也会被呈现出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">In [129]: df.groupby(&quot;grade&quot;).size()</div><div class="line">Out[129]: </div><div class="line">grade</div><div class="line">very bad     1</div><div class="line">bad          0</div><div class="line">medium       0</div><div class="line">good         2</div><div class="line">very good    3</div><div class="line">dtype: int64</div></pre></td></tr></table></figure>
+<p><img src="http://pandas.pydata.org/pandas-docs/stable/_images/series_plot_basic.png" alt=""></p>
+<p>对于 DataFrame，可以直接 plot</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">In [133]: df = pd.DataFrame(np.random.randn(1000, 4), index=ts.index,</div><div class="line">   .....:                   columns=[&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;])</div><div class="line">   .....: </div><div class="line"></div><div class="line">In [134]: df = df.cumsum()</div><div class="line"></div><div class="line">In [135]: plt.figure(); df.plot(); plt.legend(loc=&apos;best&apos;)</div><div class="line">Out[135]: &lt;matplotlib.legend.Legend at 0xab53b26c&gt;</div></pre></td></tr></table></figure>
+<p><img src="http://pandas.pydata.org/pandas-docs/stable/_images/frame_plot_basic.png" alt=""></p>
+<h2 id="读取、写入数据"><a href="#读取、写入数据" class="headerlink" title="读取、写入数据"></a>读取、写入数据</h2><h3 id="CSV"><a href="#CSV" class="headerlink" title="CSV"></a>CSV</h3><p>写入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">In [136]: df.to_csv(&apos;foo.csv&apos;)</div></pre></td></tr></table></figure>
+<p>读取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">In [137]: pd.read_csv(&apos;foo.csv&apos;)</div><div class="line">Out[137]: </div><div class="line">     Unnamed: 0          A          B         C          D</div><div class="line">0    2000-01-01   0.266457  -0.399641 -0.219582   1.186860</div><div class="line">1    2000-01-02  -1.170732  -0.345873  1.653061  -0.282953</div><div class="line">2    2000-01-03  -1.734933   0.530468  2.060811  -0.515536</div><div class="line">3    2000-01-04  -1.555121   1.452620  0.239859  -1.156896</div><div class="line">4    2000-01-05   0.578117   0.511371  0.103552  -2.428202</div><div class="line">5    2000-01-06   0.478344   0.449933 -0.741620  -1.962409</div><div class="line">6    2000-01-07   1.235339  -0.091757 -1.543861  -1.084753</div><div class="line">..          ...        ...        ...       ...        ...</div><div class="line">993  2002-09-20 -10.628548  -9.153563 -7.883146  28.313940</div><div class="line">994  2002-09-21 -10.390377  -8.727491 -6.399645  30.914107</div><div class="line">995  2002-09-22  -8.985362  -8.485624 -4.669462  31.367740</div><div class="line">996  2002-09-23  -9.558560  -8.781216 -4.499815  30.518439</div><div class="line">997  2002-09-24  -9.902058  -9.340490 -4.386639  30.105593</div><div class="line">998  2002-09-25 -10.216020  -9.480682 -3.933802  29.758560</div><div class="line">999  2002-09-26 -11.856774 -10.671012 -3.216025  29.369368</div><div class="line"></div><div class="line">[1000 rows x 5 columns]</div></pre></td></tr></table></figure>
+<h3 id="HDF5"><a href="#HDF5" class="headerlink" title="HDF5"></a>HDF5</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">In [138]: df.to_hdf(&apos;foo.h5&apos;,&apos;df&apos;)</div><div class="line"></div><div class="line">In [139]: pd.read_hdf(&apos;foo.h5&apos;,&apos;df&apos;)</div></pre></td></tr></table></figure>
+<h3 id="Excel"><a href="#Excel" class="headerlink" title="Excel"></a>Excel</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">In [140]: df.to_excel(&apos;foo.xlsx&apos;, sheet_name=&apos;Sheet1&apos;)</div><div class="line"></div><div class="line">In [141]: pd.read_excel(&apos;foo.xlsx&apos;, &apos;Sheet1&apos;, index_col=None, na_values=[&apos;NA&apos;])</div></pre></td></tr></table></figure>
+<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; if pd.Series([False, True, False]):</div><div class="line">    print(&quot;I was true&quot;)</div><div class="line">Traceback</div><div class="line">    ...</div><div class="line">ValueError: The truth value of an array is ambiguous. Use a.empty, a.any() or a.all().</div></pre></td></tr></table></figure>
+<p>如上，不能直接把返回值当作布尔值。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xiaomi-market-puzzle-game-solution/" rel="next" title="给小米商城的拼图游戏写了个外挂">
+                <i class="fa fa-chevron-left"></i> 给小米商城的拼图游戏写了个外挂
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/solution-to-heibanke-crawler-ex/" rel="prev" title="黑板客爬虫闯关解答（更新到第五关）">
+                黑板客爬虫闯关解答（更新到第五关） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创造对象"><span class="nav-number">1.</span> <span class="nav-text">创造对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看数据"><span class="nav-number">2.</span> <span class="nav-text">查看数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择"><span class="nav-number">3.</span> <span class="nav-text">选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取行-列"><span class="nav-number">4.</span> <span class="nav-text">获取行/列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-label-选择"><span class="nav-number">4.1.</span> <span class="nav-text">通过 label 选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过整数下标选择"><span class="nav-number">4.2.</span> <span class="nav-text">通过整数下标选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布尔值下标"><span class="nav-number">4.3.</span> <span class="nav-text">布尔值下标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setting"><span class="nav-number">4.4.</span> <span class="nav-text">Setting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺失值"><span class="nav-number">5.</span> <span class="nav-text">缺失值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作"><span class="nav-number">6.</span> <span class="nav-text">操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#统计"><span class="nav-number">6.1.</span> <span class="nav-text">统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Apply"><span class="nav-number">6.2.</span> <span class="nav-text">Apply</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直方图"><span class="nav-number">6.3.</span> <span class="nav-text">直方图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串函数"><span class="nav-number">6.4.</span> <span class="nav-text">字符串函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Merge"><span class="nav-number">7.</span> <span class="nav-text">Merge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Concat"><span class="nav-number">7.1.</span> <span class="nav-text">Concat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Join"><span class="nav-number">7.2.</span> <span class="nav-text">Join</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Append"><span class="nav-number">7.3.</span> <span class="nav-text">Append</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grouping"><span class="nav-number">8.</span> <span class="nav-text">Grouping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reshape"><span class="nav-number">9.</span> <span class="nav-text">Reshape</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stack-层叠"><span class="nav-number">9.1.</span> <span class="nav-text">Stack 层叠</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pivot-Table-旋转"><span class="nav-number">9.2.</span> <span class="nav-text">Pivot Table 旋转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间序列"><span class="nav-number">10.</span> <span class="nav-text">时间序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类别"><span class="nav-number">11.</span> <span class="nav-text">类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取、写入数据"><span class="nav-number">12.</span> <span class="nav-text">读取、写入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CSV"><span class="nav-number">12.1.</span> <span class="nav-text">CSV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HDF5"><span class="nav-number">12.2.</span> <span class="nav-text">HDF5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Excel"><span class="nav-number">12.3.</span> <span class="nav-text">Excel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑"><span class="nav-number">13.</span> <span class="nav-text">坑</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

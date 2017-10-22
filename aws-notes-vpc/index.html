@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="AWS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="VPC 把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（peer">
+<meta name="keywords" content="AWS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS 学习笔记之 VPC">
+<meta property="og:url" content="https://ericfu.me/aws-notes-vpc/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="VPC 把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（peer">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-04-09T22:57:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS 学习笔记之 VPC">
+<meta name="twitter:description" content="VPC 把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（peer">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/aws-notes-vpc/"/>
+
+
+
+
+
+  <title>AWS 学习笔记之 VPC | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-vpc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS 学习笔记之 VPC</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-10T02:36:00+08:00">
+                2017-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h2><ul>
+<li>把 VPC 想象成一个逻辑上的数据中心</li>
+<li>包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups</li>
+<li>1 个 Subnet = 1 个可用区</li>
+<li>Security Group 是有状态的，Network ACL 是无状态的</li>
+<li>VPC 可以连接（peer）起来，甚至可以连接不同 AWS 账号的 VPC</li>
+<li>不能 transitive peer！如果 A 和 B 相连，B 和 C 相连，A 和 C 是<strong>不</strong>联通的，必须手动连接 A 和 C</li>
+</ul>
+<h3 id="NAT-Instance"><a href="#NAT-Instance" class="headerlink" title="NAT Instance"></a>NAT Instance</h3><ul>
+<li>创建 NAT instance 的时候要关掉 Source/Destination Check</li>
+<li>NAT instance 必须放在 public subnet 里</li>
+<li>必须有一个 Elastic IP</li>
+<li>必须有一个从 private subnet 到 NAT instance 的路由</li>
+<li>NAT instance 支持的流量取决于 instance size，如果不够用只能增加 instance size</li>
+<li>如果要 HA，可以利用 Autoscaling Group 为不同 AZ 的 subnet 创建 NAT instance</li>
+</ul>
+<h3 id="NAT-Gateway"><a href="#NAT-Gateway" class="headerlink" title="NAT Gateway"></a>NAT Gateway</h3><ul>
+<li>很新，很可能不出现在考试中</li>
+<li>可以自动伸缩，最大支持 10Gbps</li>
+<li>不用管补丁</li>
+<li>不用管 security group</li>
+<li>不用手工禁用 Source/Destination Check</li>
+<li>自动分配 IP 地址</li>
+<li>记得要更新 Route table</li>
+</ul>
+<h3 id="Network-ACLs"><a href="#Network-ACLs" class="headerlink" title="Network ACLs"></a>Network ACLs</h3><ul>
+<li>VPC 创建的时候会自动创建一个 default network ACL，允许所有 outbound 和 inbount 流量</li>
+<li>你可以创建自定义的 network ACL，默认情况下，新创建的 network ACL 阻止所有连接（为了安全考虑）</li>
+<li>VPC 里的每个 subnet 必须要指定一个 network ACL，如果你没有显式的指定 network ACL，那就是用 default network ACL</li>
+<li>一个 subnet 只能指定一个 network ACL；但 network ACL 可以被指定给多个 subnet。注意，当你把一个 network ACL 指定给某个 subnet 的时候，subnet 之前设定的 network ACL 就被挤掉了，不能共存（以上两点和 Route table 很相似）</li>
+<li>Network ACL 的每条 rule 都有一个序号，序号决定了 rule 执行的循序</li>
+<li>Network ACL 包含两张表：inbound rules 和 outbound rules，每个 rule 可以是 allow 或者 deny</li>
+<li>Network ACL 是无状态的。也就是说，对允许进入的流量也可能会被拒绝出去，反之亦然（区别于 security group）</li>
+<li>可以用 Network ACL 来 block 某些 IP 地址（段），security group 则不行</li>
+</ul>
+<h3 id="NAT-vs-Bastions"><a href="#NAT-vs-Bastions" class="headerlink" title="NAT vs Bastions"></a>NAT vs Bastions</h3><ul>
+<li>NAT 用来给 private subnet 里的机器提供 internet 访问</li>
+<li>Bastion 用来安全地管理 private subnet 里的机器，也可以称为跳板机</li>
+</ul>
+<h3 id="容灾架构"><a href="#容灾架构" class="headerlink" title="容灾架构"></a>容灾架构</h3><ul>
+<li>如果你想保证容灾性，至少保证 2 个 public subnets 和 2 个 private subnets，保证它们不在一个可用区</li>
+<li>保证 ELB 横跨你的多个可用区</li>
+<li>对于 Bastion instance，把它放在 autoscaling group 里，保证至少有 2 个节点工作，用 Route53 来做 fail over</li>
+<li>NAT instance 就比较麻烦了，每个 public subnet 里需要放一个，各自分配一个 IP 地址，而且你要写一个脚本来做 fail over。如果可能的话，用 NAT gateway 来代替</li>
+</ul>
+<h3 id="VPC-Flow-Logs"><a href="#VPC-Flow-Logs" class="headerlink" title="VPC Flow Logs"></a>VPC Flow Logs</h3><p>用来监控 VPC 里的网络流量。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AWS/" rel="tag"># AWS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/aws-notes-database/" rel="next" title="AWS 学习笔记之数据库">
+                <i class="fa fa-chevron-left"></i> AWS 学习笔记之数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/aws-notes-sqs-swf-sns/" rel="prev" title="AWS 学习笔记之 SQS/SWF/SNS 等">
+                AWS 学习笔记之 SQS/SWF/SNS 等 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#VPC"><span class="nav-number">1.</span> <span class="nav-text">VPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT-Instance"><span class="nav-number">1.1.</span> <span class="nav-text">NAT Instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT-Gateway"><span class="nav-number">1.2.</span> <span class="nav-text">NAT Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Network-ACLs"><span class="nav-number">1.3.</span> <span class="nav-text">Network ACLs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT-vs-Bastions"><span class="nav-number">1.4.</span> <span class="nav-text">NAT vs Bastions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容灾架构"><span class="nav-number">1.5.</span> <span class="nav-text">容灾架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VPC-Flow-Logs"><span class="nav-number">1.6.</span> <span class="nav-text">VPC Flow Logs</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

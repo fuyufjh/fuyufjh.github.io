@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="AWS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="S3 101 Tips S3 是一个对象存储（Object-based Storage），比如，用于上传文件 文件大小可以从 0 到 5 TB 无限存储容量 文件存在 Bucket 里 S3 Bucket 是全局的 namespace，也就是说所有的 S3 Bucket 都不能有同名 一个 S3 bucket URL 的例子：https://s3-us-east-1.amazonaws.com/b">
+<meta name="keywords" content="AWS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS 学习笔记之 S3">
+<meta property="og:url" content="https://ericfu.me/aws-notes-s3/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="S3 101 Tips S3 是一个对象存储（Object-based Storage），比如，用于上传文件 文件大小可以从 0 到 5 TB 无限存储容量 文件存在 Bucket 里 S3 Bucket 是全局的 namespace，也就是说所有的 S3 Bucket 都不能有同名 一个 S3 bucket URL 的例子：https://s3-us-east-1.amazonaws.com/b">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-03-31T00:54:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS 学习笔记之 S3">
+<meta name="twitter:description" content="S3 101 Tips S3 是一个对象存储（Object-based Storage），比如，用于上传文件 文件大小可以从 0 到 5 TB 无限存储容量 文件存在 Bucket 里 S3 Bucket 是全局的 namespace，也就是说所有的 S3 Bucket 都不能有同名 一个 S3 bucket URL 的例子：https://s3-us-east-1.amazonaws.com/b">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/aws-notes-s3/"/>
+
+
+
+
+
+  <title>AWS 学习笔记之 S3 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-s3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWS 学习笔记之 S3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-28T01:56:24+08:00">
+                2017-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="S3-101-Tips"><a href="#S3-101-Tips" class="headerlink" title="S3 101 Tips"></a>S3 101 Tips</h2><ul>
+<li>S3 是一个对象存储（Object-based Storage），比如，用于上传文件</li>
+<li>文件大小可以从 0 到 5 TB</li>
+<li>无限存储容量</li>
+<li>文件存在 Bucket 里</li>
+<li>S3 Bucket 是全局的 namespace，也就是说所有的 S3 Bucket 都不能有同名</li>
+<li>一个 S3 bucket URL 的例子：<code>https://s3-us-east-1.amazonaws.com/bucketname</code></li>
+</ul>
+<p>一致性模型：</p>
+<ul>
+<li>对 PUT 的新文件，具有 Read-after-write 一致性</li>
+<li>对于覆盖 PUT 和删除 DELETE，只保证最终一致性（Eventual Consistency），即这个操作需要一些时间生效</li>
+</ul>
+<p>S3 Storage 有不同的 Classes / Tiers</p>
+<ul>
+<li>S3：持久性，随时可用，经常访问</li>
+<li>S3 - IA （Infrequent Access）：持久性，随时可用，不经常访问</li>
+<li>S3 - Reduced Redundancy Storage：通常用于很容易重新产生的文件，比如缩略图</li>
+<li>Glacier：非常便宜，用于存档数据（Archived Data），访问前可能需要 3-5 个小时来取出文件</li>
+</ul>
+<table class="tg"><br>  <tr><br>    <th class="tg-yw4l"></th><br>    <th class="tg-yw4l">Standard</th><br>    <th class="tg-yw4l">Standard - Infrequent Access</th><br>    <th class="tg-yw4l">Reduced Redundancy Storage</th><br>  </tr><br>  <tr><br>    <td class="tg-yw4l">Durability</td><br>    <td class="tg-yw4l">99.999999999%</td><br>    <td class="tg-yw4l">99.999999999%</td><br>    <td class="tg-yw4l">99.99%</td><br>  </tr><br>  <tr><br>    <td class="tg-yw4l">Availability</td><br>    <td class="tg-yw4l">99.99%</td><br>    <td class="tg-yw4l">99.9%</td><br>    <td class="tg-yw4l">99.99%</td><br>  </tr><br>  <tr><br>    <td class="tg-yw4l">Concurrent facility fault tolerance</td><br>    <td class="tg-yw4l">2</td><br>    <td class="tg-yw4l">2</td><br>    <td class="tg-yw4l">1</td><br>  </tr><br>  <tr><br>    <td class="tg-yw4l">SSL support</td><br>    <td class="tg-yw4l">Yes</td><br>    <td class="tg-yw4l">Yes</td><br>    <td class="tg-yw4l">Yes</td><br>  </tr><br>  <tr><br>    <td class="tg-yw4l">First byte latency</td><br>    <td class="tg-yw4l">Milliseconds</td><br>    <td class="tg-yw4l">Milliseconds</td><br>    <td class="tg-yw4l">Milliseconds</td><br>  </tr><br>  <tr><br>    <td class="tg-yw4l">Lifecycle Management Policies</td><br>    <td class="tg-yw4l">Yes</td><br>    <td class="tg-yw4l">Yes</td><br>    <td class="tg-yw4l">Yes</td><br>  </tr><br></table>
+
+<p>S3 Object的基本点：</p>
+<ul>
+<li>Key（文件名）</li>
+<li>Value （数据）</li>
+<li>Version ID</li>
+<li>Metadata</li>
+<li>Subresources<ul>
+<li>ACL (Access Control List)</li>
+<li>Torrent (BitTorrent 种子)</li>
+</ul>
+</li>
+</ul>
+<p>其它：</p>
+<ul>
+<li>注意！S3 是对象存储，不能用于安装操作系统（和 Block Storage 不同）</li>
+<li>成功的上传会返回 HTTP 200</li>
+<li>可以启用 Multipart uploading 加快速度</li>
+<li>考前一定要阅读 S3 FAQ ！经常考！</li>
+</ul>
+<h2 id="S3-Versioning"><a href="#S3-Versioning" class="headerlink" title="S3 - Versioning"></a>S3 - Versioning</h2><ul>
+<li>保存一个object的所有版本，即使删除（删除只是增加了一个Deleting Mark，并非真的删除）</li>
+<li>是个很好的备份工具</li>
+<li>一旦启用，无法再停下（disable），只能暂停（suspended）</li>
+<li>和 Lifecycle Rules 集成</li>
+<li>MFA Delete 功能，要求通过 Multi-factor Authentication才能删除</li>
+<li>Cross Region Replication 也要求源和目标 bucket 都要开启Versioning</li>
+</ul>
+<h2 id="S3-Lifecycle-Management"><a href="#S3-Lifecycle-Management" class="headerlink" title="S3 - Lifecycle Management"></a>S3 - Lifecycle Management</h2><ul>
+<li>可以和 Versioning 结合使用，也可以不结合</li>
+<li>可以用于 current version 和 previous version</li>
+<li>可以做以下操作：<ul>
+<li>变成 Standard IA (Infequent Access) (128KB, 30 days after)</li>
+<li>存档到 Glacier (30 days after IA)</li>
+<li>永久删除</li>
+</ul>
+</li>
+</ul>
+<h2 id="CloudFront-CDN"><a href="#CloudFront-CDN" class="headerlink" title="CloudFront CDN"></a>CloudFront CDN</h2><ul>
+<li>Edge Location：内容被缓存的地方，和AWS Region／AZ无关</li>
+<li>Origin - CDN 分发内容的源，可以是 S3 bucket, EC2 Instance, Elastic Load Balancer 或 Route53</li>
+<li>Distribution - 给CDN的名字，包含一系列 Edge Locations<ul>
+<li>Web Distribution - 通常用于网站</li>
+<li>RTMP - 用于流媒体</li>
+</ul>
+</li>
+<li>Edge Location 不止能 READ，也能写入（比如PUT）</li>
+<li>Object 被缓存的时间叫 TTL，默认 24h</li>
+<li>你可以手工清除缓存的文件，但是要收费</li>
+</ul>
+<h2 id="S3-Security"><a href="#S3-Security" class="headerlink" title="S3 - Security"></a>S3 - Security</h2><ul>
+<li>默认情况下，新的 bucket 是 Private 的</li>
+<li>你可以设置访问控制，用：<ul>
+<li>Bucket Policies</li>
+<li>Access Control Lists</li>
+</ul>
+</li>
+<li>S3 Bucket 可以设置 log 下所有请求，存到另一个bucket里去</li>
+</ul>
+<h2 id="S3-Encryption"><a href="#S3-Encryption" class="headerlink" title="S3 - Encryption"></a>S3 - Encryption</h2><ul>
+<li>In transit (SSL / TLS)</li>
+<li>At Rest:<ul>
+<li>Server Side Encrytion<ul>
+<li>S3 自己Key (SSE-S3)</li>
+<li>AWS KMS 管理的Key （SSE-KMS）</li>
+<li>Server Side Encryion 用客户提供的Key（SSE-C）</li>
+</ul>
+</li>
+<li>Client Side Encrytion</li>
+</ul>
+</li>
+</ul>
+<h2 id="Storage-Gateway"><a href="#Storage-Gateway" class="headerlink" title="Storage Gateway"></a>Storage Gateway</h2><ul>
+<li>File Gateway: For flat files，直接存储在 S3，本地缓存</li>
+<li>Volume Gateway: Block storage<ul>
+<li>Cached Volume: 数据在 S3，本地缓存最近访问的文件</li>
+<li>Stored Volume: 数据存在本地（on-premise），定期备份到 S3</li>
+</ul>
+</li>
+<li>Gateway Virtual Tape Library (VTL): 作为虚拟磁带设备，用来备份</li>
+</ul>
+<h2 id="Snowball"><a href="#Snowball" class="headerlink" title="Snowball"></a>Snowball</h2><p>有以下几种产品：</p>
+<ul>
+<li>Snowball</li>
+<li>Snowball Edge: 包含计算功能</li>
+<li>Snowmobile: 一卡车PB数据</li>
+</ul>
+<p>功能：</p>
+<ul>
+<li>前身是 Import Export Service</li>
+<li>能用来：<ul>
+<li>Import to S3</li>
+<li>Export from S3</li>
+</ul>
+</li>
+</ul>
+<h2 id="S3-Transfer-Accelaraion"><a href="#S3-Transfer-Accelaraion" class="headerlink" title="S3 Transfer Accelaraion"></a>S3 Transfer Accelaraion</h2><p>利用 CloudFront 加速 S3 的上传下载</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AWS/" rel="tag"># AWS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/aws-notes-iam/" rel="next" title="AWS 学习笔记之 IAM">
+                <i class="fa fa-chevron-left"></i> AWS 学习笔记之 IAM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/aws-notes-ec2/" rel="prev" title="AWS 学习笔记之 EC2">
+                AWS 学习笔记之 EC2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-101-Tips"><span class="nav-number">1.</span> <span class="nav-text">S3 101 Tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Versioning"><span class="nav-number">2.</span> <span class="nav-text">S3 - Versioning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Lifecycle-Management"><span class="nav-number">3.</span> <span class="nav-text">S3 - Lifecycle Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudFront-CDN"><span class="nav-number">4.</span> <span class="nav-text">CloudFront CDN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Security"><span class="nav-number">5.</span> <span class="nav-text">S3 - Security</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Encryption"><span class="nav-number">6.</span> <span class="nav-text">S3 - Encryption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Storage-Gateway"><span class="nav-number">7.</span> <span class="nav-text">Storage Gateway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Snowball"><span class="nav-number">8.</span> <span class="nav-text">Snowball</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-Transfer-Accelaraion"><span class="nav-number">9.</span> <span class="nav-text">S3 Transfer Accelaraion</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

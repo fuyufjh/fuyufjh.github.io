@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,安全," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Bandit 是什么？Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
+<meta name="keywords" content="Python,安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bandit - Python 代码静态安全检查工具">
+<meta property="og:url" content="https://ericfu.me/bandit-the-python-static-analyzer/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="Bandit 是什么？Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-08-21T00:55:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bandit - Python 代码静态安全检查工具">
+<meta name="twitter:description" content="Bandit 是什么？Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/bandit-the-python-static-analyzer/"/>
+
+
+
+
+
+  <title>Bandit - Python 代码静态安全检查工具 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/bandit-the-python-static-analyzer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Bandit - Python 代码静态安全检查工具</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-16T09:50:47+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Bandit-是什么？"><a href="#Bandit-是什么？" class="headerlink" title="Bandit 是什么？"></a>Bandit 是什么？</h2><p>Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。</p>
+<p>安装说明：参见 <a href="https://github.com/openstack/bandit" target="_blank" rel="external">GitHub 项目主页</a>。</p>
+<a id="more"></a>
+<h2 id="编写自定义的检查"><a href="#编写自定义的检查" class="headerlink" title="编写自定义的检查"></a>编写自定义的检查</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@bandit.checks('Call')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">prohibit_unsafe_deserialization</span><span class="params">(context)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'unsafe_load'</span> <span class="keyword">in</span> context.call_function_name_qual:</div><div class="line">        <span class="keyword">return</span> bandit.Issue(</div><div class="line">            severity=bandit.HIGH,</div><div class="line">            confidence=bandit.HIGH,</div><div class="line">            text=<span class="string">"Unsafe deserialization detected."</span></div><div class="line">        )</div></pre></td></tr></table></figure>
+<ul>
+<li><code>@bandit.checks(&#39;Call&#39;)</code>: 仅仅检查类型为 <code>Call</code> 的 AST Node</li>
+<li><code>return bandit.Issue(...)</code>: 返回一个 Security Issue</li>
+</ul>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>入口在 <code>cli/main.py</code> 的 <code>main()</code></p>
+<p>先初始化了一堆参数，然后在这里创建了一个关键的 BanditManager 对象，之后的事情都是由它来完成的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">b_mgr = b_manager.BanditManager(b_conf, args.agg_type, args.debug,</div><div class="line">                                profile=profile, verbose=args.verbose,</div><div class="line">                                ignore_nosec=args.ignore_nosec)</div></pre></td></tr></table></figure>
+<h3 id="扫描文件"><a href="#扫描文件" class="headerlink" title="扫描文件"></a>扫描文件</h3><p>紧接着就能看到这行代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># initiate file discovery step within Bandit Manager</span></div><div class="line">b_mgr.discover_files(args.targets, args.recursive, args.excluded_paths)</div></pre></td></tr></table></figure>
+<p>让我们跟进去，然后看看 <code>discover_files()</code> 都做了些什么：（代码太长就不贴了）</p>
+<ul>
+<li>处理 include/exclude 参数<ul>
+<li>如果有 include 就只看这里面的文件，否则扫描所有文件</li>
+<li>如果有 exclude，之后扫描的时候要去掉这些文件</li>
+</ul>
+</li>
+<li>对所有指定的目标进行扫描<ul>
+<li>如果设置了 recursive 选项，就递归地遍历子目录。</li>
+</ul>
+</li>
+</ul>
+<p>最后把遍历的结果排序并以列表的形式存放在 <code>self.files_list</code> 中。</p>
+<h3 id="运行-Tests"><a href="#运行-Tests" class="headerlink" title="运行 Tests"></a>运行 Tests</h3><p>回到 <code>main()</code> 函数中，再往下看一点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># initiate execution of tests within Bandit Manager</span></div><div class="line">b_mgr.run_tests()</div></pre></td></tr></table></figure>
+<p>看来这里是核心的一步，当然要走进去看看：（代码不贴了）</p>
+<ul>
+<li>枚举刚刚列表中的所有文件，读出来、并调用 <code>_parse_file()</code> 处理之。</li>
+<li>如果处理失败了，也记下来，最后汇总输出会用到。</li>
+</ul>
+<p>继续跟进 <code>_parse_file()</code>，发现只是个包装，进入 <code>_execute_ast_visitor()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_execute_ast_visitor</span><span class="params">(self, fname, data, nosec_lines)</span>:</span></div><div class="line">    score = []</div><div class="line">    res = b_node_visitor.BanditNodeVisitor(fname, self.b_ma,</div><div class="line">                                           self.b_ts, self.debug,</div><div class="line">                                           nosec_lines, self.metrics)</div><div class="line"></div><div class="line">    score = res.process(data)</div><div class="line">    self.results.extend(res.tester.results)</div><div class="line">    <span class="keyword">return</span> score</div></pre></td></tr></table></figure>
+<p>这个 BanditNodeVisitor 虽然没有继承标准库里的 ast.NodeVisitor 但实际上做的工作就是那样的——遍历所有 AST Node，同时对各个类型的 Node 执行对应的函数。</p>
+<p>在 BanditNodeVisitor 中定义了很多类似 <code>visit_Call</code>, <code>visit_FunctionDef</code>, <code>visit_Str</code> 这样奇怪名字的函数，顾名思义就是对各个类型的 Node 所运行的函数。遍历的逻辑看 <code>visit</code> 函数。</p>
+<p>以 <code>visit_Call</code> 为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">visit_Call</span><span class="params">(self, node)</span>:</span></div><div class="line">    self.context[<span class="string">'call'</span>] = node</div><div class="line">    qualname = b_utils.get_call_name(node, self.import_aliases)</div><div class="line">    name = qualname.split(<span class="string">'.'</span>)[<span class="number">-1</span>]</div><div class="line"></div><div class="line">    self.context[<span class="string">'qualname'</span>] = qualname</div><div class="line">    self.context[<span class="string">'name'</span>] = name</div><div class="line"></div><div class="line">    self.update_scores(self.tester.run_tests(self.context, <span class="string">'Call'</span>))</div></pre></td></tr></table></figure>
+<p>其实很简单，把对应的一些上下文信息 extract 出来并存到 <code>self.context</code>，然后用 <code>tester.run_tests</code> 执行所有对应 Call Node 的检查。</p>
+<p>所以 <code>run_tests()</code> 的逻辑你应该能猜到个大概了：</p>
+<ol>
+<li>拿到所有类型为 <code>checktype</code> 的检查</li>
+<li>对每个检查，以当前的 <code>context</code> 作为参数做检查，如果检查出问题就存起来</li>
+</ol>
+<h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><p>再回到 <code>main()</code> 函数中，再往下就是输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># trigger output of results by Bandit Manager</span></div><div class="line">sev_level = constants.RANKING[args.severity - <span class="number">1</span>]</div><div class="line">conf_level = constants.RANKING[args.confidence - <span class="number">1</span>]</div><div class="line">b_mgr.output_results(args.context_lines,</div><div class="line">                     sev_level,</div><div class="line">                     conf_level,</div><div class="line">                     args.output_file,</div><div class="line">                     args.output_format)</div></pre></td></tr></table></figure>
+<p>Severity 和 Confidence 都是用来过滤的。最后输出到指定的形式。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/安全/" rel="tag"># 安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/aliware-performance-contest-first-prize/" rel="next" title="获得第三届阿里中间件性能大赛冠军！">
+                <i class="fa fa-chevron-left"></i> 获得第三届阿里中间件性能大赛冠军！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python-2-str-and-unicode/" rel="prev" title="Python 2 字符串编码踩坑小结">
+                Python 2 字符串编码踩坑小结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bandit-是什么？"><span class="nav-number">1.</span> <span class="nav-text">Bandit 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写自定义的检查"><span class="nav-number">2.</span> <span class="nav-text">编写自定义的检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#扫描文件"><span class="nav-number">3.1.</span> <span class="nav-text">扫描文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行-Tests"><span class="nav-number">3.2.</span> <span class="nav-text">运行 Tests</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出结果"><span class="nav-number">3.3.</span> <span class="nav-text">输出结果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="TensorFlow," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="单层神经网络的代码已经写好了。请打开 mnist_1.0_softmax.py 文件并按说明进行操作。  你在本节的任务是理解代码，以便之后对其改进。  你应该看到，在文档中的说明和启动代码只有微小的差别。它们对应于可视化的函数，并且在注释中被标记。此处可忽略。 1234567import tensorflow as tfX = tf.placeholder(tf.float32, [None,">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 与深度学习 (6) 阅读代码">
+<meta property="og:url" content="https://ericfu.me/tfdl-6-jump-into-the-code/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="单层神经网络的代码已经写好了。请打开 mnist_1.0_softmax.py 文件并按说明进行操作。  你在本节的任务是理解代码，以便之后对其改进。  你应该看到，在文档中的说明和启动代码只有微小的差别。它们对应于可视化的函数，并且在注释中被标记。此处可忽略。 1234567import tensorflow as tfX = tf.placeholder(tf.float32, [None,">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/e102f513bec53e08.png">
+<meta property="og:updated_time" content="2017-02-18T01:22:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow 与深度学习 (6) 阅读代码">
+<meta name="twitter:description" content="单层神经网络的代码已经写好了。请打开 mnist_1.0_softmax.py 文件并按说明进行操作。  你在本节的任务是理解代码，以便之后对其改进。  你应该看到，在文档中的说明和启动代码只有微小的差别。它们对应于可视化的函数，并且在注释中被标记。此处可忽略。 1234567import tensorflow as tfX = tf.placeholder(tf.float32, [None,">
+<meta name="twitter:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/e102f513bec53e08.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/tfdl-6-jump-into-the-code/"/>
+
+
+
+
+
+  <title>TensorFlow 与深度学习 (6) 阅读代码 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Thoughts, stories and ideas.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-6-jump-into-the-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TensorFlow 与深度学习 (6) 阅读代码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:16:27+08:00">
+                2017-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>单层神经网络的代码已经写好了。请打开 <code>mnist_1.0_softmax.py</code> 文件并按说明进行操作。</p>
+<blockquote>
+<p>你在本节的任务是理解代码，以便之后对其改进。</p>
+</blockquote>
+<p>你应该看到，在文档中的说明和启动代码只有微小的差别。它们对应于可视化的函数，并且在注释中被标记。此处可忽略。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line">X = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</div><div class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</div><div class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</div><div class="line"></div><div class="line">init = tf.initialize_all_variables()</div></pre></td></tr></table></figure>
+<p>我们首先定义 TensorFlow 的变量和占位符。变量是你希望训练算法为你确定的所有的参数，在我们的例子中参数有权重和偏置。</p>
+<p>占位符是在训练期间填充实际数据的参数，通常是训练图像。持有训练图像的张量的形式是 [None, 28, 28, 1]，其中的参数代表</p>
+<ul>
+<li>28, 28, 1: 图像是 28x28 像素 x 1（灰度）。最后一个数字对于彩色图像是 3，但在这里不是必须的。</li>
+<li>None: 这是代表 mini-batch 中的图像数量。在训练时可以得到。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># model</span></div><div class="line">Y = tf.nn.softmax(tf.matmul(tf.reshape(X, [<span class="number">-1</span>, <span class="number">784</span>]), W) + b)</div><div class="line"><span class="comment"># placeholder for correct labels</span></div><div class="line">Y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</div><div class="line"></div><div class="line"><span class="comment"># loss function</span></div><div class="line">cross_entropy = -tf.reduce_sum(Y_ * tf.log(Y))</div><div class="line"></div><div class="line"><span class="comment"># % of correct answers found in batch</span></div><div class="line">is_correct = tf.equal(tf.argmax(Y,<span class="number">1</span>), tf.argmax(Y_,<span class="number">1</span>))</div><div class="line">accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))</div></pre></td></tr></table></figure>
+<p>第一行是我们单层神经网络的模型。公式是我们在前面的理论部分建立的。<code>tf.reshape</code> 命令将我们的 28×28 的图像转化成 784 个像素的单向量。在 reshape 中的 “-1” 意思是：“帮我算出这个数，只有一种可能”。实际上，这就是 mini-batch 中的图像数量。</p>
+<p>然后，我们需要一个额外的占位符用于存放训练集的 labels，这些 label 与训练图像一起被提供。</p>
+<p>现在我们有模型预测和正确的 label，可以计算交叉熵了。<code>tf.reduce_sum</code> 是对向量的所有元素求和。</p>
+<p>最后两行计算了正确识别数字的百分比。这是留给读者的理解练习，参考 <a href="https://www.tensorflow.org/versions/r0.9/api_docs/python/index.html" target="_blank" rel="external">TensorFlow API reference</a>。你可以先跳过这部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.003</span>)</div><div class="line">train_step = optimizer.minimize(cross_entropy)</div></pre></td></tr></table></figure>
+<p>这才是 TensorFlow 发挥力量的地方。你选择一个 optimiser（有许多可供选择）并用它最小化 cross-entrophy loss。在这一步中，TensorFlow 计算损失函数对于所有权重和偏置的偏导数，也就是梯度。这是一个形式推导的过程，而非耗时的数值方法计算。</p>
+<p>梯度然后被用来更新权重和偏置，学习率为 0.003。</p>
+<p>最后，是时候来启动训练循环（training loop）了！目前为止，这些 TensorFlow 指令已经在内存中准备了一个计算图，但是还未开始计算。</p>
+<blockquote>
+<p>TensorFlow 的<strong>延迟执行（deferred execution）</strong>”模型：TensorFlow 是为分布式计算构建的。它必须知道你要计算的是什么、你的执行图（execution graph），然后才开始发送计算任务到各种计算机。这就是为什么它有一个延迟执行模型——你首先使用 TensorFlow 函数在内存中创造一个计算图，然后启动一个执行 Session 并且使用 Session.run 执行实际计算任务。此刻，图形无法被更改。</p>
+<p>多亏了这个模型，TensorFlow 能接管分布式计算的大部分逻辑。举例而言，假如你指示它在计算机 1 上运行计算的一部分 ，而在计算机 2 上运行另一部分，它可以自动进行必要的数据传输。</p>
+</blockquote>
+<p>计算需要将实际数据填进你在 TensorFlow 代码中定义的占位符。这是以 Python 的字典类型给出的，其中 key 是占位符的名字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">sess = tf.Session()</div><div class="line">sess.run(init)</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</div><div class="line">    <span class="comment"># load batch of images and correct answers</span></div><div class="line">    batch_X, batch_Y = mnist.train.next_batch(<span class="number">100</span>)</div><div class="line">    train_data=&#123;X: batch_X, Y_: batch_Y&#125;</div><div class="line"></div><div class="line">    <span class="comment"># train</span></div><div class="line">    sess.run(train_step, feed_dict=train_data)</div></pre></td></tr></table></figure>
+<p>这里的 <code>train_step</code> 是我们之前定义的，意思是让 TensorFlow 最小化交叉熵。这就是计算梯度以及更新权重、偏置的那一步。</p>
+<p>最终，我们还需要显示一些值，以便我们看到模型性能的变化。</p>
+<p>在训练循环里，我们用这行代码来计算准确度和交叉熵（例如每 10 次迭代）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># success ?</span></div><div class="line">a,c = sess.run([accuracy, cross_entropy], feed_dict=train_data)</div></pre></td></tr></table></figure>
+<p>通过在 <code>feed_dict</code> 中提供测试数据（而不是训练数据），我们可以对测试数据进行同样的计算（例如每 100 次迭代计算一次。有 10,000 个测试数字，所以会耗费一些时间）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># success on test data ?</span></div><div class="line">test_data=&#123;X: mnist.test.images, Y_: mnist.test.labels&#125;</div><div class="line">a,c = sess.run([accuracy, cross_entropy], feed_dict=test_data)</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>TensorFlow 和 Numpy 是朋友</strong>：在准备计算图时，你只需要操纵 TensorFlow 张量和命令，比如 <code>tf.matmul</code>, <code>tf.reshape</code> 等。</p>
+<p>然而，只要执行 <code>Session.run</code> 命令，它的返回值就是 Numpy 张量，即 Numpy 可以使用的 <code>numpy.ndarray</code> 对象以及基于它的所有科学计算库。这就是为什么我们能用 matplotlib（基于 Numpy 的标准 Python 绘图库）为实验构建实时可视化。</p>
+</blockquote>
+<p>这个简单的模型已经能识别 92% 的数字了！不错，但是你现在要显著地改善它。</p>
+<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/e102f513bec53e08.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tfdl-5-gradient-descent/" rel="next" title="TensorFlow 与深度学习 (5) 梯度下降">
+                <i class="fa fa-chevron-left"></i> TensorFlow 与深度学习 (5) 梯度下降
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tfdl-7-add-layers/" rel="prev" title="TensorFlow 和深度学习 (7) 增加 Layer">
+                TensorFlow 和深度学习 (7) 增加 Layer <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
