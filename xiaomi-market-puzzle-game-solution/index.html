@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -53,45 +53,51 @@
 <link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
 
 
+  <link rel="manifest" href="/icons/manifest.json">
 
 
-
-  <meta name="keywords" content="杂货," />
-
-
-
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
 
 
 
+  <meta name="keywords" content="selected,algorithm,misc," />
 
 
 
 
-<meta name="description" content="最近小米商城 App 里推出了一个游戏，大概是酱紫的： 左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。  为了方便处理，把每一块（按照在完成图上的位置）编上号，如此以后，问题就变成了： 123411   8   5   610   9   0">
-<meta name="keywords" content="杂货">
+
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="最近小米商城 App 里推出了一个游戏，大概是酱紫的： 左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。">
+<meta name="keywords" content="selected,algorithm,misc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="给小米商城的拼图游戏写了个外挂">
 <meta property="og:url" content="https://ericfu.me/xiaomi-market-puzzle-game-solution/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="最近小米商城 App 里推出了一个游戏，大概是酱紫的： 左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。  为了方便处理，把每一块（按照在完成图上的位置）编上号，如此以后，问题就变成了： 123411   8   5   610   9   0">
-<meta property="og:locale" content="en">
+<meta property="og:description" content="最近小米商城 App 里推出了一个游戏，大概是酱紫的： 左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2015/12/puzzlegamejoined.jpg">
 <meta property="og:updated_time" content="2016-01-01T18:40:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="给小米商城的拼图游戏写了个外挂">
-<meta name="twitter:description" content="最近小米商城 App 里推出了一个游戏，大概是酱紫的： 左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。  为了方便处理，把每一块（按照在完成图上的位置）编上号，如此以后，问题就变成了： 123411   8   5   610   9   0">
+<meta name="twitter:description" content="最近小米商城 App 里推出了一个游戏，大概是酱紫的： 左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。">
 <meta name="twitter:image" content="https://ericfu.me/images/2015/12/puzzlegamejoined.jpg">
 
 
@@ -100,7 +106,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.3',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -108,7 +114,7 @@
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -128,11 +134,20 @@
 
 
 
-  <title>给小米商城的拼图游戏写了个外挂 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>给小米商城的拼图游戏写了个外挂 | Coding Husky</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -140,7 +155,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -162,9 +177,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle">Thoughts, stories and ideas.</p>
-      
+    
   </div>
 
   <div class="site-nav-toggle">
@@ -188,7 +201,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -198,7 +211,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -208,7 +231,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -250,7 +273,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -272,9 +295,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-30T12:32:10+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-30T12:32:10+08:00">
                 2015-12-30
               </time>
             
@@ -287,6 +310,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/xiaomi-market-puzzle-game-solution/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="xiaomi-market-puzzle-game-solution/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -314,6 +348,7 @@
       
         <p>最近小米商城 App 里推出了一个游戏，大概是酱紫的：</p>
 <p>左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。</p>
+<a id="more"></a>
 <p><img src="/images/2015/12/puzzlegamejoined.jpg" alt="Puzzle Game"></p>
 <p>为了方便处理，把每一块（按照在完成图上的位置）编上号，如此以后，问题就变成了：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">11   8   5   6</div><div class="line">10   9   0   4</div><div class="line">13   1   2   7</div><div class="line">14  12   3 [15]</div></pre></td></tr></table></figure>
@@ -352,12 +387,38 @@
     
 
     
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Eric Fu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://ericfu.me/xiaomi-market-puzzle-game-solution/" title="给小米商城的拼图游戏写了个外挂">https://ericfu.me/xiaomi-market-puzzle-game-solution/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/杂货/" rel="tag"># 杂货</a>
+            
+          
+            
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+            
+          
+            
+              <a href="/tags/misc/" rel="tag"># misc</a>
+            
           
         </div>
       
@@ -412,6 +473,16 @@
           
 
   
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
 
 
 
@@ -439,6 +510,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
+            
               <p class="site-author-name" itemprop="name">Eric Fu</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -450,30 +525,60 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
             
           </div>
 
@@ -481,6 +586,24 @@
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -502,7 +625,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -520,7 +643,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
 
 
 
@@ -620,6 +743,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
@@ -638,6 +768,26 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ericfu.me/xiaomi-market-puzzle-game-solution/';
+          this.page.identifier = 'xiaomi-market-puzzle-game-solution/';
+          this.page.title = '给小米商城的拼图游戏写了个外挂';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ericfu.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
 
 
 
@@ -653,10 +803,6 @@
 
 
 
-  
-
-
-
 
 
 
@@ -675,6 +821,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   

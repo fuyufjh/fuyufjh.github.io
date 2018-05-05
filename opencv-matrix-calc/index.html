@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -53,26 +53,32 @@
 <link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="selected,cpp," />
 
 
 
 
 
-  <meta name="keywords" content="C/C++," />
-
-
-
-
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
 
 
@@ -80,13 +86,13 @@
 
 
 <meta name="description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式静">
-<meta name="keywords" content="C&#x2F;C++">
+<meta name="keywords" content="selected,cpp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenCV 矩阵运算小结">
 <meta property="og:url" content="https://ericfu.me/opencv-matrix-calc/index.html">
 <meta property="og:site_name" content="Coding Husky">
 <meta property="og:description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式静">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-08-19T08:59:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenCV 矩阵运算小结">
@@ -98,7 +104,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.3',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -106,7 +112,7 @@
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -126,11 +132,20 @@
 
 
 
-  <title>OpenCV 矩阵运算小结 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>OpenCV 矩阵运算小结 | Coding Husky</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -138,7 +153,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -160,9 +175,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle">Thoughts, stories and ideas.</p>
-      
+    
   </div>
 
   <div class="site-nav-toggle">
@@ -186,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -196,7 +209,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -206,7 +229,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -248,7 +271,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -270,9 +293,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-09T05:54:18+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-09T05:54:18+08:00">
                 2016-04-09
               </time>
             
@@ -285,6 +308,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/opencv-matrix-calc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="opencv-matrix-calc/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -318,6 +352,7 @@
 <li>动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个<strong>头</strong>——包含矩阵内存区域的指针和矩阵的大小、类型等信息。</li>
 <li>静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，<strong>没有额外的存储空间</strong>，矩阵自身的信息都以模板的方式静态编译了。</li>
 </ul>
+<a id="more"></a>
 <p>对于能确定大小和类型的矩阵，尽量使用静态的存储方式。</p>
 <h2 id="Matx-Vec"><a href="#Matx-Vec" class="headerlink" title="Matx \ Vec"></a>Matx \ Vec</h2><p>创建时需要给定模板参数（类型、行数、列数），例如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Matx&lt;<span class="keyword">float</span>, <span class="number">3</span>, <span class="number">3</span>&gt; matrix;</div></pre></td></tr></table></figure>
@@ -359,12 +394,34 @@
     
 
     
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Eric Fu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://ericfu.me/opencv-matrix-calc/" title="OpenCV 矩阵运算小结">https://ericfu.me/opencv-matrix-calc/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/C-C/" rel="tag"># C/C++</a>
+            
+          
+            
+              <a href="/tags/cpp/" rel="tag"># cpp</a>
+            
           
         </div>
       
@@ -387,8 +444,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bash-shell-shortcut-keys/" rel="prev" title="Mac 下的 Bash Shell 常用快捷键">
-                Mac 下的 Bash Shell 常用快捷键 <i class="fa fa-chevron-right"></i>
+              <a href="/solve-chinese-rings/" rel="prev" title="九连环的解法和代码">
+                九连环的解法和代码 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -419,6 +476,16 @@
           
 
   
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
 
 
 
@@ -443,10 +510,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
+            文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
+            站点概览
           </li>
         </ul>
       
@@ -454,6 +521,10 @@
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
             
               <p class="site-author-name" itemprop="name">Eric Fu</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -466,30 +537,60 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
             
           </div>
 
@@ -497,6 +598,24 @@
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -534,7 +653,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -552,7 +671,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
 
 
 
@@ -652,6 +771,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
@@ -670,6 +796,26 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ericfu.me/opencv-matrix-calc/';
+          this.page.identifier = 'opencv-matrix-calc/';
+          this.page.title = 'OpenCV 矩阵运算小结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ericfu.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
 
 
 
@@ -685,10 +831,6 @@
 
 
 
-  
-
-
-
 
 
 
@@ -707,6 +849,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   

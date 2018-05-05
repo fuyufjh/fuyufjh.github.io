@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -53,40 +53,46 @@
 <link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
 
 
+  <link rel="manifest" href="/icons/manifest.json">
 
 
-
-  <meta name="keywords" content="TensorFlow," />
-
-
-
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
 
 
 
+  <meta name="keywords" content="tensorflow," />
 
 
 
 
-<meta name="description" content="你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。  它不会立刻影响你模型的识别能力，但这将阻止你运行很多次迭代，这基本上是一个信号——告诉我们训练已经不能再为模型提供进一步改进了。这种现象通">
-<meta name="keywords" content="TensorFlow">
+
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。">
+<meta name="keywords" content="tensorflow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TensorFlow 与深度学习 (10) Dropout 和过拟合">
 <meta property="og:url" content="https://ericfu.me/tfdl-10-dropout-and-overfitting/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。  它不会立刻影响你模型的识别能力，但这将阻止你运行很多次迭代，这基本上是一个信号——告诉我们训练已经不能再为模型提供进一步改进了。这种现象通">
-<meta property="og:locale" content="en">
+<meta property="og:description" content="你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/681d5ef1732ef066.png">
 <meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/d1a460e8334d6b1c.png">
 <meta property="og:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5ee25552f4c216c.png">
@@ -96,7 +102,7 @@
 <meta property="og:updated_time" content="2017-02-18T01:25:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow 与深度学习 (10) Dropout 和过拟合">
-<meta name="twitter:description" content="你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。  它不会立刻影响你模型的识别能力，但这将阻止你运行很多次迭代，这基本上是一个信号——告诉我们训练已经不能再为模型提供进一步改进了。这种现象通">
+<meta name="twitter:description" content="你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。">
 <meta name="twitter:image" content="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/681d5ef1732ef066.png">
 
 
@@ -105,7 +111,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.3',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -113,7 +119,7 @@
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -133,11 +139,20 @@
 
 
 
-  <title>TensorFlow 与深度学习 (10) Dropout 和过拟合 | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>TensorFlow 与深度学习 (10) Dropout 和过拟合 | Coding Husky</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -145,7 +160,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -167,9 +182,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle">Thoughts, stories and ideas.</p>
-      
+    
   </div>
 
   <div class="site-nav-toggle">
@@ -193,7 +206,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -203,7 +216,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -213,7 +236,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -255,7 +278,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -277,9 +300,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:24:33+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-18T09:24:33+08:00">
                 2017-02-18
               </time>
             
@@ -292,6 +315,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/tfdl-10-dropout-and-overfitting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="tfdl-10-dropout-and-overfitting/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -319,6 +353,7 @@
       
         <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/681d5ef1732ef066.png" alt=""></p>
 <p>你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。</p>
+<a id="more"></a>
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/d1a460e8334d6b1c.png" alt=""></p>
 <p>它不会立刻影响你模型的识别能力，但这将阻止你运行很多次迭代，这基本上是一个信号——告诉我们训练已经不能再为模型提供进一步改进了。这种现象通常会被标为<strong>过拟合（overfitting）</strong>。当发生过拟合时，你可以尝试采用一种正则化（regularization）技术，称为 <strong>dropout</strong>。</p>
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5ee25552f4c216c.png" alt=""></p>
@@ -351,12 +386,32 @@
     
 
     
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Eric Fu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://ericfu.me/tfdl-10-dropout-and-overfitting/" title="TensorFlow 与深度学习 (10) Dropout 和过拟合">https://ericfu.me/tfdl-10-dropout-and-overfitting/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+            
+              <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+            
           
         </div>
       
@@ -411,6 +466,16 @@
           
 
   
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
 
 
 
@@ -438,6 +503,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
+            
               <p class="site-author-name" itemprop="name">Eric Fu</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -449,30 +518,60 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
             
           </div>
 
@@ -480,6 +579,24 @@
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -501,7 +618,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -519,7 +636,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
 
 
 
@@ -619,6 +736,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
@@ -637,6 +761,26 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ericfu.me/tfdl-10-dropout-and-overfitting/';
+          this.page.identifier = 'tfdl-10-dropout-and-overfitting/';
+          this.page.title = 'TensorFlow 与深度学习 (10) Dropout 和过拟合';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ericfu.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
 
 
 
@@ -652,10 +796,6 @@
 
 
 
-  
-
-
-
 
 
 
@@ -674,6 +814,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   

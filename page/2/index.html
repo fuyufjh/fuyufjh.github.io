@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -53,26 +53,32 @@
 <link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="Eric Fu, Internet, Softeware, Programming, Code" />
 
 
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
 
 
@@ -83,7 +89,7 @@
 <meta property="og:title" content="Coding Husky">
 <meta property="og:url" content="https://ericfu.me/page/2/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Coding Husky">
 
@@ -93,7 +99,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.3',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -101,7 +107,7 @@
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -121,11 +127,20 @@
 
 
 
-  <title>Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Coding Husky</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -133,7 +148,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -156,9 +171,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle">Thoughts, stories and ideas.</p>
-      
+    
   </div>
 
   <div class="site-nav-toggle">
@@ -182,7 +195,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -192,7 +205,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -202,7 +225,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -239,12 +262,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-vpc/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/perf-test-blockingqueue-vs-channel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -258,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/aws-notes-vpc/" itemprop="url">AWS 学习笔记之 VPC</a></h1>
+                <a class="post-title-link" href="/perf-test-blockingqueue-vs-channel/" itemprop="url">性能测试：ArrayBlockingQueue vs. Go channel</a></h1>
         
 
         <div class="post-meta">
@@ -268,10 +291,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-10T02:36:00+08:00">
-                2017-04-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T07:56:23+08:00">
+                2017-05-01
               </time>
             
 
@@ -283,6 +306,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/perf-test-blockingqueue-vs-channel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="perf-test-blockingqueue-vs-channel/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -309,18 +343,17 @@
 
       
         
-          
-          VPC
-把 VPC 想象成一个逻辑上的数据中心
-包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups
-1 个 Subnet = 1 个可用区
-Security Group 是有状态的，Network ACL 是无状态的
-VPC 可以连接（peer
-          ...
+          <p>测试方案：</p>
+<ol>
+<li>主线程将一个 Integer 对象发到 Channel 0</li>
+<li>线程 i 将对象从 Channel i 不断搬运到 Channel i+1</li>
+<li>最后一个线程从 Channel N-1 中拿到对象，做加和</li>
+</ol>
+<p>为了保证公平，Go 中自行封装一个 Integer 而不是用 int 型；考虑到实际中大多数情况下 channel 里走的都是对象而非基本类型，这样是合理的。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/aws-notes-vpc/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/perf-test-blockingqueue-vs-channel/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -370,12 +403,12 @@ VPC 可以连接（peer
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-database/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-solution-architect-cert-associate/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -389,7 +422,7 @@ VPC 可以连接（peer
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/aws-notes-database/" itemprop="url">AWS 学习笔记之数据库</a></h1>
+                <a class="post-title-link" href="/aws-solution-architect-cert-associate/" itemprop="url">AWS Solution Architect 认证学习笔记</a></h1>
         
 
         <div class="post-meta">
@@ -399,10 +432,10 @@ VPC 可以连接（peer
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-05T14:42:21+08:00">
-                2017-04-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T06:22:55+08:00">
+                2017-05-01
               </time>
             
 
@@ -412,8 +445,41 @@ VPC 可以连接（peer
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/series/" itemprop="url" rel="index">
+                    <span itemprop="name">series</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/aws-solution-architect-cert-associate/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="aws-solution-architect-cert-associate/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -440,31 +506,297 @@ VPC 可以连接（peer
 
       
         
-          
-          AWS 提供的数据库
-RDS - OLTP
-SQL Server
-MySQL
-PostgreSQL
-Oracle
-Aurora
-MariaDB
-
-
-DynamoDB - NoSQL
-RedShift - OLAP
-Elasticache - In Memory Caching
-Memcached
-Redis
-
-
-
-RDS - Relational Database ServiceRDS 提供一系列
-          ...
+          <p><img src="/images/2017/05/Solutions-Architect-Associate.png" alt="Solutions-Architect-Associate"></p>
+<p>经过一个月的学习，成功通过了 AWS 考试认证。不得不说相比从零开始闷声摸索，学习带来的收获还是很大的，避免了一些 AWS 的大坑，也了解了一些 best practice 的系统设计。</p>
+<p>可惜这个博客并不是在 AWS 上（原因可能是贫穷）。</p>
+<p>以下是我看过的学习资料：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/aws-notes-database/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/aws-solution-architect-cert-associate/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/varnish-notes-from-archetect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/varnish-notes-from-archetect/" itemprop="url">译：Varnish 架构师笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T06:06:55+08:00">
+                2017-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/varnish-notes-from-archetect/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="varnish-notes-from-archetect/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="external">名为 “Don’t fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
+<ul>
+<li>因为操作系统 PageCache 的存在，磁盘操作可能很快</li>
+<li>虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快</li>
+<li>CPU Cache 常常被忽略了，了解 CPU Cache 对提升内存读写性能至关重要</li>
+</ul>
+<p><a href="http://varnish-cache.org/docs/trunk/phk/notes.html" target="_blank" rel="external">原文链接</a></p>
+</blockquote>
+<p>当你开始深入 Varnish 的源代码后，应该会发觉它与你日常所见的一般应用软件有着明显不同，而这绝非偶然。</p>
+<p>多年以来我的绝大部分时间花费在 FreeBSD 的内核开发上，而每每涉足用户空间编程，却总是毫无例外地发现那里的人们还在以1975年的方式工作。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/varnish-notes-from-archetect/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/hackerrank-spanning-tree-fraction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/hackerrank-spanning-tree-fraction/" itemprop="url">HackerRank: Spanning Tree Fraction 题解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-20T16:50:21+08:00">
+                2017-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/hackerrank-spanning-tree-fraction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="hackerrank-spanning-tree-fraction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>题目：<a href="https://www.hackerrank.com/contests/w31/challenges/spanning-tree-fraction" target="_blank" rel="external">https://www.hackerrank.com/contests/w31/challenges/spanning-tree-fraction</a><br>一张连通图G=(V,E)上，每条边有a和b两个整数，求一个生成树使得Sum(a) / Sum(b) 最大，输出这个最大值的分数形式 p/q</p>
+</blockquote>
+<p>设 $\frac{\sum{a_i}}{\sum{b_i}} \ge c$ ，经过变换可得，$\sum{(a_i - b_i c)} \ge 0$，这种形式下 <code>ai - bi * c</code> 就退化为一条边的 cost，能方便得用 Prim 或 Kruskal 算法求出 cost 最大的生成树。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/hackerrank-spanning-tree-fraction/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -519,7 +851,7 @@ RDS - Relational Database ServiceRDS 提供一系列
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -543,9 +875,9 @@ RDS - Relational Database ServiceRDS 提供一系列
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-05T06:05:54+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-05T06:05:54+08:00">
                 2017-04-05
               </time>
             
@@ -559,6 +891,17 @@ RDS - Relational Database ServiceRDS 提供一系列
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/tfdl-contents/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="tfdl-contents/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -584,552 +927,15 @@ RDS - Relational Database ServiceRDS 提供一系列
 
       
         
-          
-          
-花了一周翻译了 Google Cloud Platform 上的教学课程 TensorFlow and deep learning, without a PhD，分享给大家。
-
-这篇文章对于初学者是很友好的，即使你对机器学习没有任何掌握也能跟着教程做完全部课程，并且 TensorFlow 的接口很简单，甚至不用掌握矩阵运算也能轻松使用。当然，如果你有一些线性代数和机器学习的先验知识，很多概念都是
-          ...
+          <p><img src="/images/2017/04/tensorflow-and-deep-learning-cover.png" alt="tensorflow-and-deep-learning-cove"></p>
+<blockquote>
+<p>花了一周翻译了 Google Cloud Platform 上的教学课程 <em>TensorFlow and deep learning, without a PhD</em>，分享给大家。</p>
+</blockquote>
+<p>这篇文章对于初学者是很友好的，即使你对机器学习没有任何掌握也能跟着教程做完全部课程，并且 TensorFlow 的接口很简单，甚至不用掌握矩阵运算也能轻松使用。当然，如果你有一些线性代数和机器学习的先验知识，很多概念都是相通的，理解起来要更容易。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/tfdl-contents/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-route53/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/aws-notes-route53/" itemprop="url">AWS 学习笔记之 Route53</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-04T02:26:48+08:00">
-                2017-04-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Route53 是 AWS 的域名解析（DNS）服务。
-ELB 没有固定的 IPv4 地址，用域名解析过去。
-理解 Alias record 和 CNAME record 的区别：Alias 是 AWS 特有的一种解析方式，只能解析到 AWS Resources 上，但是具有 CNAME 不具备的一些特性，例如，解析裸域名。
-
-考试中，如果让你选择 CNAME 或 Alias，大多数情况下都是选 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/aws-notes-route53/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-ec2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/aws-notes-ec2/" itemprop="url">AWS 学习笔记之 EC2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-03T16:00:25+08:00">
-                2017-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          EC2 - Elastic Compute Cloud付费方式了解不同付费方式的区别：
-
-On Demand 比如：需要Auto Scaling
-Spot 比如：有大量计算任务，可以随时开始和停止
-Reserved 比如：必须要很多主机常开
-Dedicated Hosts 比如：不接受多租户
-
-对于 Spot instances
-
-如果你终止了这些instance，你需要为最后一个小时付费
-如果A
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/aws-notes-ec2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-s3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/aws-notes-s3/" itemprop="url">AWS 学习笔记之 S3</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-28T01:56:24+08:00">
-                2017-03-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          S3 101 Tips
-S3 是一个对象存储（Object-based Storage），比如，用于上传文件
-文件大小可以从 0 到 5 TB
-无限存储容量
-文件存在 Bucket 里
-S3 Bucket 是全局的 namespace，也就是说所有的 S3 Bucket 都不能有同名
-一个 S3 bucket URL 的例子：https://s3-us-east-1.amazonaws.com/b
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/aws-notes-s3/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/aws-notes-iam/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/aws-notes-iam/" itemprop="url">AWS 学习笔记之 IAM</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-27T15:43:33+08:00">
-                2017-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          IAM (Identity Access Management) 由这些东西组成：
-
-Users
-Groups
-Roles
-Policy Documents
-
-// An example policy: allowing any access to any resource
-{
-  "Version": "2012-10-17"
-  "Statement": [
-      {
-        "
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/aws-notes-iam/#more" rel="contents">
-              Read more &raquo;
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1184,7 +990,7 @@ Policy Documents
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1208,9 +1014,9 @@ Policy Documents
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-20T16:06:28+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T16:06:28+08:00">
                 2017-03-20
               </time>
             
@@ -1223,6 +1029,17 @@ Policy Documents
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/docker-pid-1-process-and-zombie-process/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="docker-pid-1-process-and-zombie-process/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1249,15 +1066,13 @@ Policy Documents
 
       
         
-          
-          PID 1 的责任我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。
-在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。
-init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起
-          ...
+          <h2 id="PID-1-的责任"><a href="#PID-1-的责任" class="headerlink" title="PID 1 的责任"></a>PID 1 的责任</h2><p>我们知道，在 Linux 内核启动的时候会先启动一个 <code>init</code> 进程，这个进程的 PID 始终为 1，通过 <code>ps</code> 命令你会发现这个进程是很多进程的父进程。</p>
+<p>在 Linux 中，进程是用树来组织的，这个 <code>init</code> 就是根结点，很多重要的系统服务进程例如 <code>sshd</code>，<code>cron</code> 都是 <code>init</code> 的子节点。</p>
+<p><code>init</code> 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起来。经常发生如下的情况，一个进程还没有等到子进程结束（<code>waitpid</code>），自己就因为某些原因退出了，那它的子进程就此时成为孤儿会被 <code>init</code> 接管，<code>init</code> 会很尽责的对他们做 <code>waitpid</code>，从而确保资源不被浪费。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/docker-pid-1-process-and-zombie-process/#more" rel="contents">
-              Read more &raquo;
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1312,7 +1127,7 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1336,9 +1151,9 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-28T14:36:18+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-28T14:36:18+08:00">
                 2017-02-28
               </time>
             
@@ -1351,6 +1166,17 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/linux-network-namespace-practice/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="linux-network-namespace-practice/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1377,16 +1203,13 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
 
       
         
-          
-          Docker 中使用 linux namespace 机制来隔离不同容器的网络配置。
-简而言之，一般情况下每个容器有一个独立的 network namespace，这个 namespace 和主机的网络配置是隔离的，而他们之间通过一条虚拟链路以及网桥相连。
-接下来的过程通过命令行模拟了这个网络建立的过程，以便粗浅的理解 linux namespace 的原理。
-目标最终网络拓扑如下图所示。在 Do
-          ...
+          <p>Docker 中使用 linux namespace 机制来隔离不同容器的网络配置。</p>
+<p>简而言之，一般情况下每个容器有一个独立的 network namespace，这个 namespace 和主机的网络配置是隔离的，而他们之间通过一条虚拟链路以及网桥相连。</p>
+<p>接下来的过程通过命令行模拟了这个网络建立的过程，以便粗浅的理解 linux namespace 的原理。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/linux-network-namespace-practice/#more" rel="contents">
-              Read more &raquo;
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1436,12 +1259,12 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/raspberry-pi-close-ssh-by-default/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/build-pipeline-with-goroutine-and-channel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1455,7 +1278,7 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/raspberry-pi-close-ssh-by-default/" itemprop="url">新的 RaspberryPi 安全更新已经默认禁用了 SSH</a></h1>
+                <a class="post-title-link" href="/build-pipeline-with-goroutine-and-channel/" itemprop="url">用 goroutine 和 channel 搭建流水线</a></h1>
         
 
         <div class="post-meta">
@@ -1465,10 +1288,10 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-19T01:26:03+08:00">
-                2017-02-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-25T15:09:38+08:00">
+                2017-01-25
               </time>
             
 
@@ -1480,6 +1303,17 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/build-pipeline-with-goroutine-and-channel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="build-pipeline-with-goroutine-and-channel/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1506,17 +1340,291 @@ init 进程天生有个重要的任务，就是做好这个父节点的角色，
 
       
         
-          
-          以前，新刷好的 raspbian 是可以直接通过 SSH 连上的，现在则是：
-12$ ssh pi@192.168.1.143ssh: connect to host 192.168.1.143 port 22: Connection refused
-从官方博客找到了原因：
-
-Anyone who has been following tech media over the last few mo
-          ...
+          <p><strong>0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。</strong></p>
+<p>假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。</p>
+<p>如果one by one地做完三件事，总时间是 <code>N * (t1 + t2 + t3)</code><br>如果组成流水线，总时间缩短到 <code>N * min(t1, t2, t3)</code></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/raspberry-pi-close-ssh-by-default/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/build-pipeline-with-goroutine-and-channel/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/solve-unauthorized-pull-aws-docker-image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/solve-unauthorized-pull-aws-docker-image/" itemprop="url">解决本地 docker/minikube 没有权限拉取 AWS 的镜像</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-08T11:21:38+08:00">
+                2016-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/solve-unauthorized-pull-aws-docker-image/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="solve-unauthorized-pull-aws-docker-image/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：</p>
+<blockquote>
+<p>Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: authentication required)</p>
+</blockquote>
+<p>解决方案是用AWS CLI工具登录Docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">eval</span> `aws ecr get-login`</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/solve-unauthorized-pull-aws-docker-image/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/golang-build-minimal-docker-image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/golang-build-minimal-docker-image/" itemprop="url">Golang 编译最小化的 Docker Image</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-28T14:10:39+08:00">
+                2016-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/golang-build-minimal-docker-image/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="golang-build-minimal-docker-image/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="普通做法"><a href="#普通做法" class="headerlink" title="普通做法"></a>普通做法</h2><p>以下是引用自某开源项目的做法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM golang:alpine</div><div class="line">RUN apk update &amp;&amp; \</div><div class="line">    apk upgrade &amp;&amp; \</div><div class="line">    apk add git</div><div class="line">RUN go get github.com/author/package</div></pre></td></tr></table></figure>
+<p>这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。</p>
+<p>比如 Golang SDK 在程序运行中根本用不到，<code>Go Get</code>带来的源文件同样用不到。Golang是可以编译到真二进制的的语言，只要保留程序本身和必要的动态链接库（<code>.so</code>）即可。进一步，如果使用静态链接，那库也可以不要。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/golang-build-minimal-docker-image/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1557,7 +1665,7 @@ Anyone who has been following tech media over the last few mo
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1592,6 +1700,10 @@ Anyone who has been following tech media over the last few mo
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
+            
               <p class="site-author-name" itemprop="name">Eric Fu</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -1603,30 +1715,60 @@ Anyone who has been following tech media over the last few mo
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
             
           </div>
 
@@ -1634,6 +1776,24 @@ Anyone who has been following tech media over the last few mo
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -1655,7 +1815,7 @@ Anyone who has been following tech media over the last few mo
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1673,7 +1833,7 @@ Anyone who has been following tech media over the last few mo
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
 
 
 
@@ -1773,6 +1933,13 @@ Anyone who has been following tech media over the last few mo
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
   
 
   
@@ -1784,6 +1951,14 @@ Anyone who has been following tech media over the last few mo
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
 
   
 
@@ -1802,10 +1977,6 @@ Anyone who has been following tech media over the last few mo
 
 
 
-  
-
-
-
 
 
 
@@ -1824,6 +1995,21 @@ Anyone who has been following tech media over the last few mo
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   

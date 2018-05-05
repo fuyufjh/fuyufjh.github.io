@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -53,26 +53,32 @@
 <link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="Eric Fu, Internet, Softeware, Programming, Code" />
 
 
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
 
 
@@ -83,7 +89,7 @@
 <meta property="og:title" content="Coding Husky">
 <meta property="og:url" content="https://ericfu.me/page/3/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Coding Husky">
 
@@ -93,7 +99,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.3',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -101,7 +107,7 @@
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -121,11 +127,20 @@
 
 
 
-  <title>Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Coding Husky</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -133,7 +148,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -156,9 +171,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle">Thoughts, stories and ideas.</p>
-      
+    
   </div>
 
   <div class="site-nav-toggle">
@@ -182,7 +195,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -192,7 +205,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -202,7 +225,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -239,12 +262,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-14-congratulations/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/rop-attack-example-under-32bit-os/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -258,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-14-congratulations/" itemprop="url">TensorFlow 与深度学习 (14) 恭喜！</a></h1>
+                <a class="post-title-link" href="/rop-attack-example-under-32bit-os/" itemprop="url">32位程序的ROP攻击示例</a></h1>
         
 
         <div class="post-meta">
@@ -268,10 +291,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:28:06+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-29T17:21:01+08:00">
+                2016-10-29
               </time>
             
 
@@ -283,6 +306,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/rop-attack-example-under-32bit-os/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="rop-attack-example-under-32bit-os/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -309,17 +343,14 @@
 
       
         
-          
-          你已经建立了你的第一个神经网络，并且达到了 99% 的准确率。在这个过程中，你所学到的技术并不局限于 MNIST 数据集。实际上，这些技术在训练神经网络的过程中被广泛使用。作为礼物，下面提供的内容可以用来帮助你回忆已经所学的内容。
-
-下一步
-在完成了完全神经网络和卷积网络后，你应该看看循环神经网络。
-在本教程中，你已经学习了如何在矩阵层次构建 TensorFlow 模型。Tensorflow 还有
-          ...
+          <blockquote>
+<p>给定的程序 <code>readelf32</code> 存在一个漏洞（想多了，这当然不是Linux里的<code>readelf</code>），它读取文件内容写入到一个局部变量，但没有正确地检查文件大小。</p>
+</blockquote>
+<p>实验中假设 ASLR 已经关闭：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo 0 &gt;/proc/sys/kernel/randomize_va_space</div></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-14-congratulations/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/rop-attack-example-under-32bit-os/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -369,12 +400,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-13-the-99-percent-challenge/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/golang-learning-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -388,7 +419,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-13-the-99-percent-challenge/" itemprop="url">TensorFlow 与深度学习 (13) 挑战 99% 准确率</a></h1>
+                <a class="post-title-link" href="/golang-learning-notes/" itemprop="url">Go 学习笔记</a></h1>
         
 
         <div class="post-meta">
@@ -398,10 +429,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:27:27+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-27T06:34:42+08:00">
+                2016-10-27
               </time>
             
 
@@ -413,6 +444,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/golang-learning-notes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="golang-learning-notes/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -439,15 +481,12 @@
 
       
         
-          
-          调整你的神经网络的一个好方法是：先去实现一个限制较多的神经网络，然后给它更多的自由度并且增加 dropout，使神经网络避免过拟合。最终你将得到一个相当不错的神经网络。
-例如，我们在第一层卷积层中仅仅使用了 4 个 patch，如果这些权重的 patch 在训练的过程中发展成不同的识别器，你可以直观地看到这对于解决我们的问题是不够的。手写数字模式远多于 4 种基本样式。
-因此，让我们稍微增加 pa
-          ...
+          <p>因为工作项目原因，跟着 tour 学习了一下 Golang。语法比较奇怪，记下备忘。</p>
+<p><a href="https://gist.github.com/fuyufjh/b612c4ea000c943cc9adfc98533a37c8" target="_blank" rel="external">Gist link</a></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-13-the-99-percent-challenge/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/golang-learning-notes/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -497,12 +536,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-12-convolutional-network-lab/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/best-practice-to-use-gradle-in-idea/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -516,7 +555,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-12-convolutional-network-lab/" itemprop="url">TensorFlow 与深度学习 (12) 卷积网络：实验</a></h1>
+                <a class="post-title-link" href="/best-practice-to-use-gradle-in-idea/" itemprop="url">在IntelliJ IDEA中使用Gradle的最佳实践</a></h1>
         
 
         <div class="post-meta">
@@ -526,10 +565,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:26:44+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-16T16:33:25+08:00">
+                2016-08-16
               </time>
             
 
@@ -541,6 +580,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/best-practice-to-use-gradle-in-idea/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="best-practice-to-use-gradle-in-idea/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -567,17 +617,13 @@
 
       
         
-          
-          
-为了将我们的代码转化为卷积模型，我们需要为卷积层定义适当的权重张量，然后将该卷积层添加到模型中。
-我们已经见过到卷积层需要以下形式的权重张量。下面代码是用 TensorFlow 语法来对其初始化：
-
-12W = tf.Variable(tf.truncated_normal([4, 4, 3, 2], stddev=0.1))B = tf.Variable(tf.ones([2])/10) # 
-          ...
+          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行</p>
+<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><p><strong>Step 1</strong>: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程</p>
+<p><strong>Step 2</strong>: 向 <code>build.gradle</code> 中添加插件、依赖等等，例如：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-12-convolutional-network-lab/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/best-practice-to-use-gradle-in-idea/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -627,12 +673,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-11-convolutional-network/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tian-yi-cracking-patch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -646,7 +692,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-11-convolutional-network/" itemprop="url">TensorFlow 与深度学习 (11) 卷积网络：理论</a></h1>
+                <a class="post-title-link" href="/tian-yi-cracking-patch/" itemprop="url">天翼校园客户端逆向工程</a></h1>
         
 
         <div class="post-meta">
@@ -656,10 +702,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:25:26+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-09T03:09:54+08:00">
+                2016-08-09
               </time>
             
 
@@ -671,6 +717,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/tian-yi-cracking-patch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="tian-yi-cracking-patch/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -697,16 +754,13 @@
 
       
         
-          
-          
-在卷积网络层中，一个神经元仅对该图像上的一个小部分的像素求加权和。然后，通常会加上一个偏置，并且将得到的加权和传给激活函数。与全连接网络相比，其最大的区别在于卷积网络的每个神经元重用相同的权重，而不是每个神经元都有自己的权重。
-在上面的动画中，你可以看到通过连续修改图片上两个方向的权重（卷积），能够获得与图片上的像素点数量相同的输出值（边缘处需要 padding）。
-要产生一个输出值平面，我们使
-          ...
+          <blockquote>
+<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="external">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。<br>如果感到正文不明觉厉请直接跳到最后的patch</p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-11-convolutional-network/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/tian-yi-cracking-patch/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -756,12 +810,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-10-dropout-and-overfitting/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/solve-chinese-rings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -775,7 +829,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-10-dropout-and-overfitting/" itemprop="url">TensorFlow 与深度学习 (10) Dropout 和过拟合</a></h1>
+                <a class="post-title-link" href="/solve-chinese-rings/" itemprop="url">九连环的解法和代码</a></h1>
         
 
         <div class="post-meta">
@@ -785,10 +839,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:24:33+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-23T17:59:54+08:00">
+                2016-07-23
               </time>
             
 
@@ -800,6 +854,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/solve-chinese-rings/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="solve-chinese-rings/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -826,16 +891,12 @@
 
       
         
-          
-          
-你可能已经注意到，在数千次迭代之后，测试和训练数据的交叉熵曲线开始不相连。学习算法只是在训练数据上做工作并相应地优化训练的交叉熵。它从来看不到测试数据了，所以看到这一点也不必感到奇怪：过了一会儿它不再对测试交叉熵产生影响，交叉熵不再下降，有时甚至反弹回来。
-
-它不会立刻影响你模型的识别能力，但这将阻止你运行很多次迭代，这基本上是一个信号——告诉我们训练已经不能再为模型提供进一步改进了。这种现象通
-          ...
+          <p><img src="/images/2016/07/get_thumbnail.jpeg" alt=""></p>
+<p>今天第一次解九连环，觉得这个小玩具还是很有思想的，特把解法整理如下。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-10-dropout-and-overfitting/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/solve-chinese-rings/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -885,12 +946,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-9-learning-rate-decay/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/opencv-matrix-calc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -904,7 +965,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-9-learning-rate-decay/" itemprop="url">TensorFlow 与深度学习 (9) 学习率衰减</a></h1>
+                <a class="post-title-link" href="/opencv-matrix-calc/" itemprop="url">OpenCV 矩阵运算小结</a></h1>
         
 
         <div class="post-meta">
@@ -914,10 +975,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:23:34+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-09T05:54:18+08:00">
+                2016-04-09
               </time>
             
 
@@ -929,6 +990,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/opencv-matrix-calc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="opencv-matrix-calc/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -955,17 +1027,18 @@
 
       
         
-          
-          
-通过两个、三个或者四个中间层，你现在可以将准确度提升至接近 98%，当然，你的迭代次数要达到 5000 次以上。然而你会发现结果并不一直如此。
-
-这些曲线充满噪声，看测试精确度：它在全百分比范围内跳上跳下。这意味着即使 0.003 的学习率我们还是太快了。但我们不能仅仅将学习率除以十或者永远不停地做训练。一个好的解决方案是：一开始很快，随后将学习速率指数级衰减至，比如说，0.0001。
-这个小改
-          ...
+          <blockquote>
+<p>这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 <a href="http://docs.opencv.org/2.4.12/modules/core/doc/basic_structures.html" target="_blank" rel="external">这里</a>。</p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenCV 里的矩阵分静态和动态两种：</p>
+<ul>
+<li>动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个<strong>头</strong>——包含矩阵内存区域的指针和矩阵的大小、类型等信息。</li>
+<li>静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，<strong>没有额外的存储空间</strong>，矩阵自身的信息都以模板的方式静态编译了。</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-9-learning-rate-decay/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/opencv-matrix-calc/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1015,12 +1088,12 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-8-special-care-for-deep-networks/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/matlab-object-cheatsheet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1034,7 +1107,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-8-special-care-for-deep-networks/" itemprop="url">TensorFlow 与深度学习 (8) 特别注意之处</a></h1>
+                <a class="post-title-link" href="/matlab-object-cheatsheet/" itemprop="url">MATLAB 面向对象编程 Cheatsheet</a></h1>
         
 
         <div class="post-meta">
@@ -1044,10 +1117,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:17:52+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-03T11:33:19+08:00">
+                2016-03-03
               </time>
             
 
@@ -1059,6 +1132,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/matlab-object-cheatsheet/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="matlab-object-cheatsheet/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1085,16 +1169,11 @@
 
       
         
-          
-          
-随着层数的增加，神经网络越来越难以收敛。但现在我们知道如何控制它们的行为了。这里是一些只用一行就可以实现的改进，这些小技巧会帮到你，当你看到准确度曲线出现如下情况的时候：
-
-RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多问题。它把所有的值都挤到了 0 到 1 之间，而且当你重复做的时候，神经元的输出和它们的梯度可能会完全消失。值得一提的是，出于历史原因，一些现代神经网络使
-          ...
+          <h1 id="A-Simple-Class"><a href="#A-Simple-Class" class="headerlink" title="A Simple Class"></a>A Simple Class</h1><p><a href="http://cn.mathworks.com/help/matlab/matlab_oop/getting-familiar-with-classes.html" target="_blank" rel="external">Doc Link</a></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-8-special-care-for-deep-networks/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/matlab-object-cheatsheet/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1144,12 +1223,12 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-7-add-layers/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/solution-to-heibanke-crawler-ex/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1163,7 +1242,7 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-7-add-layers/" itemprop="url">TensorFlow 和深度学习 (7) 增加 Layer</a></h1>
+                <a class="post-title-link" href="/solution-to-heibanke-crawler-ex/" itemprop="url">黑板客爬虫闯关解答（更新到第五关）</a></h1>
         
 
         <div class="post-meta">
@@ -1173,10 +1252,10 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:17:04+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-21T03:01:38+08:00">
+                2016-02-21
               </time>
             
 
@@ -1188,6 +1267,17 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/solution-to-heibanke-crawler-ex/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="solution-to-heibanke-crawler-ex/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1214,19 +1304,13 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
 
       
         
-          
-          为了提高识别准确度，我们将为神经网络增加更多层（Layer）。第二层神经元将计算前一层神经元输出的加权和，而非计算像素的加权和。这里有一个 5 层全连接神经网络的例子：
-
-我们继续用 softmax 来作为最后一层的激活函数，因为它在分类问题中工作的最好。但在中间层，我们要使用最经典的激活函数：sigmoid：
-
-
-在这一节中，你的任务是为模型增加一到两个中间层以提高性能。
-答案可以在 mnist
-          ...
+          <p>初学爬虫，又没什么想爬的东西，正好看到这个闯关就做了一下。截至今天，游戏作者更新到第五关。</p>
+<p>前面4关都比较简单，具体请搜索网上的教程。比如<a href="http://vjson.com/wordpress/%E7%88%AC%E8%99%AB%E9%97%AF%E5%85%B3%E7%AC%AC%E4%B8%80%E5%85%B3.html" target="_blank" rel="external">这里</a>有个详细的。</p>
+<p>我的代码放在 GitHub：<a href="https://github.com/fuyufjh/crawler_ex_answer" target="_blank" rel="external">fuyufjh/crawler_ex_answer</a></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-7-add-layers/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/solution-to-heibanke-crawler-ex/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1276,12 +1360,12 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-6-jump-into-the-code/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/10-minutes-to-pandas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1295,7 +1379,7 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-6-jump-into-the-code/" itemprop="url">TensorFlow 与深度学习 (6) 阅读代码</a></h1>
+                <a class="post-title-link" href="/10-minutes-to-pandas/" itemprop="url">十分钟的 pandas 入门教程（中文翻译）</a></h1>
         
 
         <div class="post-meta">
@@ -1305,10 +1389,10 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:16:27+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-05T07:06:57+08:00">
+                2016-02-05
               </time>
             
 
@@ -1320,6 +1404,17 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/10-minutes-to-pandas/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="10-minutes-to-pandas/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1346,18 +1441,16 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
 
       
         
-          
-          单层神经网络的代码已经写好了。请打开 mnist_1.0_softmax.py 文件并按说明进行操作。
-
-你在本节的任务是理解代码，以便之后对其改进。
-
-你应该看到，在文档中的说明和启动代码只有微小的差别。它们对应于可视化的函数，并且在注释中被标记。此处可忽略。
-1234567import tensorflow as tfX = tf.placeholder(tf.float32, [None, 
-          ...
+          <blockquote>
+<p>原文是 pandas documentation 中的 <a href="http://pandas.pydata.org/pandas-docs/stable/10min.html" target="_blank" rel="external">10 Minutes to pandas</a></p>
+<p>十分钟你妹啊！！</p>
+</blockquote>
+<p>导入 pandas、numpy、matplotlib</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">In [1]: import pandas as pd</div><div class="line"></div><div class="line">In [2]: import numpy as np</div><div class="line"></div><div class="line">In [3]: import matplotlib.pyplot as plt</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-6-jump-into-the-code/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/10-minutes-to-pandas/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1407,12 +1500,12 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/tfdl-5-gradient-descent/">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/xiaomi-market-puzzle-game-solution/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1426,7 +1519,7 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/tfdl-5-gradient-descent/" itemprop="url">TensorFlow 与深度学习 (5) 梯度下降</a></h1>
+                <a class="post-title-link" href="/xiaomi-market-puzzle-game-solution/" itemprop="url">给小米商城的拼图游戏写了个外挂</a></h1>
         
 
         <div class="post-meta">
@@ -1436,10 +1529,10 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T09:15:36+08:00">
-                2017-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-30T12:32:10+08:00">
+                2015-12-30
               </time>
             
 
@@ -1451,6 +1544,17 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/xiaomi-market-puzzle-game-solution/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="xiaomi-market-puzzle-game-solution/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1477,17 +1581,12 @@ RELU 激活函数在深度网络里，sigmoid 激活函数确实能带来很多�
 
       
         
-          
-          现在我们的神经网络从输入图像中产生预测，我们需要知道这个模型有多好，即，事实情况和网络的预测之间到底有多大的距离。回忆下，这个数据集中的所有图像都有一个真实的标签（label）。
-任何一种定义的距离都可以进行这样的操作，普通欧几里得距离是可以的，但是对于分类问题，被称为交叉熵（cross-entropy）的距离更加有效。
-
-
-one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6 
-          ...
+          <p>最近小米商城 App 里推出了一个游戏，大概是酱紫的：</p>
+<p>左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/tfdl-5-gradient-descent/#more" rel="contents">
-              Read more &raquo;
+            <a class="btn" href="/xiaomi-market-puzzle-game-solution/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1528,7 +1627,7 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1563,6 +1662,10 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
+            
               <p class="site-author-name" itemprop="name">Eric Fu</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -1574,30 +1677,60 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
             
           </div>
 
@@ -1605,6 +1738,24 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -1626,7 +1777,7 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1644,7 +1795,7 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
 
 
 
@@ -1744,6 +1895,13 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
   
 
   
@@ -1755,6 +1913,14 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
 
   
 
@@ -1773,10 +1939,6 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
 
 
 
-  
-
-
-
 
 
 
@@ -1795,6 +1957,21 @@ one-hot 编码意味着你使用一个 10 个值的向量，其中除了第 6
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   

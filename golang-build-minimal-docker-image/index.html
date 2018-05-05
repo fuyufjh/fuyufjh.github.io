@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -53,26 +53,32 @@
 <link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="selected,docker,golang," />
 
 
 
 
 
-  <meta name="keywords" content="Docker,Go," />
-
-
-
-
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
 
 
@@ -80,13 +86,13 @@
 
 
 <meta name="description" content="普通做法以下是引用自某开源项目的做法： 12345FROM golang:alpineRUN apk update &amp;amp;&amp;amp; \    apk upgrade &amp;amp;&amp;amp; \    apk add gitRUN go get github.com/author/package 这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。 比如 Golang SDK">
-<meta name="keywords" content="Docker,Go">
+<meta name="keywords" content="selected,docker,golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang 编译最小化的 Docker Image">
 <meta property="og:url" content="https://ericfu.me/golang-build-minimal-docker-image/index.html">
 <meta property="og:site_name" content="Coding Husky">
 <meta property="og:description" content="普通做法以下是引用自某开源项目的做法： 12345FROM golang:alpineRUN apk update &amp;amp;&amp;amp; \    apk upgrade &amp;amp;&amp;amp; \    apk add gitRUN go get github.com/author/package 这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。 比如 Golang SDK">
-<meta property="og:locale" content="en">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-11-28T06:48:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang 编译最小化的 Docker Image">
@@ -98,7 +104,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.3',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -106,7 +112,7 @@
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -126,11 +132,20 @@
 
 
 
-  <title>Golang 编译最小化的 Docker Image | Coding Husky</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Golang 编译最小化的 Docker Image | Coding Husky</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -138,7 +153,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -160,9 +175,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle">Thoughts, stories and ideas.</p>
-      
+    
   </div>
 
   <div class="site-nav-toggle">
@@ -186,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首页
           </a>
         </li>
       
@@ -196,7 +209,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -206,7 +229,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            归档
           </a>
         </li>
       
@@ -248,7 +271,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eric Fu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -270,9 +293,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-28T14:10:39+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-28T14:10:39+08:00">
                 2016-11-28
               </time>
             
@@ -285,6 +308,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/golang-build-minimal-docker-image/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="golang-build-minimal-docker-image/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -310,15 +344,16 @@
       
 
       
-        <h3 id="普通做法"><a href="#普通做法" class="headerlink" title="普通做法"></a>普通做法</h3><p>以下是引用自某开源项目的做法：</p>
+        <h2 id="普通做法"><a href="#普通做法" class="headerlink" title="普通做法"></a>普通做法</h2><p>以下是引用自某开源项目的做法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM golang:alpine</div><div class="line">RUN apk update &amp;&amp; \</div><div class="line">    apk upgrade &amp;&amp; \</div><div class="line">    apk add git</div><div class="line">RUN go get github.com/author/package</div></pre></td></tr></table></figure>
 <p>这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。</p>
 <p>比如 Golang SDK 在程序运行中根本用不到，<code>Go Get</code>带来的源文件同样用不到。Golang是可以编译到真二进制的的语言，只要保留程序本身和必要的动态链接库（<code>.so</code>）即可。进一步，如果使用静态链接，那库也可以不要。</p>
-<h3 id="From-Alpine"><a href="#From-Alpine" class="headerlink" title="From Alpine"></a>From Alpine</h3><p>首先编译出静态链接的二进制：</p>
+<a id="more"></a>
+<h2 id="From-Alpine"><a href="#From-Alpine" class="headerlink" title="From Alpine"></a>From Alpine</h2><p>首先编译出静态链接的二进制：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/release/main ./main.go</div></pre></td></tr></table></figure>
 <p>然后是Dockerfile，把刚刚编译出的程序拷贝进去就可以了。其中用到 APK (Alpine Package Manager) 安装CA证书，因为Golang标准库中的SSL会使用系统的CA证书。 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM alpine:3.4</div><div class="line">RUN apk add --no-cache ca-certificates</div><div class="line"></div><div class="line">ADD ./build/release/main /</div><div class="line">ENTRYPOINT [&quot;/main&quot;]</div></pre></td></tr></table></figure>
-<h3 id="From-Scratch"><a href="#From-Scratch" class="headerlink" title="From Scratch"></a>From Scratch</h3><p>其实，Alpine Linux也可以不要，直接从0开始Build一个Docker Image也是可行的，理论上这是<strong>最</strong>小的方案。</p>
+<h2 id="From-Scratch"><a href="#From-Scratch" class="headerlink" title="From Scratch"></a>From Scratch</h2><p>其实，Alpine Linux也可以不要，直接从0开始Build一个Docker Image也是可行的，理论上这是<strong>最</strong>小的方案。</p>
 <p>同上，先编译出静态链接的二进制。Dockerfile如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM scratch</div><div class="line">ADD ca-certificates.crt /etc/ssl/certs/</div><div class="line"></div><div class="line">ADD ./build/release/main /</div><div class="line">ENTRYPOINT [&quot;/main&quot;]</div></pre></td></tr></table></figure>
 <p><code>ca-certificates.crt</code> 通常位于系统的<code>/etc/ssl/certs/</code>目录下，你需要从那里把他拷贝到当前目录，然后添加到镜像中。</p>
@@ -346,14 +381,38 @@
     
 
     
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Eric Fu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://ericfu.me/golang-build-minimal-docker-image/" title="Golang 编译最小化的 Docker Image">https://ericfu.me/golang-build-minimal-docker-image/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Docker/" rel="tag"># Docker</a>
+            
           
-            <a href="/tags/Go/" rel="tag"># Go</a>
+            
+              <a href="/tags/docker/" rel="tag"># docker</a>
+            
+          
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
           
         </div>
       
@@ -408,6 +467,16 @@
           
 
   
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
 
 
 
@@ -432,10 +501,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
+            文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
+            站点概览
           </li>
         </ul>
       
@@ -443,6 +512,10 @@
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
             
               <p class="site-author-name" itemprop="name">Eric Fu</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -455,30 +528,60 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
             
           </div>
 
@@ -486,6 +589,24 @@
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -503,7 +624,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通做法"><span class="nav-number">1.</span> <span class="nav-text">普通做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#From-Alpine"><span class="nav-number">2.</span> <span class="nav-text">From Alpine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#From-Scratch"><span class="nav-number">3.</span> <span class="nav-text">From Scratch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number"></span> <span class="nav-text">References</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#普通做法"><span class="nav-number">1.</span> <span class="nav-text">普通做法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#From-Alpine"><span class="nav-number">2.</span> <span class="nav-text">From Alpine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#From-Scratch"><span class="nav-number">3.</span> <span class="nav-text">From Scratch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
@@ -523,7 +644,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -541,7 +662,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
 
 
 
@@ -641,6 +762,13 @@
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
@@ -659,6 +787,26 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ericfu.me/golang-build-minimal-docker-image/';
+          this.page.identifier = 'golang-build-minimal-docker-image/';
+          this.page.title = 'Golang 编译最小化的 Docker Image';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ericfu.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
 
 
 
@@ -674,10 +822,6 @@
 
 
 
-  
-
-
-
 
 
 
@@ -696,6 +840,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   
