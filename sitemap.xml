@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/columnar-storage-overview-system/</loc>
+    
+    <lastmod>2018-05-27T12:26:02.012Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/columnar-storage-overview-storage/</loc>
     
     <lastmod>2018-04-26T04:23:25.563Z</lastmod>
