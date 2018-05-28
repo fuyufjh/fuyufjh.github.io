@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/05/kudu-write-path.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/05/powerdrill-partition-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/05/powerdrill-global-chunk-dict-example.png">
-<meta property="og:updated_time" content="2018-05-28T02:29:11.878Z">
+<meta property="og:updated_time" content="2018-05-28T03:10:33.681Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="处理海量数据：列式存储综述（系统篇）">
 <meta name="twitter:description" content="在上一篇文章《处理海量数据：列式存储综述（存储篇）》 中，我们介绍了几种 Apache ORC、Dremel 等几种典型列式存储的数据组织格式。实践中，很多数据系统构建在 HDFS 等分布式文件系统之上，使用这些规范的格式保存数据，方便各方的业务进行分析查询。 本文将介绍若干个典型的列式存储数据库系统。作为完整的 OLAP 或 HTAP 数据库系统，他们大多使用了自主设计的存储方式，运行在多台机">
@@ -361,7 +361,7 @@
 <blockquote>
 <p>通常而言，互联网应用对 DBMS 有较高的并发写入需求，对一致性读、分析型查询的需求不那么强烈。而企业级应用（例如 CRM 系统）的并发写入需求不大，但需要对一致性读、分析型查询等。</p>
 </blockquote>
-<h3 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h3><p>C-Store 将其物理存储也就是每个 projection 分成两层，<strong>分别是为写优化的 Writeable Store (WS) 和为写优化的 Read-optimized Store (RS)</strong>。RS 即是基线数据，WS 上暂存了对 RS 数据的变更，二者在读取时需要 merge 得到最新的数据。在上一篇文章的 Apache ORC 格式种，我们也看到了类似的做法（基线数据叠加增量数据）。</p>
+<h3 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h3><p>C-Store 将其物理存储也就是每个 projection 分成两层，<strong>分别是为写优化的 Writeable Store (WS) 和为读优化的 Read-optimized Store (RS)</strong>。RS 即是基线数据，WS 上暂存了对 RS 数据的变更，二者在读取时需要 merge 得到最新的数据。在上一篇文章的 Apache ORC 格式种，我们也看到了类似的做法（基线数据叠加增量数据）。</p>
 <p><img src="/images/2018/05/c-store-ws-rs.png" alt="cstore-architecture"></p>
 <p>RS 是一个为读优化的列式存储。RS 中采用之前提到的 projection 数据模型，对不同的列采用了不同的编码方式，根据它是否是 projection 的排序列、以及该列的取值个数，来决定采取何种编码方式。</p>
 <p>WS 用于暂存高性能的写入操作，例如 INSERT、UPDATE 等。为了简化系统的设计，WS 逻辑上仍然按照 projection 的列式模型存储，但是物理上<strong>使用 B 树以满足快速的写入要求</strong>。WS 基于 BerkeleyDB 构建。</p>
