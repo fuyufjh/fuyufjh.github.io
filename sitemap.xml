@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/apache-spark-in-nutshell/</loc>
+    
+    <lastmod>2018-06-17T12:56:34.955Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/columnar-storage-overview-system/</loc>
     
     <lastmod>2018-05-28T03:10:33.681Z</lastmod>
