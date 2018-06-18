@@ -77,8 +77,6 @@
 
 
 
-  
-
 
   <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
@@ -109,7 +107,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/06/spark-structured-streaming-model.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/06/spark-structured-streaming-watermark.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/06/cluster-overview.png">
-<meta property="og:updated_time" content="2018-06-18T06:01:10.884Z">
+<meta property="og:updated_time" content="2018-06-18T06:19:44.322Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一文读懂 Spark 和 Spark Streaming">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; }    Apache Spark 是当今最流行的开源大数据处理框架。和人们耳熟能详的 MapReduce 一样，Spark 用于进行分布式、大规模的数据处理，但 Spark 作为 MapReduce 的接任者，提供了更高级的编程接口、更高的性能。除此之外，Spark 不仅能进行常规的批处理计算，还提供了流式计算支持">
@@ -465,7 +463,7 @@
 <h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>Spark 中有三个角色：Driver, Worker 和 Cluster Manager。</p>
 <p><img src="/images/2018/06/cluster-overview.png" alt="cluster-overview"></p>
 <p><strong>驱动程序（Driver）</strong>即用户编写的程序，对应一个 <code>SparkContext</code>，负责任务的构造、调度、故障恢复等。驱动程序可以直接运行在客户端，例如用户的应用程序中；也可以托管在 Master 上，这被称为集群模式（cluster mode），通常用于流计算等长期任务。</p>
-<p><strong>Cluster Manager</strong>顾名思义负责集群的资源分配，Spark 自带的 Spark Master 支持任务的资源分配，并包含一个 Web UI 用来监控任务运行状况。多个 Master 可以构成一主多备，通过 ZooKeeper 进行协调和故障恢复。通常 Spark 集群使用 Spark Master 即可，但如果用户的集群中不仅有 Spark 框架、还要承担其他任务，官方推荐使用 Mesos 作为集群调度器。</p>
+<p><strong>Cluster Manager</strong> 顾名思义负责集群的资源分配，Spark 自带的 Spark Master 支持任务的资源分配，并包含一个 Web UI 用来监控任务运行状况。多个 Master 可以构成一主多备，通过 ZooKeeper 进行协调和故障恢复。通常 Spark 集群使用 Spark Master 即可，但如果用户的集群中不仅有 Spark 框架、还要承担其他任务，官方推荐使用 Mesos 作为集群调度器。</p>
 <p><strong>Worker</strong> 节点负责执行计算任务，上面保存了 RDD 等数据。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spark 是一个同时支持批处理和流计算的分布式计算系统。Spark 的所有计算均构建于 RDD 之上，RDD 通过算子连接形成 DAG 的执行计划，RDD 的确定性及不可变性是 Spark 实现故障恢复的基础。Spark Streaming 的 D-Stream 本质上也是将输入数据分成一个个 micro-batch 的 RDD。</p>
 <p>Spark SQL 是在 RDD 之上的一层封装，相比原始 RDD，DataFrame API 支持数据表的 schema 信息，从而可以执行 SQL 关系型查询，大幅降低了开发成本。Spark Structured Streaming 是 Spark SQL 的流计算版本，它将输入的数据流看作不断追加的数据行。</p>
