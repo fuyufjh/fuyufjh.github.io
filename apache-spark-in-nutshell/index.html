@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/06/spark-structured-streaming-model.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/06/spark-structured-streaming-watermark.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/06/cluster-overview.png">
-<meta property="og:updated_time" content="2018-06-19T02:27:12.314Z">
+<meta property="og:updated_time" content="2018-06-19T05:31:32.755Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一文读懂 Spark 和 Spark Streaming">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; }    Apache Spark 是当今最流行的开源大数据处理框架。和人们耳熟能详的 MapReduce 一样，Spark 用于进行分布式、大规模的数据处理，但 Spark 作为 MapReduce 的接任者，提供了更高级的编程接口、更高的性能。除此之外，Spark 不仅能进行常规的批处理计算，还提供了流式计算支持">
@@ -445,7 +445,10 @@
 <blockquote>
 <p>关于流行的几个开源流计算框架的对比，可以参考文章 <a href="https://www.cakesolutions.net/teamblogs/comparison-of-apache-stream-processing-frameworks-part-1" target="_blank" rel="external">Comparison of Apache Stream Processing Frameworks</a>。</p>
 </blockquote>
-<h2 id="流计算与-SQL：Spark-Structured-Streaming"><a href="#流计算与-SQL：Spark-Structured-Streaming" class="headerlink" title="流计算与 SQL：Spark Structured Streaming"></a>流计算与 SQL：Spark Structured Streaming</h2><p>我们已经有了 DataFrame 和 D-Stream，能否把他们结合起来？DataFrame 提供了类似 SQL 的声明式编程体验，D-Stream 提供了准实时的持续流计算能力，两者结合起来，我们希望能用 SQL 对数据流进行查询——<strong>数据流被建模成一张不断增长、没有边界的表</strong>，在这样的语义之下，很多 SQL 操作等就能直接应用在流数据上。</p>
+<h2 id="流计算与-SQL：Spark-Structured-Streaming"><a href="#流计算与-SQL：Spark-Structured-Streaming" class="headerlink" title="流计算与 SQL：Spark Structured Streaming"></a>流计算与 SQL：Spark Structured Streaming</h2><p>Spark 通过 Spark Streaming 拥有了流计算能力，那 Spark SQL 是否也能具有类似的流处理能力呢？答案是肯定的，只要将<strong>数据流建模成一张不断增长、没有边界的表</strong>，在这样的语义之下，很多 SQL 操作等就能直接应用在流数据上。</p>
+<blockquote>
+<p>出人意料的是，Spark Structured Streaming 的流式计算引擎并没有复用 Spark Streaming，而是在 Spark SQL 上设计了新的一套引擎。因此，从 Spark SQL 迁移到 Spark Structured Streaming 十分容易，但从 Spark Streaming 迁移过来就要困难得多。</p>
+</blockquote>
 <p>很自然的，基于这样的模型，Spark SQL 中的大部分接口、实现都得以在 Spark Structured Streaming 中直接复用。将用户的 SQL 执行计划转化成流计算执行计划的过程被称为<strong>增量化</strong>（incrementalize），这一步是由 Spark 框架自动完成的。对于用户来说只要知道：每次计算的输入是某一小段时间的流数据，而输出是对应数据产生的计算结果。</p>
 <p><img src="/images/2018/06/spark-structured-streaming-model.png" alt="spark-structured-streaming-mode"></p>
 <p class="image-captain">▲ <em>左图是 Spark Structured Streaming 模型示意图；右图展示了同一个任务的批处理、流计算版本，可以看到，除了输入输出不同，内部计算过程完全相同。</em></p>
@@ -466,7 +469,7 @@
 <p><strong>Cluster Manager</strong> 顾名思义负责集群的资源分配，Spark 自带的 Spark Master 支持任务的资源分配，并包含一个 Web UI 用来监控任务运行状况。多个 Master 可以构成一主多备，通过 ZooKeeper 进行协调和故障恢复。通常 Spark 集群使用 Spark Master 即可，但如果用户的集群中不仅有 Spark 框架、还要承担其他任务，官方推荐使用 Mesos 作为集群调度器。</p>
 <p><strong>Worker</strong> 节点负责执行计算任务，上面保存了 RDD 等数据。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spark 是一个同时支持批处理和流计算的分布式计算系统。Spark 的所有计算均构建于 RDD 之上，RDD 通过算子连接形成 DAG 的执行计划，RDD 的确定性及不可变性是 Spark 实现故障恢复的基础。Spark Streaming 的 D-Stream 本质上也是将输入数据分成一个个 micro-batch 的 RDD。</p>
-<p>Spark SQL 是在 RDD 之上的一层封装，相比原始 RDD，DataFrame API 支持数据表的 schema 信息，从而可以执行 SQL 关系型查询，大幅降低了开发成本。Spark Structured Streaming 是 Spark SQL 的流计算版本，它将输入的数据流看作不断追加的数据行。</p>
+<p>Spark SQL 是在 RDD 之上的一层封装，相比原始 RDD，DataFrame API 支持数据表的 schema 信息，从而可以执行 SQL 关系型查询，大幅降低了开发成本。Spark Structured Streaming 为 Spark SQL 提供了流计算支持，它将输入的数据流看作不断追加的数据行。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" target="_blank" rel="external">Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing (NSDI ‘12)</a> </li>
 <li><a href="https://people.csail.mit.edu/matei/papers/2013/sosp_spark_streaming.pdf" target="_blank" rel="external">Discretized Streams: Fault-Tolerant Streaming Computation at Scale (SOSP ‘13)</a></li>
