@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/05/kudu-write-path.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/05/powerdrill-partition-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/05/powerdrill-global-chunk-dict-example.png">
-<meta property="og:updated_time" content="2018-05-28T03:10:33.681Z">
+<meta property="og:updated_time" content="2018-06-19T03:15:58.105Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="处理海量数据：列式存储综述（系统篇）">
 <meta name="twitter:description" content="在上一篇文章《处理海量数据：列式存储综述（存储篇）》 中，我们介绍了几种 Apache ORC、Dremel 等几种典型列式存储的数据组织格式。实践中，很多数据系统构建在 HDFS 等分布式文件系统之上，使用这些规范的格式保存数据，方便各方的业务进行分析查询。 本文将介绍若干个典型的列式存储数据库系统。作为完整的 OLAP 或 HTAP 数据库系统，他们大多使用了自主设计的存储方式，运行在多台机">
@@ -419,7 +419,7 @@
 </ol>
 <p>这样的两层映射保证 chunk-id 尽可能的小，所以可以用更紧凑的编码，比如用 8bit、16bit 整数存储。这不仅能节省空间，也能加快扫描速度。</p>
 <p>此外，相同的数据只会在全局字典表中存一份。而且全局字典表中的字符串数据已经被排序，相比不排序，排序后用 Snappy 等算法的压缩比更高。</p>
-<h3 id="分区索引"><a href="#分区索引" class="headerlink" title="分区索引"></a>分区索引</h3><p>上述的数据结构还有一个额外的好处：<strong>它能快速算出某个分区是否包含有用的数据，帮助执行器跳过无关的分区</strong>。以下面的 SQL 为例（数据参考上一张图 Figure XXXX）：</p>
+<h3 id="分区索引"><a href="#分区索引" class="headerlink" title="分区索引"></a>分区索引</h3><p>上述的数据结构还有一个额外的好处：<strong>它能快速算出某个分区是否包含有用的数据，帮助执行器跳过无关的分区</strong>。以下面的 SQL 为例（数据参考上一张图）：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> search_string, <span class="keyword">COUNT</span>(*) <span class="keyword">as</span> c <span class="keyword">FROM</span> <span class="keyword">data</span></div><div class="line"><span class="keyword">WHERE</span> search_string <span class="keyword">IN</span> (<span class="string">"la redoute"</span>, <span class="string">"voyages sncf"</span>)</div><div class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> search_string</div><div class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> c <span class="keyword">DESC</span> <span class="keyword">LIMIT</span> <span class="number">10</span>;</div></pre></td></tr></table></figure>
 <p>步骤如下：</p>
 <ol>
