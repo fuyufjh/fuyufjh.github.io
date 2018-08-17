@@ -351,7 +351,7 @@
 <p>Emmm… 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。</p>
 <a id="more"></a>
 <h2 id="第一赛季：消息中间件"><a href="#第一赛季：消息中间件" class="headerlink" title="第一赛季：消息中间件"></a>第一赛季：消息中间件</h2><blockquote>
-<p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/middlewarerace2017/open-messaging-demo" target="_blank" rel="external">这里</a>）</p>
+<p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/middlewarerace2017/open-messaging-demo" target="_blank" rel="noopener">这里</a>）</p>
 <p>设计一个消息中间件，它支持 Topic 和 Queue，每个 Topic 可以被一个或多个 Queue 订阅。显然，发往 Topic 的消息会被所有的订阅者接收到，而发往某个特定 Queue 的消息只会被它接收到。</p>
 <p>消息不能丢失，且对于各个 Queue 消息要保持有序。在此前提下，吞吐量最优者获胜。</p>
 <p>要注意的是，生产和消费是分两个阶段进行的：先进行生产，结束后再进行消费。</p>
@@ -364,9 +364,9 @@
 </ul>
 <p>此外，序列化的过程中尽可能减少内存拷贝，以及避免不必要的 String 序列化、反序列化。</p>
 <p>做到以上几点，进入前 20 不是问题。初赛只要前 200 名就可以晋级了（吐槽：那很容易啊！！但是一开始不知道初赛成绩也要计入最后评分的）</p>
-<p><a href="https://code.aliyun.com/fuyufjh/open-messaging-demo-zero/" target="_blank" rel="external">代码</a>托管在阿里云 code 上。</p>
+<p><a href="https://code.aliyun.com/fuyufjh/open-messaging-demo-zero/" target="_blank" rel="noopener">代码</a>托管在阿里云 code 上。</p>
 <h2 id="第二赛季：数据库同步"><a href="#第二赛季：数据库同步" class="headerlink" title="第二赛季：数据库同步"></a>第二赛季：数据库同步</h2><blockquote>
-<p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/wanshao/IncrementalSync/" target="_blank" rel="external">这里</a>）</p>
+<p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/wanshao/IncrementalSync/" target="_blank" rel="noopener">这里</a>）</p>
 <p>模拟数据库的主备复制。给定一批 binlog 文本数据，你的任务是重放所有 binlog 从而得到数据表的最新状态（假设原本状态是空的）。重放的操作包含 Insert/Update/Delete 三种操作，注意主键也可能被更新！</p>
 <p>验证结果的方式是，客户端给定一个 PK 的区间，输出该区间的所有行。</p>
 <p>注意，程序分 Server 和 Client 端，机器配置都很高（16核CPU），但是 JVM 的堆大小被限制为 1G 新生代 + 2G 老年代。此外，必须顺序读取 binlog。</p>
@@ -377,9 +377,9 @@
 <p><iframe src="//www.slideshare.net/slideshow/embed_code/key/jURs7pfS57Uz7d" width="100%" height="500" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 700px;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> </div></p>
 <p>这题思考了很久，最后交出的答卷含金量也很高。哈希分桶作为经典算法中常见的一种模式，在很多分布式系统中都有应用。</p>
 <p>此外，比赛初期还没有加上“必须顺序读取”这个条件。如果没有这个条件又会有别的奇思妙想的算法来解决。留给读者自己思考（喵）</p>
-<p><a href="https://code.aliyun.com/fuyufjh/IncrementalSyncSequential" target="_blank" rel="external">代码</a><br>托管在阿里云上，同时还有<br><a href="https://code.aliyun.com/fuyufjh/tianchi-middleware-doc" target="_blank" rel="external">设计文档</a> 也很有帮助（如果你觉得 PPT 还不够细致）。</p>
+<p><a href="https://code.aliyun.com/fuyufjh/IncrementalSyncSequential" target="_blank" rel="noopener">代码</a><br>托管在阿里云上，同时还有<br><a href="https://code.aliyun.com/fuyufjh/tianchi-middleware-doc" target="_blank" rel="noopener">设计文档</a> 也很有帮助（如果你觉得 PPT 还不够细致）。</p>
 <h2 id="24-小时极客-PK-赛"><a href="#24-小时极客-PK-赛" class="headerlink" title="24 小时极客 PK 赛"></a>24 小时极客 PK 赛</h2><blockquote>
-<p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/fuyufjh/topkn_final" target="_blank" rel="external">这里</a>）</p>
+<p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/fuyufjh/topkn_final" target="_blank" rel="noopener">这里</a>）</p>
 <p>分页排序。给定一批数据，求解按顺序从小到大，顺序排名从第k下标序号之后连续的n个数据，类似于 <code>order by id limit k, n</code>，n 会很大，k &lt;= 100</p>
 <p>数据是文本文件，每行是一个长度在 256 字符以内的字符串。排序的方式是：先按长度从小到大、再按字典序。</p>
 <p>注意一共有 2 台 Worker 和 1 台 Master，Worker 上分别放了 5G 的数据，最后 Master 要请求到完整的排序结果。</p>
@@ -387,13 +387,13 @@
 <p>和之前的两场比赛不同，24小时赛的成绩是不计入最后评价的，而且是以个人名义参赛。奖品是去硅谷开（玩）会（耍）！（PS. 然而不能带女朋友，最后去了一帮基佬啊摔！）</p>
 <p>外排序是很容易想到的思路，然而十分复杂，也不能很好的并行。那怎么办？依然是分桶，Bucket Sort。</p>
 <p>假设字符串长度的分布是均匀的，字符出现的概率也是相近的，则我们可以用以下的值作为每个字符串的 key：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;length&gt; &lt;text[0]&gt; &lt;text[1]&gt; &lt;text[2]&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;length&gt; &lt;text[0]&gt; &lt;text[1]&gt; &lt;text[2]&gt;</span><br></pre></td></tr></table></figure>
 <p>（如果长度小于 3 就用 ‘\0’ 填充一下）</p>
 <p>这样我们就能对每个 key 做统计了——有多少个字符串是在这个桶里呢？假设这个结果放在数组 <code>count</code> 中，那再对 <code>count</code> 求一个累计和，就能用二分查找找到第 N 个数应该位于哪一个桶里。</p>
 <p>同样的也可以找到第 N+K-1 个数应该位于哪个桶里。然后就简单了，把区间内的桶里的值都取出来，让 Master 排个序就好了。</p>
 <p>把区间内的桶里的值都取出来？——这个过程可以扫描整个文件。也可以做个预处理的优化：把每个字符串的 key 和 offset 分别存到两个数组里，比如 <code>keys[]</code> 和 <code>offsets[]</code>，这样只要扫描数组就可以了！</p>
 <p>然而我并没有想到这个优化，所以是第二名。哈哈哈！</p>
-<p><a href="https://code.aliyun.com/fuyufjh/topkn_final?spm=a2111a.8458726.0.0.59556667DTd4xf" target="_blank" rel="external">代码</a>托管在阿里云上。</p>
+<p><a href="https://code.aliyun.com/fuyufjh/topkn_final?spm=a2111a.8458726.0.0.59556667DTd4xf" target="_blank" rel="noopener">代码</a>托管在阿里云上。</p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><ol>
 <li>算法是好的，要多刷 HackerRank</li>
 <li>阿里搞的这个比赛啊，Excited ！</li>
@@ -609,6 +609,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

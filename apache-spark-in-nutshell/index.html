@@ -407,12 +407,14 @@
 </blockquote>
 <h2 id="声明式接口：Spark-SQL"><a href="#声明式接口：Spark-SQL" class="headerlink" title="声明式接口：Spark SQL"></a>声明式接口：Spark SQL</h2><p>Spark 诞生后，大幅简化了 MapReduce 编程模型，但人们并不满足于此。我们知道，<strong>与命令式（imperative）编程相对的是声明式（declarative）编程，前者需要告诉程序怎样得到我需要的结果，后者则是告诉程序我需要的结果是什么</strong>。举例而言：你想知道，各个部门 <code>&lt;dept_id, dept_name&gt;</code> 中性别为女 <code>&#39;female&#39;</code> 的员工分别有多少？</p>
 <p>命令式编程中，你需要编写一个程序。下面给出了一种伪代码实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">employees = db.getAllEmployees()</div><div class="line">countByDept = dict() // 统计各部门女生人数 (dept_id -&gt; count)</div><div class="line">for employee in employees:</div><div class="line">    if (employee.gender == &apos;female&apos;)</div><div class="line">        countByDept[employee.dept_id] += 1</div><div class="line">results = list() // 加上 dept.name 列</div><div class="line">depts = db.getAllDepartments()</div><div class="line">for dept in depts:</div><div class="line">    if (countByDept containsKey dept.id)</div><div class="line">        results.add(row(dept.id, dept.name, countByDept[dept.id]))</div><div class="line">return results;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">employees = db.getAllEmployees()</span><br><span class="line">countByDept = dict() // 统计各部门女生人数 (dept_id -&gt; count)</span><br><span class="line">for employee in employees:</span><br><span class="line">    if (employee.gender == &apos;female&apos;)</span><br><span class="line">        countByDept[employee.dept_id] += 1</span><br><span class="line">results = list() // 加上 dept.name 列</span><br><span class="line">depts = db.getAllDepartments()</span><br><span class="line">for dept in depts:</span><br><span class="line">    if (countByDept containsKey dept.id)</span><br><span class="line">        results.add(row(dept.id, dept.name, countByDept[dept.id]))</span><br><span class="line">return results;</span><br></pre></td></tr></table></figure>
 <p>声明式编程中，你只要用关系代数的运算表达出结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">employees.join(dept, employees.deptId == dept.id)</div><div class="line">         .where(employees.gender == &apos;female&apos;)</div><div class="line">         .groupBy(dept.id, dept.name)</div><div class="line">         .agg()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">employees.join(dept, employees.deptId == dept.id)</span><br><span class="line">         .where(employees.gender == &apos;female&apos;)</span><br><span class="line">         .groupBy(dept.id, dept.name)</span><br><span class="line">         .agg()</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>等价地，如果你更熟悉 SQL，也可以写成这样：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> dept.id, dept.name, <span class="keyword">COUNT</span>(*)</div><div class="line"><span class="keyword">FROM</span> employees <span class="keyword">JOIN</span> dept <span class="keyword">ON</span> employees.dept_id == dept.id</div><div class="line"><span class="keyword">WHERE</span> employees.gender = <span class="string">'female'</span></div><div class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> dept.id, dept.name</div></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> dept.id, dept.name, <span class="keyword">COUNT</span>(*)</span><br><span class="line"><span class="keyword">FROM</span> employees <span class="keyword">JOIN</span> dept <span class="keyword">ON</span> employees.dept_id == dept.id</span><br><span class="line"><span class="keyword">WHERE</span> employees.gender = <span class="string">'female'</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> dept.id, dept.name</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p>显然，声明式的要简洁的多！但声明式编程依赖于执行者产生真正的程序代码，所以除了上面这段程序，还需要把数据模型（即 schema）一并告知执行者。声明式编程最广为人知的形式就是 SQL。</p>
 <p>Spark SQL 就是这样一个基于 SQL 的声明式编程接口。<strong>你可以将它看作在 Spark 之上的一层封装，在 RDD 计算模型的基础上，提供了 DataFrame API 以及一个内置的 SQL 执行计划优化器 Catalyst。</strong></p>
@@ -443,7 +445,7 @@
 
 <p>那么另一个问题也随之而来：随着时间的推进，上图中的状态 RDD <code>counts</code> 会越来越多，他的祖先（lineage）变得越来越长，极端情况下，恢复过程可能溯源到很久之前。这是不可接受的！<strong>因此，Spark Streming 会定期地对状态 RDD 做 checkpoint，将其持久化到 HDFS 等存储中，这被称为 lineage cut</strong>，在它之前更早的 RDD 就可以没有顾虑地清理掉了。</p>
 <blockquote>
-<p>关于流行的几个开源流计算框架的对比，可以参考文章 <a href="https://www.cakesolutions.net/teamblogs/comparison-of-apache-stream-processing-frameworks-part-1" target="_blank" rel="external">Comparison of Apache Stream Processing Frameworks</a>。</p>
+<p>关于流行的几个开源流计算框架的对比，可以参考文章 <a href="https://www.cakesolutions.net/teamblogs/comparison-of-apache-stream-processing-frameworks-part-1" target="_blank" rel="noopener">Comparison of Apache Stream Processing Frameworks</a>。</p>
 </blockquote>
 <h2 id="流计算与-SQL：Spark-Structured-Streaming"><a href="#流计算与-SQL：Spark-Structured-Streaming" class="headerlink" title="流计算与 SQL：Spark Structured Streaming"></a>流计算与 SQL：Spark Structured Streaming</h2><p>Spark 通过 Spark Streaming 拥有了流计算能力，那 Spark SQL 是否也能具有类似的流处理能力呢？答案是肯定的，只要将<strong>数据流建模成一张不断增长、没有边界的表</strong>，在这样的语义之下，很多 SQL 操作等就能直接应用在流数据上。</p>
 <blockquote>
@@ -461,7 +463,7 @@
 
 <p>水位和窗口的概念都是因时间而来。在其他流计算系统中，也存在相同或类似的概念。</p>
 <blockquote>
-<p>关于 SQL 的流计算模型，常常被拿来对比的还有另一个流计算框架 <a href="https://flink.apache.org/" target="_blank" rel="external">Apache Flink</a>。与 Spark 相比，它们的实现思路有很大不同，但在模型上是很相似的。</p>
+<p>关于 SQL 的流计算模型，常常被拿来对比的还有另一个流计算框架 <a href="https://flink.apache.org/" target="_blank" rel="noopener">Apache Flink</a>。与 Spark 相比，它们的实现思路有很大不同，但在模型上是很相似的。</p>
 </blockquote>
 <h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>Spark 中有三个角色：Driver, Worker 和 Cluster Manager。</p>
 <p><img src="/images/2018/06/cluster-overview.png" alt="cluster-overview"></p>
@@ -471,12 +473,12 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spark 是一个同时支持批处理和流计算的分布式计算系统。Spark 的所有计算均构建于 RDD 之上，RDD 通过算子连接形成 DAG 的执行计划，RDD 的确定性及不可变性是 Spark 实现故障恢复的基础。Spark Streaming 的 D-Stream 本质上也是将输入数据分成一个个 micro-batch 的 RDD。</p>
 <p>Spark SQL 是在 RDD 之上的一层封装，相比原始 RDD，DataFrame API 支持数据表的 schema 信息，从而可以执行 SQL 关系型查询，大幅降低了开发成本。Spark Structured Streaming 为 Spark SQL 提供了流计算支持，它将输入的数据流看作不断追加的数据行。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
-<li><a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" target="_blank" rel="external">Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing (NSDI ‘12)</a> </li>
-<li><a href="https://people.csail.mit.edu/matei/papers/2013/sosp_spark_streaming.pdf" target="_blank" rel="external">Discretized Streams: Fault-Tolerant Streaming Computation at Scale (SOSP ‘13)</a></li>
-<li><a href="https://people.csail.mit.edu/matei/papers/2015/sigmod_spark_sql.pdf" target="_blank" rel="external">Spark SQL: Relational Data Processing in Spark (SIGMOD ‘15)</a></li>
-<li><a href="https://cs.stanford.edu/~matei/papers/2018/sigmod_structured_streaming.pdf" target="_blank" rel="external">Structured Streaming: A Declarative API for Real-Time Applications in Apache Spark (SIGMOD ‘18)</a></li>
-<li><a href="https://www.cakesolutions.net/teamblogs/comparison-of-apache-stream-processing-frameworks-part-1" target="_blank" rel="external">Comparison of Apache Stream Processing Frameworks</a></li>
-<li><a href="https://databricks.com/blog/2016/07/28/structured-streaming-in-apache-spark.html" target="_blank" rel="external">Structured Streaming in Apache Spark</a></li>
+<li><a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" target="_blank" rel="noopener">Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing (NSDI ‘12)</a> </li>
+<li><a href="https://people.csail.mit.edu/matei/papers/2013/sosp_spark_streaming.pdf" target="_blank" rel="noopener">Discretized Streams: Fault-Tolerant Streaming Computation at Scale (SOSP ‘13)</a></li>
+<li><a href="https://people.csail.mit.edu/matei/papers/2015/sigmod_spark_sql.pdf" target="_blank" rel="noopener">Spark SQL: Relational Data Processing in Spark (SIGMOD ‘15)</a></li>
+<li><a href="https://cs.stanford.edu/~matei/papers/2018/sigmod_structured_streaming.pdf" target="_blank" rel="noopener">Structured Streaming: A Declarative API for Real-Time Applications in Apache Spark (SIGMOD ‘18)</a></li>
+<li><a href="https://www.cakesolutions.net/teamblogs/comparison-of-apache-stream-processing-frameworks-part-1" target="_blank" rel="noopener">Comparison of Apache Stream Processing Frameworks</a></li>
+<li><a href="https://databricks.com/blog/2016/07/28/structured-streaming-in-apache-spark.html" target="_blank" rel="noopener">Structured Streaming in Apache Spark</a></li>
 </ol>
 
       
@@ -677,6 +679,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

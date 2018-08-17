@@ -363,7 +363,7 @@
 <p>Update 2/4: 现在将你的 <code>tf.train.GradientDescentOptimiser</code> 替换为 <code>tf.train.AdamOptimizer</code>。</p>
 </blockquote>
 <h3 id="随机初始化"><a href="#随机初始化" class="headerlink" title="随机初始化"></a>随机初始化</h3><p>精确度一直卡在 0.1？你的权值初始化成随机值了吗？对于偏置，如果用 ReLU 的话，最好的办法就是把它们都初始化成小的正值，这样神经元一开始就会工作在 ReLU 的非零区域内。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W = tf.Variable(tf.truncated_normal([K, L], stddev=<span class="number">0.1</span>))</div><div class="line">B = tf.Variable(tf.ones([L])/<span class="number">10</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">W = tf.Variable(tf.truncated_normal([K, L], stddev=<span class="number">0.1</span>))</span><br><span class="line">B = tf.Variable(tf.ones([L])/<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Update 3/4: 检查是否你所有的权值和偏置值都被正确地初始化了。上图所示，0.1 对偏置是一个合适的初始值。</p>
 </blockquote>
@@ -371,13 +371,13 @@
 <p>如果你看到你的精确曲线陡然下滑并且命令行输出的交叉熵是 NaN，别慌，你其实是正在尝试计算 log(0)，而这肯定是个非数（NaN, Not a Number）。还记得吗，交叉熵的计算涉及到对 softmax 层的输出取对数。鉴于 softmax 基本上是一个指数，它肯定不是 0，我们如果用 32 位精度的浮点运算就还好，exp(-100) 基本上可以算作是 0 了。</p>
 <p>幸运的是，TensorFlow 有一个方便的函数可以在一步内计算 softmax 和交叉熵，它是以一种数值上较为稳定的方式实现的。如果要使用它，你需要在应用 softmax 之前将原始的权重和加上你最后一层的偏置隔离开来（在神经网络的术语里叫 <strong>logits</strong>）。</p>
 <p>如果你模型的最后一行是这样的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Y = tf.nn.softmax(tf.matmul(Y4, W5) + B5)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Y = tf.nn.softmax(tf.matmul(Y4, W5) + B5)</span><br></pre></td></tr></table></figure>
 <p>你需要把它替换成：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Ylogits = tf.matmul(Y4, W5) + B5</div><div class="line">Y = tf.nn.softmax(Ylogits)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ylogits = tf.matmul(Y4, W5) + B5</span><br><span class="line">Y = tf.nn.softmax(Ylogits)</span><br></pre></td></tr></table></figure>
 <p>你现在能以一种安全的方式计算交叉熵了：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cross_entropy = tf.nn.softmax_cross_entropy_with_logits(Ylogits, Y_)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cross_entropy = tf.nn.softmax_cross_entropy_with_logits(Ylogits, Y_)</span><br></pre></td></tr></table></figure>
 <p>同样地，加上这行代码使得测试和训练的交叉熵能够显示在统一尺度：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cross_entropy = tf.reduce_mean(cross_entropy)*<span class="number">100</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cross_entropy = tf.reduce_mean(cross_entropy)*<span class="number">100</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Update 4/4: 请把 <code>tf.nn.softmax_cross_entropy_with_logits</code> 加到你的代码里。你也可以跳过这一步，等你遇到 NaN 以后再来做这步。</p>
 </blockquote>
@@ -587,6 +587,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

@@ -343,7 +343,7 @@
       
 
       
-        <p>近期买了 <a href="http://bandwagonhost.com/aff.php?aff=044&amp;pid=12" target="_blank" rel="external">搬瓦工20刀包年的VPS套餐</a>，尝试专用来科学上网，以防主站被封IP。战斗若干天成果如下：</p>
+        <p>近期买了 <a href="http://bandwagonhost.com/aff.php?aff=044&amp;pid=12" target="_blank" rel="noopener">搬瓦工20刀包年的VPS套餐</a>，尝试专用来科学上网，以防主站被封IP。战斗若干天成果如下：</p>
 <h1 id="成功的列表"><a href="#成功的列表" class="headerlink" title="成功的列表"></a>成功的列表</h1><ul>
 <li><strong>Shadowsocks</strong></li>
 </ul>
@@ -354,22 +354,22 @@
 </ul>
 <h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1><p>最近用到的自动安装脚本（配置过程太酸爽）</p>
 <ul>
-<li><strong>IKEv2</strong> on Debian 7 x64/x32 and Debian 8 <a href="https://github.com/magic282/One-Key-L2TP-IKEV2-Setup" target="_blank" rel="external">magic282/One-Key-L2TP-IKEV2-Setup</a></li>
-<li><strong>IKEv2</strong> on CentOS &amp; Ubuntu <a href="https://quericy.me/blog/699" target="_blank" rel="external">CENTOS/UBUNTU一键安装IPSEC/IKEV2 VPN服务器</a></li>
-<li><strong>OpenVPN</strong> on Debian, Ubuntu and CentOS <a href="https://github.com/Nyr/openvpn-install" target="_blank" rel="external">Nyr/openvpn-install</a></li>
-<li><strong>Shadowsocks</strong> on Debian (编译安装) <a href="https://teddysun.com/358.html" target="_blank" rel="external">Debian下shadowsocks-libev一键安装脚本</a></li>
+<li><strong>IKEv2</strong> on Debian 7 x64/x32 and Debian 8 <a href="https://github.com/magic282/One-Key-L2TP-IKEV2-Setup" target="_blank" rel="noopener">magic282/One-Key-L2TP-IKEV2-Setup</a></li>
+<li><strong>IKEv2</strong> on CentOS &amp; Ubuntu <a href="https://quericy.me/blog/699" target="_blank" rel="noopener">CENTOS/UBUNTU一键安装IPSEC/IKEV2 VPN服务器</a></li>
+<li><strong>OpenVPN</strong> on Debian, Ubuntu and CentOS <a href="https://github.com/Nyr/openvpn-install" target="_blank" rel="noopener">Nyr/openvpn-install</a></li>
+<li><strong>Shadowsocks</strong> on Debian (编译安装) <a href="https://teddysun.com/358.html" target="_blank" rel="noopener">Debian下shadowsocks-libev一键安装脚本</a></li>
 </ul>
-<p>建议 Shadowsocks 直接看<a href="https://github.com/shadowsocks/shadowsocks-libev" target="_blank" rel="external">官方说明</a></p>
+<p>建议 Shadowsocks 直接看<a href="https://github.com/shadowsocks/shadowsocks-libev" target="_blank" rel="noopener">官方说明</a></p>
 <hr>
 <p>Update at 01/22/2016</p>
-<p>全局翻墙可以用 OpenVpn over Shadowsocks ，速度还不错。<a href="https://github.com/shadowsocks/shadowsocks/wiki/Connect-to-OpenVPN-over-Shadowsocks" target="_blank" rel="external">这里</a>有 clowwindy 大神写的教程。</p>
+<p>全局翻墙可以用 OpenVpn over Shadowsocks ，速度还不错。<a href="https://github.com/shadowsocks/shadowsocks/wiki/Connect-to-OpenVPN-over-Shadowsocks" target="_blank" rel="noopener">这里</a>有 clowwindy 大神写的教程。</p>
 <blockquote>
 <p>Notice: only versions that support UDP relay support this feature.</p>
 </blockquote>
 <p>Shadowsocks-C# 就是不支持 UDP 的，所以要把 OpenVPN 调成 TCP 模式。方法是在两边的配置文件中加上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">proto tcp</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proto tcp</span><br></pre></td></tr></table></figure>
 <p>此外，在 <code>server.conf</code> 加上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tcp-nodelay</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp-nodelay</span><br></pre></td></tr></table></figure>
 <p>可大幅改善性能。</p>
 
       
@@ -568,6 +568,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

@@ -373,7 +373,7 @@
 <p>HWM 由中心的 TA 维护，时间被分成固定长度的 epoch。当各个节点确认 epoch e 中<strong>开始</strong>的写入事务完成时，就会发送一个 <code>Complete(e)</code> 的消息给 TA，当 TA 收集到所有节点的 <code>Complete(e)</code> 将 HWM 置为 e。换句话说，HWM 以前的事务一定是已经完成提交的。  </p>
 <p>对于读写事务，C-Store 采用了传统的 2PC。</p>
 <h2 id="MonetDB-2012-VectorWise"><a href="#MonetDB-2012-VectorWise" class="headerlink" title="MonetDB (2012) / VectorWise"></a>MonetDB (2012) / VectorWise</h2><p>MonetDB 是一个面向 OLAP 的内存数据。区别于大多数 DBMS 使用的 Valcano 执行模式，MonetDB 使用一种独特的 full materialization 的列式（向量）执行模型，也因此设计了对应的一系列算子以及查询优化器。</p>
-<h3 id="BAT-Algebra"><a href="#BAT-Algebra" class="headerlink" title="BAT Algebra"></a>BAT Algebra</h3><p>MonetDB 独有的列式计算是通过 BAT（Binary Association Table）的运算组成的，<strong>BAT 之间通过算子产生新的 BAT，最终生成查询结果</strong>。每个 BAT 可以简单地理解为一列带有编号的数据 <oid, value="">，有些 BAT 来自用户的逻辑表，其他则是运算的结果。每个算子被设计地很紧凑、高效，能充分利用 CPU 流水线的计算能力，这和 CPU 设计的 RISC 思想颇为相似，所以被称为“<strong>数据库查询的 RISC 方案</strong>”。</oid,></p>
+<h3 id="BAT-Algebra"><a href="#BAT-Algebra" class="headerlink" title="BAT Algebra"></a>BAT Algebra</h3><p>MonetDB 独有的列式计算是通过 BAT（Binary Association Table）的运算组成的，<strong>BAT 之间通过算子产生新的 BAT，最终生成查询结果</strong>。每个 BAT 可以简单地理解为一列带有编号的数据 &lt;oid, value&gt;，有些 BAT 来自用户的逻辑表，其他则是运算的结果。每个算子被设计地很紧凑、高效，能充分利用 CPU 流水线的计算能力，这和 CPU 设计的 RISC 思想颇为相似，所以被称为“<strong>数据库查询的 RISC 方案</strong>”。</p>
 <p><img src="/images/2018/05/monetdb-bat-example.png" alt="monetdb-bat-example"></p>
 <p>如上图，对于用户一条 SELECT 查询，MonetDB 先将其分解为多次 BAT 的运算，执行计划中的每一步的输入和输出都是 BAT。图中蓝框中为输入的 BAT，其他则是执行产生的运算结果。</p>
 <p>MonetDB 的设计决定了它的计算过程十分耗费内存。MonetDB 利用操作系统的 Memory Mapped File 进行内存管理，不使用的页面可以被换出内存，为执行查询腾出空间。但显然这并不是一个彻底的解决方案。</p>
@@ -389,7 +389,7 @@
 <li>Catalog 管理：同步各个库、表的 schema 等元信息、负责协调完成建表等 DDL 操作</li>
 <li>集群协调者：各个 Tablet Server 向其汇报自己的状态、replica 变更等</li>
 </ul>
-<p>Kudu 底层数据文件并没有存储在 HDFS 这样的分布式文件系统上，而是<strong>基于 Raft 算法实现了一套副本同步机制，保障数据不丢失及高可用性</strong>。其中 Raft 算法用于同步数据修改操作的 log，这点和大多数 shared-nothing 架构分布式数据库并无二致。对 Raft 算法有兴趣的同学可以参考<a href="https://raft.github.io/raft.pdf" target="_blank" rel="external">原论文</a>。</p>
+<p>Kudu 底层数据文件并没有存储在 HDFS 这样的分布式文件系统上，而是<strong>基于 Raft 算法实现了一套副本同步机制，保障数据不丢失及高可用性</strong>。其中 Raft 算法用于同步数据修改操作的 log，这点和大多数 shared-nothing 架构分布式数据库并无二致。对 Raft 算法有兴趣的同学可以参考<a href="https://raft.github.io/raft.pdf" target="_blank" rel="noopener">原论文</a>。</p>
 <p>作为列式 OLAP 数据库，Kudu 的磁盘存储是常见的列式方案，很多地方直接复用了 Parquet 的代码。我们知道，紧凑的列式存储难以实现高效的更新操作。Kudu 为了提供实时写入功能，采用了类似 C-Store 中的方案——在不可变的基线数据上，叠加后续的更新数据。</p>
 <p><img src="/images/2018/05/kudu-write-path.png" alt="kudu-write-path"></p>
 <p>具体来说，Tablet 由 RowSet 组成，而 RowSet 既可以是内存中的 MemRowSet，也可以是存储在磁盘上的 DiskRowSet。<strong>一个 RowSet 包含两部分数据：基础数据通常以 DiskRowSet 形式保存在磁盘上；而变更数据先以 MemRowSet 的形式暂存在内存中，后续再异步地刷写到磁盘上。</strong>和 C-Store 类似，内存中的数据使用 B 树存储。</p>
@@ -420,7 +420,7 @@
 <p>这样的两层映射保证 chunk-id 尽可能的小，所以可以用更紧凑的编码，比如用 8bit、16bit 整数存储。这不仅能节省空间，也能加快扫描速度。</p>
 <p>此外，相同的数据只会在全局字典表中存一份。而且全局字典表中的字符串数据已经被排序，相比不排序，排序后用 Snappy 等算法的压缩比更高。</p>
 <h3 id="分区索引"><a href="#分区索引" class="headerlink" title="分区索引"></a>分区索引</h3><p>上述的数据结构还有一个额外的好处：<strong>它能快速算出某个分区是否包含有用的数据，帮助执行器跳过无关的分区</strong>。以下面的 SQL 为例（数据参考上一张图）：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> search_string, <span class="keyword">COUNT</span>(*) <span class="keyword">as</span> c <span class="keyword">FROM</span> <span class="keyword">data</span></div><div class="line"><span class="keyword">WHERE</span> search_string <span class="keyword">IN</span> (<span class="string">"la redoute"</span>, <span class="string">"voyages sncf"</span>)</div><div class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> search_string</div><div class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> c <span class="keyword">DESC</span> <span class="keyword">LIMIT</span> <span class="number">10</span>;</div></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> search_string, <span class="keyword">COUNT</span>(*) <span class="keyword">as</span> c <span class="keyword">FROM</span> <span class="keyword">data</span></span><br><span class="line"><span class="keyword">WHERE</span> search_string <span class="keyword">IN</span> (<span class="string">"la redoute"</span>, <span class="string">"voyages sncf"</span>)</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> search_string</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> c <span class="keyword">DESC</span> <span class="keyword">LIMIT</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
 <p>步骤如下：</p>
 <ol>
 <li>在 <code>search_string</code> 列的全局字典表中查找 <code>&quot;[la redoute&quot;, &quot;voyages sncf&quot;]</code>，得到 global-id <code>[9, 11]</code></li>
@@ -435,10 +435,10 @@
 <li><strong>系统提供怎样的数据一致性保证？</strong>对于只读的系统来说，这不是个问题。但是一旦支持写入，数据的一致性、事务隔离性都需要精心的考虑和权衡。Kudu 和 C-Store 的 Snapshot Read 实现可作为参考。</li>
 </ul>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
-<li><a href="http://people.csail.mit.edu/tdanford/6830papers/stonebraker-cstore.pdf" target="_blank" rel="external">C-store: a column-oriented DBMS - M Stonebraker, DJ Abadi, A Batkin, X Chen…</a></li>
-<li><a href="http://db.csail.mit.edu/pubs/abadi-column-stores.pdf" target="_blank" rel="external">The Design and Implementation of Modern Column-Oriented Database Systems - D Abadi, P Boncz, S Harizopoulos…</a></li>
-<li><a href="https://kudu.apache.org/kudu.pdf" target="_blank" rel="external">Kudu: Storage for Fast Analytics on Fast Data - T Lipcon, D Alves…</a></li>
-<li><a href="http://vldb.org/pvldb/vol5/p1436_alexanderhall_vldb2012.pdf" target="_blank" rel="external">Processing a Trillion Cells per Mouse Click - A Hall, O Bachmann…</a></li>
+<li><a href="http://people.csail.mit.edu/tdanford/6830papers/stonebraker-cstore.pdf" target="_blank" rel="noopener">C-store: a column-oriented DBMS - M Stonebraker, DJ Abadi, A Batkin, X Chen…</a></li>
+<li><a href="http://db.csail.mit.edu/pubs/abadi-column-stores.pdf" target="_blank" rel="noopener">The Design and Implementation of Modern Column-Oriented Database Systems - D Abadi, P Boncz, S Harizopoulos…</a></li>
+<li><a href="https://kudu.apache.org/kudu.pdf" target="_blank" rel="noopener">Kudu: Storage for Fast Analytics on Fast Data - T Lipcon, D Alves…</a></li>
+<li><a href="http://vldb.org/pvldb/vol5/p1436_alexanderhall_vldb2012.pdf" target="_blank" rel="noopener">Processing a Trillion Cells per Mouse Click - A Hall, O Bachmann…</a></li>
 </ol>
 
       
@@ -643,6 +643,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

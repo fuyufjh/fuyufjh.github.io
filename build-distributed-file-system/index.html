@@ -85,13 +85,13 @@
 
 
 
-<meta name="description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。 该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。 每个服务器节点都有自己的存储空间，可以保存客户上传的文件。 所有在线客户应当实时获得系统中文件信息的更新。 每个服">
+<meta name="description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的更">
 <meta name="keywords" content="docker,go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建分布式文件系统">
 <meta property="og:url" content="https://ericfu.me/build-distributed-file-system/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。 该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。 每个服务器节点都有自己的存储空间，可以保存客户上传的文件。 所有在线客户应当实时获得系统中文件信息的更新。 每个服">
+<meta property="og:description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的更">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2017/01/DFS---.png">
 <meta property="og:image" content="https://ericfu.me/images/2017/01/Screen-Shot-2016-12-20-at-1.25.02-AM.png">
@@ -99,7 +99,7 @@
 <meta property="og:updated_time" content="2017-01-25T07:23:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建分布式文件系统">
-<meta name="twitter:description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。 该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。 每个服务器节点都有自己的存储空间，可以保存客户上传的文件。 所有在线客户应当实时获得系统中文件信息的更新。 每个服">
+<meta name="twitter:description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的更">
 <meta name="twitter:image" content="https://ericfu.me/images/2017/01/DFS---.png">
 
 
@@ -350,9 +350,17 @@
       
         <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><blockquote>
 <p>用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。</p>
+</blockquote>
+<blockquote>
 <p>该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。</p>
+</blockquote>
+<blockquote>
 <p>每个服务器节点都有自己的存储空间，可以保存客户上传的文件。</p>
+</blockquote>
+<blockquote>
 <p>所有在线客户应当实时获得系统中文件信息的更新。</p>
+</blockquote>
+<blockquote>
 <p>每个服务器节点都可能是不可靠的，k个节点故障（网络中断、节点关闭、节点崩溃……）不会对系统产生影响并介绍了如何设计、实现以及可靠性的分析等内容。</p>
 </blockquote>
 <a id="more"></a>
@@ -623,6 +631,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

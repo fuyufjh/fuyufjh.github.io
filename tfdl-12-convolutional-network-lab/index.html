@@ -353,9 +353,9 @@
 <a id="more"></a>
 <p>我们已经见过到卷积层需要以下形式的权重张量。下面代码是用 TensorFlow 语法来对其初始化：</p>
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/b0de36a8c59a3526.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">W = tf.Variable(tf.truncated_normal([<span class="number">4</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>], stddev=<span class="number">0.1</span>))</div><div class="line">B = tf.Variable(tf.ones([<span class="number">2</span>])/<span class="number">10</span>) <span class="comment"># 2 is the number of output channels</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">W = tf.Variable(tf.truncated_normal([<span class="number">4</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">B = tf.Variable(tf.ones([<span class="number">2</span>])/<span class="number">10</span>) <span class="comment"># 2 is the number of output channels</span></span><br></pre></td></tr></table></figure>
 <p>TensorFlow 中，使用 <code>tf.nn.conv2d</code> 函数实现卷积层，该函数使用提供的权重在两个方向上扫描输入图片。这仅仅是神经元的加权和部分，你还需要添加偏置，并将加权和传给激活函数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">stride = <span class="number">1</span>  <span class="comment"># output is still 28x28</span></div><div class="line">Ycnv = tf.nn.conv2d(X, W, strides=[<span class="number">1</span>, stride, stride, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</div><div class="line">Y = tf.nn.relu(Ycnv + B)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stride = <span class="number">1</span>  <span class="comment"># output is still 28x28</span></span><br><span class="line">Ycnv = tf.nn.conv2d(X, W, strides=[<span class="number">1</span>, stride, stride, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line">Y = tf.nn.relu(Ycnv + B)</span><br></pre></td></tr></table></figure>
 <p>不要太在意 stride 的复杂语法，欲知详情请查文档。这里的 padding 策略是复制边缘的像素。所有的数字都在一个统一的背景下，所以这仅仅扩展了背景，不应该添加任何不需要的形状。</p>
 <blockquote>
 <p>现在轮到你了。修改你的模型并将其转化为卷积模型。你可以使用上图中的值来修改它，你可以保留学习速率衰减，但是务必先移除 dropout。</p>
@@ -559,6 +559,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

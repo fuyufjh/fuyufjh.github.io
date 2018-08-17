@@ -345,17 +345,17 @@
 
       
         <p>初学爬虫，又没什么想爬的东西，正好看到这个闯关就做了一下。截至今天，游戏作者更新到第五关。</p>
-<p>前面4关都比较简单，具体请搜索网上的教程。比如<a href="http://vjson.com/wordpress/%E7%88%AC%E8%99%AB%E9%97%AF%E5%85%B3%E7%AC%AC%E4%B8%80%E5%85%B3.html" target="_blank" rel="external">这里</a>有个详细的。</p>
-<p>我的代码放在 GitHub：<a href="https://github.com/fuyufjh/crawler_ex_answer" target="_blank" rel="external">fuyufjh/crawler_ex_answer</a></p>
+<p>前面4关都比较简单，具体请搜索网上的教程。比如<a href="http://vjson.com/wordpress/%E7%88%AC%E8%99%AB%E9%97%AF%E5%85%B3%E7%AC%AC%E4%B8%80%E5%85%B3.html" target="_blank" rel="noopener">这里</a>有个详细的。</p>
+<p>我的代码放在 GitHub：<a href="https://github.com/fuyufjh/crawler_ex_answer" target="_blank" rel="noopener">fuyufjh/crawler_ex_answer</a></p>
 <a id="more"></a>
 <p><strong>说一下第五关：</strong></p>
 <p>第五关同样是猜数字，只比第三关多了一个验证码。我们只要把第三关的代码复制过来改改就好。</p>
 <p>如果不嫌弃准确率低，可以用 Google 家的 OCR 库 tesseract，Python 下有一个封装库 pytesseract。</p>
 <p>作者的验证码对字母做了一个小角度的旋转，这个干扰很大（看来训练数据里没有歪的 sample），导致识别成功率不高，大约20%。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">urllib.request.urlretrieve(captcha_image_url, <span class="string">'captcha.png'</span>)</div><div class="line">vcode_img = Image.open(<span class="string">'captcha.png'</span>)</div><div class="line">vcode = pytesseract.image_to_string(vcode_img, lang=<span class="string">'eng'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">urllib.request.urlretrieve(captcha_image_url, <span class="string">'captcha.png'</span>)</span><br><span class="line">vcode_img = Image.open(<span class="string">'captcha.png'</span>)</span><br><span class="line">vcode = pytesseract.image_to_string(vcode_img, lang=<span class="string">'eng'</span>)</span><br></pre></td></tr></table></figure>
 <p>有些识别一看就是错误的，就不去发 post 请求验证了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">not</span> re.match(<span class="string">r'[A-Z]&#123;4&#125;$'</span>, vcode):</div><div class="line">    <span class="keyword">continue</span></div></pre></td></tr></table></figure>
-<p>完整代码在<a href="https://github.com/fuyufjh/crawler_ex_answer/blob/master/ex04.py" target="_blank" rel="external">这里</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> re.match(<span class="string">r'[A-Z]&#123;4&#125;$'</span>, vcode):</span><br><span class="line">    <span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+<p>完整代码在<a href="https://github.com/fuyufjh/crawler_ex_answer/blob/master/ex04.py" target="_blank" rel="noopener">这里</a>。</p>
 <p>为了提高准确率，我寻思可以用 SIFT 特征匹配字母（因为这个验证码字体都一样，只有旋转变换）。如果做了再更新。</p>
 
       
@@ -559,6 +559,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

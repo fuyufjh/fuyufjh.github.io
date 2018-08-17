@@ -345,18 +345,18 @@
 
       
         <p>一切从获取一个 soup 对象开始</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    req = urllib2.Request(url_page)</div><div class="line">    url_opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())</div><div class="line">    source_code = url_opener.open(req, timeout=<span class="number">10</span>).read()</div><div class="line">    plain_text=unicode(source_code)</div><div class="line">    soup = BeautifulSoup(plain_text)</div><div class="line"><span class="keyword">except</span> Exception,e:</div><div class="line">    <span class="comment"># handle exceptions here</span></div><div class="line">    <span class="keyword">print</span> e</div><div class="line">    <span class="keyword">return</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    req = urllib2.Request(url_page)</span><br><span class="line">    url_opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())</span><br><span class="line">    source_code = url_opener.open(req, timeout=<span class="number">10</span>).read()</span><br><span class="line">    plain_text=unicode(source_code)</span><br><span class="line">    soup = BeautifulSoup(plain_text)</span><br><span class="line"><span class="keyword">except</span> Exception,e:</span><br><span class="line">    <span class="comment"># handle exceptions here</span></span><br><span class="line">    <span class="keyword">print</span> e</span><br><span class="line">    <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>获取类型为 <code>div</code> 的 DOM</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dom = soup.find(<span class="string">'div'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dom = soup.find(<span class="string">'div'</span>)</span><br></pre></td></tr></table></figure>
 <p>获取包含某个属性的 DOM</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dom = soup.find(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>:<span class="string">'info-panel'</span>&#125;)</div><div class="line">dom = soup.find(<span class="string">'a'</span>, &#123;<span class="string">'name'</span>:<span class="string">'selectDetail'</span>&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dom = soup.find(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>:<span class="string">'info-panel'</span>&#125;)</span><br><span class="line">dom = soup.find(<span class="string">'a'</span>, &#123;<span class="string">'name'</span>:<span class="string">'selectDetail'</span>&#125;)</span><br></pre></td></tr></table></figure>
 <p>获取所有符合条件的 DOM</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dom_list = soup.findAll(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'info-panel'</span>&#125;)</div><div class="line"><span class="keyword">for</span> dom <span class="keyword">in</span> dom_list:</div><div class="line">    <span class="comment"># do something to dom</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dom_list = soup.findAll(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'info-panel'</span>&#125;)</span><br><span class="line"><span class="keyword">for</span> dom <span class="keyword">in</span> dom_list:</span><br><span class="line">    <span class="comment"># do something to dom</span></span><br></pre></td></tr></table></figure>
 <p>获取显示的文字</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dom.text.strip()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dom.text.strip()</span><br></pre></td></tr></table></figure>
 <p>获取 DOM 的一个属性指</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dom.attrs[<span class="string">'title'</span>]</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dom.attrs[<span class="string">'title'</span>]</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -553,6 +553,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

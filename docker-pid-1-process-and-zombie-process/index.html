@@ -354,9 +354,9 @@
 <h2 id="容器中的世界"><a href="#容器中的世界" class="headerlink" title="容器中的世界"></a>容器中的世界</h2><p>容器中的进程位于一个独立的 PID Namepsace 中，容器启动时的进程就是这个 Namespace 中的第一个进程，也就是 PID = 1。多数情况下，这个启动进程就是我们自己写的程序，或者 Nginx 之类的程序。</p>
 <p>Unluckily，这些程序通常都不会有任何对于孤儿进程的妥善处理。也就是说，因为没有对这些接管过来的子进程做 <code>waitpid</code>，它们会一直存在。尽管内存已经释放了，但是会占用一个 PID 成为所谓的僵尸进程；如果这一行为不断发生，会耗尽系统的 PID 资源。</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>对于大多数只有一级子进程的应用程序来说，这不是个很大的问题。</p>
-<p>如果你的业务程序变得复杂，并且有必要产生两级子进程，那最好写一个 <code>init</code> 替代品来作为启动进程。<a href="https://github.com/phusion/baseimage-docker" target="_blank" rel="external">这个项目</a>可能会有帮助。</p>
+<p>如果你的业务程序变得复杂，并且有必要产生两级子进程，那最好写一个 <code>init</code> 替代品来作为启动进程。<a href="https://github.com/phusion/baseimage-docker" target="_blank" rel="noopener">这个项目</a>可能会有帮助。</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/" target="_blank" rel="external">Docker and the PID 1 zombie reaping problem
+<li><a href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/" target="_blank" rel="noopener">Docker and the PID 1 zombie reaping problem
 </a></li>
 </ol>
 
@@ -566,6 +566,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

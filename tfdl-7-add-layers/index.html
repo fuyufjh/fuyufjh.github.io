@@ -358,13 +358,13 @@
 <p>答案可以在 <code>mnist_2.0_five_layers_sigmoid.py</code> 中找到。只有当你卡住的时候再看它！</p>
 </blockquote>
 <p>为了增加一个层，你需要为中间层增加额外一个的权重矩阵和一个的偏置向量：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">W1 = tf.Variable(tf.truncated_normal([<span class="number">28</span>*<span class="number">28</span>, <span class="number">200</span>], stddev=<span class="number">0.1</span>))</div><div class="line">B1 = tf.Variable(tf.zeros([<span class="number">200</span>]))</div><div class="line"></div><div class="line">W2 = tf.Variable(tf.truncated_normal([<span class="number">200</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</div><div class="line">B2 = tf.Variable(tf.zeros([<span class="number">10</span>]))</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">W1 = tf.Variable(tf.truncated_normal([<span class="number">28</span>*<span class="number">28</span>, <span class="number">200</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">B1 = tf.Variable(tf.zeros([<span class="number">200</span>]))</span><br><span class="line"></span><br><span class="line">W2 = tf.Variable(tf.truncated_normal([<span class="number">200</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">B2 = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
 <p>权重矩阵的形状是 [N, M]，这里 N 是该层输入值的数量，M 是该层输出值的数量。在上述代码中，我们在中间层放了 200 个神经元，而输出层仍为 10 个神经元。</p>
 <blockquote>
 <p><strong>提示</strong>：随着你学习的深入，把权值初始化为随机值越来越重要，否则 optimiser 可能会一直卡在起始的位置。TensorFlow 函数 <code>tf.truncated_normal</code> 能生成正态（高斯）分布的随机值，范围在 $-2\sigma$ 和 $+2\sigma$ 之间。</p>
 </blockquote>
 <p>现在，把单层模型改成二层模型：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">XX = tf.reshape(X, [<span class="number">-1</span>, <span class="number">28</span>*<span class="number">28</span>])</div><div class="line"></div><div class="line">Y1 = tf.nn.sigmoid(tf.matmul(XX, W1) + B1)</div><div class="line">Y  = tf.nn.softmax(tf.matmul(Y1, W2) + B2)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">XX = tf.reshape(X, [<span class="number">-1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line"></span><br><span class="line">Y1 = tf.nn.sigmoid(tf.matmul(XX, W1) + B1)</span><br><span class="line">Y  = tf.nn.softmax(tf.matmul(Y1, W2) + B2)</span><br></pre></td></tr></table></figure>
 <p>That’s it! 你现在可以试试增加到 2 个中间层，比如分别有 200 个和 100 个神经元，那将能把准确率提升到 97% 以上（如果达不到，下一节会告诉你几个有用的改进技巧——译者注）。</p>
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/dbbf4c8edae90438.png" alt=""></p>
 
@@ -563,6 +563,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

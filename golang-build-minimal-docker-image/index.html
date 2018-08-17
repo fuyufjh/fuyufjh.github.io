@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="selected,docker,golang," />
+  <meta name="keywords" content="selected,golang,docker," />
 
 
 
@@ -86,7 +86,7 @@
 
 
 <meta name="description" content="普通做法以下是引用自某开源项目的做法： 12345FROM golang:alpineRUN apk update &amp;amp;&amp;amp; \    apk upgrade &amp;amp;&amp;amp; \    apk add gitRUN go get github.com/author/package 这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。 比如 Golang SDK">
-<meta name="keywords" content="selected,docker,golang">
+<meta name="keywords" content="selected,golang,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang 编译最小化的 Docker Image">
 <meta property="og:url" content="https://ericfu.me/golang-build-minimal-docker-image/index.html">
@@ -345,28 +345,28 @@
 
       
         <h2 id="普通做法"><a href="#普通做法" class="headerlink" title="普通做法"></a>普通做法</h2><p>以下是引用自某开源项目的做法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM golang:alpine</div><div class="line">RUN apk update &amp;&amp; \</div><div class="line">    apk upgrade &amp;&amp; \</div><div class="line">    apk add git</div><div class="line">RUN go get github.com/author/package</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:alpine</span><br><span class="line">RUN apk update &amp;&amp; \</span><br><span class="line">    apk upgrade &amp;&amp; \</span><br><span class="line">    apk add git</span><br><span class="line">RUN go get github.com/author/package</span><br></pre></td></tr></table></figure>
 <p>这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。</p>
 <p>比如 Golang SDK 在程序运行中根本用不到，<code>Go Get</code>带来的源文件同样用不到。Golang是可以编译到真二进制的的语言，只要保留程序本身和必要的动态链接库（<code>.so</code>）即可。进一步，如果使用静态链接，那库也可以不要。</p>
 <a id="more"></a>
 <h2 id="From-Alpine"><a href="#From-Alpine" class="headerlink" title="From Alpine"></a>From Alpine</h2><p>首先编译出静态链接的二进制：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/release/main ./main.go</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/release/main ./main.go</span><br></pre></td></tr></table></figure>
 <p>然后是Dockerfile，把刚刚编译出的程序拷贝进去就可以了。其中用到 APK (Alpine Package Manager) 安装CA证书，因为Golang标准库中的SSL会使用系统的CA证书。 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM alpine:3.4</div><div class="line">RUN apk add --no-cache ca-certificates</div><div class="line"></div><div class="line">ADD ./build/release/main /</div><div class="line">ENTRYPOINT [&quot;/main&quot;]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM alpine:3.4</span><br><span class="line">RUN apk add --no-cache ca-certificates</span><br><span class="line"></span><br><span class="line">ADD ./build/release/main /</span><br><span class="line">ENTRYPOINT [&quot;/main&quot;]</span><br></pre></td></tr></table></figure>
 <h2 id="From-Scratch"><a href="#From-Scratch" class="headerlink" title="From Scratch"></a>From Scratch</h2><p>其实，Alpine Linux也可以不要，直接从0开始Build一个Docker Image也是可行的，理论上这是<strong>最</strong>小的方案。</p>
 <p>同上，先编译出静态链接的二进制。Dockerfile如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM scratch</div><div class="line">ADD ca-certificates.crt /etc/ssl/certs/</div><div class="line"></div><div class="line">ADD ./build/release/main /</div><div class="line">ENTRYPOINT [&quot;/main&quot;]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">ADD ca-certificates.crt /etc/ssl/certs/</span><br><span class="line"></span><br><span class="line">ADD ./build/release/main /</span><br><span class="line">ENTRYPOINT [&quot;/main&quot;]</span><br></pre></td></tr></table></figure>
 <p><code>ca-certificates.crt</code> 通常位于系统的<code>/etc/ssl/certs/</code>目录下，你需要从那里把他拷贝到当前目录，然后添加到镜像中。</p>
 <hr>
 <p>为了方便使用，我把以上两种方案都build好放在了Docker Hub上</p>
 <ul>
-<li><a href="https://hub.docker.com/r/fuyufjh/go-alpine/" target="_blank" rel="external">fuyufjh/go-alpine</a></li>
-<li><a href="https://hub.docker.com/r/fuyufjh/go-scratch/" target="_blank" rel="external">fuyufjh/go-scratch</a></li>
+<li><a href="https://hub.docker.com/r/fuyufjh/go-alpine/" target="_blank" rel="noopener">fuyufjh/go-alpine</a></li>
+<li><a href="https://hub.docker.com/r/fuyufjh/go-scratch/" target="_blank" rel="noopener">fuyufjh/go-scratch</a></li>
 </ul>
 <p>直接在Dockerfile里<code>FROM fuyufjh/go-alpine</code>或者<code>FROM fuyufjh/go-scratch</code>即可。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
-<li><a href="https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/" target="_blank" rel="external">Building Minimal Docker Containers for Go Applications</a></li>
-<li><a href="https://medium.com/@kelseyhightower/optimizing-docker-images-for-static-binaries-b5696e26eb07#.gtqkawtfo" target="_blank" rel="external">Building Docker Images for Static Go Binaries
+<li><a href="https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/" target="_blank" rel="noopener">Building Minimal Docker Containers for Go Applications</a></li>
+<li><a href="https://medium.com/@kelseyhightower/optimizing-docker-images-for-static-binaries-b5696e26eb07#.gtqkawtfo" target="_blank" rel="noopener">Building Docker Images for Static Go Binaries
 </a></li>
 </ol>
 
@@ -407,11 +407,11 @@
             
           
             
-              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/golang/" rel="tag"># golang</a>
             
           
             
-              <a href="/tags/golang/" rel="tag"># golang</a>
+              <a href="/tags/docker/" rel="tag"># docker</a>
             
           
         </div>
@@ -580,6 +580,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

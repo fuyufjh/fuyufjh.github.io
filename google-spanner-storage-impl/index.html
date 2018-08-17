@@ -363,7 +363,7 @@
 <li><strong>read-only 事务</strong>: 读取最新或给定时间戳 $t_{read}$ 的快照，也就是 snapshot read</li>
 <li><strong>read-write 事务</strong>：读取事务开始时间戳 $t_{start}$ 的快照，而写入操作在提交时间戳 $t_{commit}$ 生效</li>
 </ul>
-<p>本文从 Spanner 本身设计出发，并结合开源实现 TiDB 和 CockroachDB，谈谈如何为 Spanner 设计一个存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="external">Spanner: Google’s Globally-Distributed Database</a>。</p>
+<p>本文从 Spanner 本身设计出发，并结合开源实现 TiDB 和 CockroachDB，谈谈如何为 Spanner 设计一个存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database</a>。</p>
 <a id="more"></a>
 <h2 id="数据的-KV-表示"><a href="#数据的-KV-表示" class="headerlink" title="数据的 KV 表示"></a>数据的 KV 表示</h2><p>Spanner 对外提供（半）关系型数据模型：每张表定义了一个或多个主键列，以及其他的非主键列。这和我们熟知的 SQL 关系型模型几乎一摸一样，唯一的不同是 schema 定义中必须含有主键。</p>
 <p>Spanner 早期的设计中大量复用了 BigTable（开源实现即 HBase）的代码。回忆一下 BigTable 的数据模型：每一条数据包含 <code>(Key, Column, Timestamp)</code> 三个维度，满足我们需要的 MVCC 特性。从 BigTable 开始的确是个不错的选择。</p>
@@ -374,11 +374,11 @@
 <li><code>Iterator()</code> 及 <code>Seek()</code> 从指定位置开始顺序扫描读取 (K, V) 数据</li>
 </ul>
 <p>如何实现列和时间戳呢？举个例子，有如下数据表 <code>Accounts</code>。在数据库中，主键索引通常也是唯一的聚簇索引，它存放了真实的数据，而我们暂时不考虑其他索引。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">| UserID (PK) | Balance | LastModified |</div><div class="line">|-------------|---------|--------------|</div><div class="line">| Alice       | 20      | 2018-02-20   |</div><div class="line">| Bob         | 10      | 2018-02-01   |</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| UserID (PK) | Balance | LastModified |</span><br><span class="line">|-------------|---------|--------------|</span><br><span class="line">| Alice       | 20      | 2018-02-20   |</span><br><span class="line">| Bob         | 10      | 2018-02-01   |</span><br></pre></td></tr></table></figure>
 <p>Spanner 内部使用 MVCC 机制，所以还有一个隐藏的时间戳维度：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">| UserID | Timestamp | Balance | LastModified |</div><div class="line">|--------|-----------|---------|--------------|</div><div class="line">| Alice  | 103       | 20      | 2018-02-20   |</div><div class="line">| Alice  | 101       | 15      | 2018-01-20   |</div><div class="line">| Bob    | 102       | 10      | 2018-02-01   |</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| UserID | Timestamp | Balance | LastModified |</span><br><span class="line">|--------|-----------|---------|--------------|</span><br><span class="line">| Alice  | 103       | 20      | 2018-02-20   |</span><br><span class="line">| Alice  | 101       | 15      | 2018-01-20   |</span><br><span class="line">| Bob    | 102       | 10      | 2018-02-01   |</span><br></pre></td></tr></table></figure>
 <p>上述数据表用 KV 模型存储，可以表示为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">| Key                             | Value      |</div><div class="line">|---------------------------------|------------|</div><div class="line">| Accounts/Alice/Balance/103      | 20         |</div><div class="line">| Accounts/Alice/Balance/101      | 15         |</div><div class="line">| Accounts/Alice/LastModified/103 | 2018-02-20 |</div><div class="line">| Accounts/Alice/LastModified/101 | 2018-01-20 |</div><div class="line">| Accounts/Bob/Balance/102        | 10         |</div><div class="line">| Accounts/Bob/LastModified/102   | 2018-02-01 |</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">| Key                             | Value      |</span><br><span class="line">|---------------------------------|------------|</span><br><span class="line">| Accounts/Alice/Balance/103      | 20         |</span><br><span class="line">| Accounts/Alice/Balance/101      | 15         |</span><br><span class="line">| Accounts/Alice/LastModified/103 | 2018-02-20 |</span><br><span class="line">| Accounts/Alice/LastModified/101 | 2018-01-20 |</span><br><span class="line">| Accounts/Bob/Balance/102        | 10         |</span><br><span class="line">| Accounts/Bob/LastModified/102   | 2018-02-01 |</span><br></pre></td></tr></table></figure>
 <p>上表中 <code>/</code> 表示一个分隔符，真实情况要更复杂。Key 这样编码：从左到右依次是表名（因为可以有不止一张表）、主键字段、列的标识符、时间戳（通常倒序排列，Tips. 取反即可）。Value 则对应原表中的数据。</p>
 <p>显然，对于半关系型数据一定能由表名、主键字段、列名唯一地确定一个值，所以这个编码方式能满足我们的要求。</p>
 <blockquote>
@@ -477,11 +477,11 @@
 <li>用两阶段锁（2PL）的方式在 KV 引擎上实现事务的原子性提交。</li>
 <li>禁止冲突违反时间戳先后顺序，从而保证 serializable 的隔离性。</li>
 </ol>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
-<li><a href="https://research.google.com/archive/spanner.html" target="_blank" rel="external">Spanner: Google’s Globally-Distributed Database (OSDI’12)</a></li>
-<li><a href="https://research.google.com/pubs/pub36726.html" target="_blank" rel="external">Large-scale Incremental Processing Using Distributed Transactions and Notifications - USENIX 2010 - Daniel Peng, Frank Dabek</a></li>
-<li><a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/" target="_blank" rel="external">How CockroachDB Does Distributed, Atomic Transactions - Cockroach Labs</a></li>
-<li><a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/" target="_blank" rel="external">Serializable, Lockless, Distributed: Isolation in CockroachDB - Cockroach Labs</a></li>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol start="0">
+<li><a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database (OSDI’12)</a></li>
+<li><a href="https://research.google.com/pubs/pub36726.html" target="_blank" rel="noopener">Large-scale Incremental Processing Using Distributed Transactions and Notifications - USENIX 2010 - Daniel Peng, Frank Dabek</a></li>
+<li><a href="https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/" target="_blank" rel="noopener">How CockroachDB Does Distributed, Atomic Transactions - Cockroach Labs</a></li>
+<li><a href="https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/" target="_blank" rel="noopener">Serializable, Lockless, Distributed: Isolation in CockroachDB - Cockroach Labs</a></li>
 <li>Designing Data‑Intensive Applications - Martin Kleppmann</li>
 </ol>
 
@@ -687,6 +687,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

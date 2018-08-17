@@ -345,13 +345,13 @@
 
       
         <blockquote>
-<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="external">名为 “Don’t fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
+<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="noopener">名为 “Don’t fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
 <ul>
 <li>因为操作系统 PageCache 的存在，磁盘操作可能很快</li>
 <li>虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快</li>
 <li>CPU Cache 常常被忽略了，了解 CPU Cache 对提升内存读写性能至关重要</li>
 </ul>
-<p><a href="http://varnish-cache.org/docs/trunk/phk/notes.html" target="_blank" rel="external">原文链接</a></p>
+<p><a href="http://varnish-cache.org/docs/trunk/phk/notes.html" target="_blank" rel="noopener">原文链接</a></p>
 </blockquote>
 <p>当你开始深入 Varnish 的源代码后，应该会发觉它与你日常所见的一般应用软件有着明显不同，而这绝非偶然。</p>
 <p>多年以来我的绝大部分时间花费在 FreeBSD 的内核开发上，而每每涉足用户空间编程，却总是毫无例外地发现那里的人们还在以1975年的方式工作。</p>
@@ -382,7 +382,7 @@
 <p>虽然时钟频率方面受限，但硅工艺的进步缩小了器件尺寸，集成了更多的晶体管。所以多核 CPU 的设计逐渐成为主流，但这从编程模型角度看来实在是很糟糕的一件事。</p>
 <p>虽然多核系统存在已久，但编写能够利用上多个 CPU 的代码依然是一件棘手的事。而要在多核系统上写出高性能的程序就更是如此了。</p>
 <p>比如我们有两个计数器：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">unsigned</span> n_foo;</div><div class="line"><span class="keyword">unsigned</span> n_bar;</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> n_foo;</span><br><span class="line"><span class="keyword">unsigned</span> n_bar;</span><br></pre></td></tr></table></figure>
 <p>在一个 CPU 上执行了 <code>n_foo++</code> 的操作会使得CPU读取 <code>n_foo</code> 的值然后写回。</p>
 <p>读取一个内存位置首先会检查它是否在 CPU L1 cache 中命中，这挺难的除非它刚刚被使用过。接下来是 L2 cache，我们不妨假设依然没有命中吧。</p>
 <p>如果是在一个单核系统上，CPU 会去内存读取数据然后就完事。但在多核系统中，我们必须去检查其他CPU核心是否缓存并修改了 <code>n_foo</code> 的数值。我们会发起一个特殊的总线事务做这种检查，如果其他 CPU 答复说它确实持有这样一份拷贝，它就需要将它写回到内存中。如果硬件设计良好，我们可能可以通过总线监听获得这份新数据，不然的话就需要去内存里读取它。</p>
@@ -607,6 +607,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

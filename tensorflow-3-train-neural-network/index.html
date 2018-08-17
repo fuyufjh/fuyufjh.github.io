@@ -353,7 +353,7 @@
       
         <p>我们首先来观察一个正在训练的神经网络。代码会在下一节解释，所以现在不必查看。</p>
 <p>我们的神经网络可以输入手写数字并对它们进行分类，即，将它们识别为 0、1、2……9。它基于内部变量（“权重（weights）”和“偏差（bias）”，会在后面进行解释），需要得到正确的值，分类才能正常工作。这个“正确的值”通过训练过程进行学习，这也将在后面详细解释。你现在需要知道的是，训练回路看起来像这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Training digits =&gt; updates to weights and biases =&gt; better recognition (loop)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Training digits =&gt; updates to weights and biases =&gt; better recognition (loop)</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>让我们逐个通过可视化的六个面板，了解训练神经网络需要什么。</p>
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/6a54f12d0f63c9bc.png" alt=""></p>
@@ -370,7 +370,7 @@
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5cb32946dd388353.png" alt=""><br><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/f3da4b4f30228cb1.png" alt=""> </p>
 <p>最后的这两幅图表说明了内部变量取值的扩展，即随训练进行而变化的 weight 和 bias。比如偏置从 0 开始，且最终得到的值大致均匀地分布在-1.5 和 1.5 之间。如果系统不能很好地收敛，那么这些图能帮到你。如果你发现 weight 和 bias 扩展到上百上千，那很可能出问题了。</p>
 <p>图中的条带为百分数，一共有 7 条带，所以每条带代表所有参数的 100/7 = 14%。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">可视化 GUI 的键盘快捷键</div><div class="line"></div><div class="line">1 ......... 仅显示第 1 张图</div><div class="line">2 ......... 仅显示第 2 张图</div><div class="line">3 ......... 仅显示第 3 张图</div><div class="line">4 ......... 仅显示第 4 张图</div><div class="line">5 ......... 仅显示第 5 张图</div><div class="line">6 ......... 仅显示第 6 张图</div><div class="line">7 ......... 显示 1 和 2 图</div><div class="line">8 ......... 显示 4 和 5 图</div><div class="line">9 ......... 显示 3 和 6 图</div><div class="line">ESC or 0 .. 恢复为显示所有图</div><div class="line">Space ..... 暂停/继续</div><div class="line">O ......... 框缩放模式（然后使用鼠标）</div><div class="line">H ......... 重置所有缩放</div><div class="line">Ctrl-S .... 保存当前图像</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">可视化 GUI 的键盘快捷键</span><br><span class="line"></span><br><span class="line">1 ......... 仅显示第 1 张图</span><br><span class="line">2 ......... 仅显示第 2 张图</span><br><span class="line">3 ......... 仅显示第 3 张图</span><br><span class="line">4 ......... 仅显示第 4 张图</span><br><span class="line">5 ......... 仅显示第 5 张图</span><br><span class="line">6 ......... 仅显示第 6 张图</span><br><span class="line">7 ......... 显示 1 和 2 图</span><br><span class="line">8 ......... 显示 4 和 5 图</span><br><span class="line">9 ......... 显示 3 和 6 图</span><br><span class="line">ESC or 0 .. 恢复为显示所有图</span><br><span class="line">Space ..... 暂停/继续</span><br><span class="line">O ......... 框缩放模式（然后使用鼠标）</span><br><span class="line">H ......... 重置所有缩放</span><br><span class="line">Ctrl-S .... 保存当前图像</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>什么是权重（weight）和偏置（bias）？“交叉熵”又是如何被计算的？训练算法究竟是如何工作的？请到下一部分一探究竟。</p>
 </blockquote>
@@ -570,6 +570,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

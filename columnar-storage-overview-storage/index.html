@@ -407,7 +407,7 @@
 <p>上述缺点对于重度依赖随机读写的 OLTP 场景来说是致命的。所以我们看到，很多定位于 OLAP 的列式存储选择放弃 OLTP 能力，从而能构建在分布式文件系统之上。</p>
 <p>要想将分布式文件系统的性能发挥到极致，无非有几种方法：<strong>按块（分片）读取数据、流式读取、追加写入等</strong>。我们在后面会看到一些开源界流行的列式存储模型，将这些优化方法体现在存储格式的设计中。</p>
 <h2 id="列式存储系统案例"><a href="#列式存储系统案例" class="headerlink" title="列式存储系统案例"></a>列式存储系统案例</h2><h3 id="C-Store-2005-Vertica"><a href="#C-Store-2005-Vertica" class="headerlink" title="C-Store (2005) / Vertica"></a>C-Store (2005) / Vertica</h3><p>大多数 DBMS 都是为写优化，而 C-Store 是第一个为读优化的 OLTP 数据库系统，虽然从今天的视角看它应当算作 HTAP 。在 ad-hoc 的分析型查询、ORM 的在线查询等场景中，大多数操作都是查询而非写入，在这些场景中列式存储能取得更好的性能。像主流的 DBMS 一样，C-Store 支持标准的关系型模型。</p>
-<p>就像本文开头即提到——列式存储不是新鲜事。C-Store 的主要贡献有以下几点：<strong>通过精心设计的 projection 同时实现列数据的多副本和多种索引方式；用读写分层的方式兼顾了（少量）写入的性能</strong>。此外，C-Store 可能是第一个现代的列式存储数据库实现，其的设计启发了无数后来的商业或开源数据库，就比如 <a href="https://www.vertica.com/" target="_blank" rel="external">Vertica</a>。</p>
+<p>就像本文开头即提到——列式存储不是新鲜事。C-Store 的主要贡献有以下几点：<strong>通过精心设计的 projection 同时实现列数据的多副本和多种索引方式；用读写分层的方式兼顾了（少量）写入的性能</strong>。此外，C-Store 可能是第一个现代的列式存储数据库实现，其的设计启发了无数后来的商业或开源数据库，就比如 <a href="https://www.vertica.com/" target="_blank" rel="noopener">Vertica</a>。</p>
 <h4 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h4><p>C-Store 是关系型数据库，它的逻辑表和其他数据库中的并没有什么不同。但是在 C-Store 内部，逻辑表被纵向拆分成 projections，每个 projection 可以包含一个或多个列，甚至可以包含来自其他逻辑表的列（构成索引）。当然，每个列至少会存在于一个 projections 上。</p>
 <p>下图的例子中，EMP 表被存储为 3 个 projections，DEPT 被存储为 1 个 projection。每个 projection 按照各自的 sort key 排序，在图中用下划线表示 sort key。</p>
 <p><img src="/images/2018/04/c-store-projections-example.png" alt="cstore-architecture"></p>
@@ -475,14 +475,14 @@
 </ol>
 <p>下一篇文章中，将会结合 C-Store、MonetDB、Apache Kudu、PowerDrill 等现代列式数据库系统，侧重描述列式 DBMS 的整体架构设计以及独特的查询执行过程。<strong>敬请期待！</strong></p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
-<li><a href="http://dbmsmusings.blogspot.jp/2010/03/distinguishing-two-major-types-of_29.html" target="_blank" rel="external">Distinguishing Two Major Types of Column-Stores - Daniel Abadi</a></li>
-<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_columnar_storage_disk_mem_mgmnt.html" target="_blank" rel="external">Columnar Storage - Amazon Redshift</a></li>
-<li><a href="http://www.vldb.org/conf/2001/P169.pdf" target="_blank" rel="external">Weaving Relations for Cache Performance - A Ailamaki, DJ DeWitt, MD Hill, M Skounakis</a></li>
-<li><a href="http://glinden.blogspot.jp/2006/05/c-store-and-google-bigtable.html" target="_blank" rel="external">C-Store and Google BigTable - Greg Linden</a></li>
-<li><a href="http://db.csail.mit.edu/pubs/abadi-column-stores.pdf" target="_blank" rel="external">The Design and Implementation of Modern Column-Oriented Database Systems - D Abadi, P Boncz, S Harizopoulos…</a></li>
-<li><a href="http://people.csail.mit.edu/tdanford/6830papers/stonebraker-cstore.pdf" target="_blank" rel="external">C-store: a column-oriented DBMS - M Stonebraker, DJ Abadi, A Batkin, X Chen…</a></li>
-<li><a href="https://orc.apache.org/docs/" target="_blank" rel="external">Apache ORC Docs</a></li>
-<li><a href="https://research.google.com/pubs/archive/36632.pdf" target="_blank" rel="external">Dremel: Interactive Analysis of Web-Scale Datasets - S Melnik, A Gubarev, JJ Long, G Romer…</a></li>
+<li><a href="http://dbmsmusings.blogspot.jp/2010/03/distinguishing-two-major-types-of_29.html" target="_blank" rel="noopener">Distinguishing Two Major Types of Column-Stores - Daniel Abadi</a></li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_columnar_storage_disk_mem_mgmnt.html" target="_blank" rel="noopener">Columnar Storage - Amazon Redshift</a></li>
+<li><a href="http://www.vldb.org/conf/2001/P169.pdf" target="_blank" rel="noopener">Weaving Relations for Cache Performance - A Ailamaki, DJ DeWitt, MD Hill, M Skounakis</a></li>
+<li><a href="http://glinden.blogspot.jp/2006/05/c-store-and-google-bigtable.html" target="_blank" rel="noopener">C-Store and Google BigTable - Greg Linden</a></li>
+<li><a href="http://db.csail.mit.edu/pubs/abadi-column-stores.pdf" target="_blank" rel="noopener">The Design and Implementation of Modern Column-Oriented Database Systems - D Abadi, P Boncz, S Harizopoulos…</a></li>
+<li><a href="http://people.csail.mit.edu/tdanford/6830papers/stonebraker-cstore.pdf" target="_blank" rel="noopener">C-store: a column-oriented DBMS - M Stonebraker, DJ Abadi, A Batkin, X Chen…</a></li>
+<li><a href="https://orc.apache.org/docs/" target="_blank" rel="noopener">Apache ORC Docs</a></li>
+<li><a href="https://research.google.com/pubs/archive/36632.pdf" target="_blank" rel="noopener">Dremel: Interactive Analysis of Web-Scale Datasets - S Melnik, A Gubarev, JJ Long, G Romer…</a></li>
 </ol>
 
       
@@ -687,6 +687,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

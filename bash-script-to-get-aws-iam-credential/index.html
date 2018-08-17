@@ -345,12 +345,12 @@
 
       
         <p>获取当前Instance的IAM Role名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">instance_profile=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/`</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">instance_profile=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/`</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>获取Key ID和Secret：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">aws_access_key_id=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<span class="variable">$&#123;instance_profile&#125;</span> | grep AccessKeyId | cut -d<span class="string">':'</span> -f2 | sed <span class="string">'s/[^0-9A-Z]*//g'</span>`  </div><div class="line">aws_secret_access_key=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<span class="variable">$&#123;instance_profile&#125;</span> | grep SecretAccessKey | cut -d<span class="string">':'</span> -f2 | sed <span class="string">'s/[^0-9A-Za-z/+=]*//g'</span>`</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aws_access_key_id=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<span class="variable">$&#123;instance_profile&#125;</span> | grep AccessKeyId | cut -d<span class="string">':'</span> -f2 | sed <span class="string">'s/[^0-9A-Z]*//g'</span>`  </span><br><span class="line">aws_secret_access_key=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<span class="variable">$&#123;instance_profile&#125;</span> | grep SecretAccessKey | cut -d<span class="string">':'</span> -f2 | sed <span class="string">'s/[^0-9A-Za-z/+=]*//g'</span>`</span><br></pre></td></tr></table></figure>
 <p>设置环境变量：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> AWS_ACCESS_KEY_ID=<span class="variable">$&#123;aws_access_key_id&#125;</span></div><div class="line"><span class="built_in">export</span> AWS_SECRET_ACCESS_KEY=<span class="variable">$&#123;aws_secret_access_key&#125;</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> AWS_ACCESS_KEY_ID=<span class="variable">$&#123;aws_access_key_id&#125;</span></span><br><span class="line"><span class="built_in">export</span> AWS_SECRET_ACCESS_KEY=<span class="variable">$&#123;aws_secret_access_key&#125;</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -547,6 +547,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

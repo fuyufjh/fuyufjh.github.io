@@ -356,28 +356,28 @@
 <p><img src="/images/2017/09/encode_decode.png" alt="encode_decode"></p>
 <a id="more"></a>
 <h2 id="从-Python-3-说起"><a href="#从-Python-3-说起" class="headerlink" title="从 Python 3 说起"></a>从 Python 3 说起</h2><p>这个编码问题（坑）可以说是 Python 2 被吐槽最多的黑点，没有之一。为了防止上来就掉进 Python 2 的坑里，我们先来看看 Python 3 里“改进”后是什么样子的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">"Hello, 世界"</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</div><div class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></div><div class="line"><span class="class">&gt;&gt;&gt; <span class="title">len</span><span class="params">(s)</span></span></div><div class="line"><span class="class">9</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">"Hello, 世界"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">len</span><span class="params">(s)</span></span></span><br><span class="line"><span class="class">9</span></span><br></pre></td></tr></table></figure>
 <p>哈，没有任何问题！（数长度的时候别漏了空格）</p>
 <p>查阅文档，我们发现 <code>str</code> 有个函数叫 <code>encode()</code>，它看起来很眼熟，让我们来试试：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">"utf-8"</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b</div><div class="line"><span class="string">b'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">"utf-8"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">b'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br></pre></td></tr></table></figure>
 <p>这个 <code>b&#39;&#39;</code> 的前缀表示返回值是一个 <code>bytes</code> 变量，也就是一堆数据了。</p>
 <blockquote>
 <p><strong>为什么这里面”Hello”还是原来的样子，但是“世界”变成一坨 <code>\x??</code> 了？</strong></p>
 <p>这是因为 ASCII 实在太有名了，程序员们都看得懂：这个 <code>H</code> 其实表示的是一字节 <code>0x48</code>。而后面“世界”的编码不在 ASCII 的编码范围内，所以只能用 <code>\x??</code> 表示了。</p>
 <p>这样看起来也许更清晰一些：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; &gt;&gt;&gt; b.hex()</div><div class="line">&gt; <span class="string">'48656c6c6f2c20e4b896e7958c'</span></div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; &gt;&gt;&gt; b.hex()</span><br><span class="line">&gt; <span class="string">'48656c6c6f2c20e4b896e7958c'</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p>有 <code>encode()</code> 当然也有 <code>decode()</code>。我们对刚刚拿到的 <code>bytes</code>  <code>b</code> 解码，果然会变成原来的字符串。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="string">'Hello, 世界'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">'Hello, 世界'</span></span><br></pre></td></tr></table></figure>
 <p>OK，现在你已经明白了奥义所在，是时候去踩坑了。</p>
 <h2 id="Python-2-的世界"><a href="#Python-2-的世界" class="headerlink" title="Python 2 的世界"></a>Python 2 的世界</h2><h3 id="初见茅庐"><a href="#初见茅庐" class="headerlink" title="初见茅庐"></a>初见茅庐</h3><p>先来一道开胃菜：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">"Hello, 世界"</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</div><div class="line">&lt;type <span class="string">'str'</span>&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>len(s)</div><div class="line"><span class="number">13</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">"Hello, 世界"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;type <span class="string">'str'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(s)</span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure>
 <p>▲ 为什么这个长度是 13 ？明明是 9 个字符啊！</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s</div><div class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br></pre></td></tr></table></figure>
 <p>▲ <code>s</code> 你怎么坏掉了？</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b</div><div class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br></pre></td></tr></table></figure>
 <p>▲ 我可能用了假的 <code>encode()</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="string">u'Hello, \u4e16\u754c'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">u'Hello, \u4e16\u754c'</span></span><br></pre></td></tr></table></figure>
 <p>▲ 喵喵喵？</p>
 <p><strong>以上，Python 2 中字符串并不像我们想的那样工作。</strong></p>
 <h3 id="问题出在哪里"><a href="#问题出在哪里" class="headerlink" title="问题出在哪里"></a>问题出在哪里</h3><p>其实说起来也简单，Python 是一门诞生于 1989 年的古老语言，比 Unicode 还要早两年，当时的程序员并不在乎编码问题，因为 ASCII 已经足够了。</p>
@@ -406,7 +406,7 @@
 </tbody>
 </table>
 <p>所以，在 Python 2 里，如果遇到非英语字符，一定要记得用 unicode。效果是这样的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">u'Hello, 世界'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s</div><div class="line"><span class="string">u'Hello, \u4e16\u754c'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</div><div class="line">&lt;type <span class="string">'unicode'</span>&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>len(s)</div><div class="line"><span class="number">9</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b</div><div class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</div><div class="line"><span class="string">u'Hello, \u4e16\u754c'</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">u'Hello, 世界'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">u'Hello, \u4e16\u754c'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;type <span class="string">'unicode'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(s)</span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">u'Hello, \u4e16\u754c'</span></span><br></pre></td></tr></table></figure>
 <p>至于为什么 <code>str</code> 也有 <code>encode()</code>，主要是为了尽可能保持和 Python 3 的兼容性，以让部分程序能在 2、3 同时运行。<del>于是事情变得更糟糕了。</del></p>
 <h3 id="原来如此"><a href="#原来如此" class="headerlink" title="原来如此"></a>原来如此</h3><p>现在我们可以解释刚刚遇到的奇怪情况了：</p>
 <ul>
@@ -415,12 +415,12 @@
 <li>“我可能用了假的 <code>encode()</code>”——你不应该对 <code>str</code> 变量做 <code>encode</code>，它本来就是编码后的</li>
 <li>“喵喵喵？”——这是正常的，只是因为 Python 2 没有把 Unicode 字符显示成中文字符，用 print 就没问题了：</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> s</div><div class="line">Hello, 世界</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> s</span><br><span class="line">Hello, 世界</span><br></pre></td></tr></table></figure>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
 <li>永远记住 str 其实是 bytes，字符串应该用 unicode，尤其是包含中文时</li>
 <li>如果能说服你的老板和同事，尽快把 Python 2 升级到 3</li>
 </ol>
-<p>最后，如果你需要写出兼容 Python 2\3 的程序，<a href="http://python-future.org/compatible_idioms.html#strings-and-bytes" target="_blank" rel="external">这篇文档</a>可以给你一些帮助。</p>
+<p>最后，如果你需要写出兼容 Python 2\3 的程序，<a href="http://python-future.org/compatible_idioms.html#strings-and-bytes" target="_blank" rel="noopener">这篇文档</a>可以给你一些帮助。</p>
 
       
     </div>
@@ -628,6 +628,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

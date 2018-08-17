@@ -359,7 +359,7 @@
 <p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/5ee25552f4c216c.png" alt=""></p>
 <p>在 dropout 里，每一次训练迭代的时候，你从网络中随机地放弃一些神经元。设置一个使神经元继续保留的概率 <code>pkeep</code>，通常介于 50% 到 75% 之间，然后每次迭代时，随机地把一些神经元连同它们的权重和偏置一起去掉。每次去掉的神经元是不同的（而且你也要按比例地增强剩余神经元的输出，以确保传到下一层的激活不会漂移）。测试网络性能的时候，再把所有的神经元都装回来 (<code>pkeep=1</code>)。</p>
 <p>TensorFlow 提供一个 dropout 函数可以用在一层神经网络的输出上。它随机地清零一些输出并且把剩下的提升 1/pkeep。这里演示了如何把它用在一个两层神经网络上：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># feed in 1 when testing, 0.75 when training</span></div><div class="line">pkeep = tf.placeholder(tf.float32)</div><div class="line"></div><div class="line">Y1 = tf.nn.relu(tf.matmul(X, W1) + B1)</div><div class="line">Y1d = tf.nn.dropout(Y1, pkeep)</div><div class="line"></div><div class="line">Y = tf.nn.softmax(tf.matmul(Y1d, W2) + B2)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># feed in 1 when testing, 0.75 when training</span></span><br><span class="line">pkeep = tf.placeholder(tf.float32)</span><br><span class="line"></span><br><span class="line">Y1 = tf.nn.relu(tf.matmul(X, W1) + B1)</span><br><span class="line">Y1d = tf.nn.dropout(Y1, pkeep)</span><br><span class="line"></span><br><span class="line">Y = tf.nn.softmax(tf.matmul(Y1d, W2) + B2)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>你现在可以在网络中每个中间层之后插入 dropout。这是可选的，如果你没时间深入阅读的话。</p>
 <p>该解决方案可以在 <code>mnist_2.2_five_layers_relu_lrdecay_dropout.py</code><br>里找到，如果你被卡住了可以看它。</p>
@@ -570,6 +570,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

@@ -348,7 +348,7 @@
 <p>Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: authentication required)</p>
 </blockquote>
 <p>解决方案是用AWS CLI工具登录Docker</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">eval</span> `aws ecr get-login`</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> `aws ecr get-login`</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/solve-unauthorized-pull-aws-docker-image/#more" rel="contents">
@@ -484,7 +484,7 @@
       
         
           <h2 id="普通做法"><a href="#普通做法" class="headerlink" title="普通做法"></a>普通做法</h2><p>以下是引用自某开源项目的做法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM golang:alpine</div><div class="line">RUN apk update &amp;&amp; \</div><div class="line">    apk upgrade &amp;&amp; \</div><div class="line">    apk add git</div><div class="line">RUN go get github.com/author/package</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:alpine</span><br><span class="line">RUN apk update &amp;&amp; \</span><br><span class="line">    apk upgrade &amp;&amp; \</span><br><span class="line">    apk add git</span><br><span class="line">RUN go get github.com/author/package</span><br></pre></td></tr></table></figure>
 <p>这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。</p>
 <p>比如 Golang SDK 在程序运行中根本用不到，<code>Go Get</code>带来的源文件同样用不到。Golang是可以编译到真二进制的的语言，只要保留程序本身和必要的动态链接库（<code>.so</code>）即可。进一步，如果使用静态链接，那库也可以不要。</p>
           <!--noindex-->
@@ -624,7 +624,7 @@
           <blockquote>
 <p>给定的程序 <code>readelf32</code> 存在一个漏洞（想多了，这当然不是Linux里的<code>readelf</code>），它读取文件内容写入到一个局部变量，但没有正确地检查文件大小。</p>
 </blockquote>
-<p>实验中假设 ASLR 已经关闭：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo 0 &gt;/proc/sys/kernel/randomize_va_space</div></pre></td></tr></table></figure></p>
+<p>实验中假设 ASLR 已经关闭：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/kernel/randomize_va_space</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/rop-attack-example-under-32bit-os/#more" rel="contents">
@@ -760,7 +760,7 @@
       
         
           <p>因为工作项目原因，跟着 tour 学习了一下 Golang。语法比较奇怪，记下备忘。</p>
-<p><a href="https://gist.github.com/fuyufjh/b612c4ea000c943cc9adfc98533a37c8" target="_blank" rel="external">Gist link</a></p>
+<p><a href="https://gist.github.com/fuyufjh/b612c4ea000c943cc9adfc98533a37c8" target="_blank" rel="noopener">Gist link</a></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/golang-learning-notes/#more" rel="contents">
@@ -1033,7 +1033,7 @@
       
         
           <blockquote>
-<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="external">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。<br>如果感到正文不明觉厉请直接跳到最后的patch</p>
+<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="noopener">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。<br>如果感到正文不明觉厉请直接跳到最后的patch</p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1306,7 +1306,7 @@
       
         
           <blockquote>
-<p>这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 <a href="http://docs.opencv.org/2.4.12/modules/core/doc/basic_structures.html" target="_blank" rel="external">这里</a>。</p>
+<p>这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 <a href="http://docs.opencv.org/2.4.12/modules/core/doc/basic_structures.html" target="_blank" rel="noopener">这里</a>。</p>
 </blockquote>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenCV 里的矩阵分静态和动态两种：</p>
 <ul>
@@ -1447,7 +1447,7 @@
 
       
         
-          <h1 id="A-Simple-Class"><a href="#A-Simple-Class" class="headerlink" title="A Simple Class"></a>A Simple Class</h1><p><a href="http://cn.mathworks.com/help/matlab/matlab_oop/getting-familiar-with-classes.html" target="_blank" rel="external">Doc Link</a></p>
+          <h1 id="A-Simple-Class"><a href="#A-Simple-Class" class="headerlink" title="A Simple Class"></a>A Simple Class</h1><p><a href="http://cn.mathworks.com/help/matlab/matlab_oop/getting-familiar-with-classes.html" target="_blank" rel="noopener">Doc Link</a></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/matlab-object-cheatsheet/#more" rel="contents">
@@ -1583,8 +1583,8 @@
       
         
           <p>初学爬虫，又没什么想爬的东西，正好看到这个闯关就做了一下。截至今天，游戏作者更新到第五关。</p>
-<p>前面4关都比较简单，具体请搜索网上的教程。比如<a href="http://vjson.com/wordpress/%E7%88%AC%E8%99%AB%E9%97%AF%E5%85%B3%E7%AC%AC%E4%B8%80%E5%85%B3.html" target="_blank" rel="external">这里</a>有个详细的。</p>
-<p>我的代码放在 GitHub：<a href="https://github.com/fuyufjh/crawler_ex_answer" target="_blank" rel="external">fuyufjh/crawler_ex_answer</a></p>
+<p>前面4关都比较简单，具体请搜索网上的教程。比如<a href="http://vjson.com/wordpress/%E7%88%AC%E8%99%AB%E9%97%AF%E5%85%B3%E7%AC%AC%E4%B8%80%E5%85%B3.html" target="_blank" rel="noopener">这里</a>有个详细的。</p>
+<p>我的代码放在 GitHub：<a href="https://github.com/fuyufjh/crawler_ex_answer" target="_blank" rel="noopener">fuyufjh/crawler_ex_answer</a></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/solution-to-heibanke-crawler-ex/#more" rel="contents">
@@ -1731,6 +1731,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

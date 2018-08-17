@@ -346,19 +346,19 @@
       
 
       
-        <p>免费 SSL 证书提供商 Let’s Encrypt 去年承诺的 ACME v2 以及通配符证书（Wildcard Certificate）终于在 3 月 14 日<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579" target="_blank" rel="external">正式发布</a>了。ACME 全称“自动化证书管理环境”，用于自动验证域名所有权并颁发 SSL 证书；本次发布的新版 ACME v2 添加了通配符证书的支持，再也不用每次添加子域名都重新申请证书。</p>
+        <p>免费 SSL 证书提供商 Let’s Encrypt 去年承诺的 ACME v2 以及通配符证书（Wildcard Certificate）终于在 3 月 14 日<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579" target="_blank" rel="noopener">正式发布</a>了。ACME 全称“自动化证书管理环境”，用于自动验证域名所有权并颁发 SSL 证书；本次发布的新版 ACME v2 添加了通配符证书的支持，再也不用每次添加子域名都重新申请证书。</p>
 <p>ACME v2 目前只有一种方案支持通配符证书的验证—— DNS-01 challenge，即：通过向域名添加一条 TXT 记录来证明用户对域名的所有权。一般只要提供了 Token 访问的 DNS 服务商都可以支持，例如 GoDaddy、CloudFlare、DNSPod 等。</p>
 <a id="more"></a>
-<p>截至目前为止，官方推荐的 ACME 客户端 <a href="https://github.com/certbot/certbot" target="_blank" rel="external">Certbot</a> 还没有支持 ACME v2，这里推荐另一个小巧的客户端 <a href="https://github.com/Neilpang/acme.sh" target="_blank" rel="external">acme.sh</a>，它完全用 shell 脚本构成，快速安装方法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://get.acme.sh | sh</div></pre></td></tr></table></figure>
-<p>为了使用 DNS-01 challenge，先在 DNS 服务商那里启用 Token 访问。这里以 DNSPod 为例，其它服务商参见<a href="https://github.com/Neilpang/acme.sh/blob/master/dnsapi/README.md" target="_blank" rel="external">完整支持列表</a>。</p>
+<p>截至目前为止，官方推荐的 ACME 客户端 <a href="https://github.com/certbot/certbot" target="_blank" rel="noopener">Certbot</a> 还没有支持 ACME v2，这里推荐另一个小巧的客户端 <a href="https://github.com/Neilpang/acme.sh" target="_blank" rel="noopener">acme.sh</a>，它完全用 shell 脚本构成，快速安装方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://get.acme.sh | sh</span><br></pre></td></tr></table></figure>
+<p>为了使用 DNS-01 challenge，先在 DNS 服务商那里启用 Token 访问。这里以 DNSPod 为例，其它服务商参见<a href="https://github.com/Neilpang/acme.sh/blob/master/dnsapi/README.md" target="_blank" rel="noopener">完整支持列表</a>。</p>
 <p><img src="/images/2018/03/dnspod-api-token.png" alt="dnspod-api-token"></p>
 <p>然后运行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> DP_Id=<span class="string">"49644"</span></div><div class="line"><span class="built_in">export</span> DP_Key=<span class="string">"******************************"</span></div><div class="line">acme.sh --issue --dns dns_dp -d example.com -d *.example.com</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> DP_Id=<span class="string">"49644"</span></span><br><span class="line"><span class="built_in">export</span> DP_Key=<span class="string">"******************************"</span></span><br><span class="line">acme.sh --issue --dns dns_dp -d example.com -d *.example.com</span><br></pre></td></tr></table></figure>
 <p>如果一切顺利，可以看到证书已经生成了。如果要安装到 nginx 中，还需要转换成 PEM 格式：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">acme.sh --install-cert -d example.com -d *.example.com \</div><div class="line">        --key-file       /etc/nginx/certificates/example.com/key.pem  \</div><div class="line">        --fullchain-file /etc/nginx/certificates/example.com/cert.pem</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --install-cert -d example.com -d *.example.com \</span><br><span class="line">        --key-file       /etc/nginx/certificates/example.com/key.pem  \</span><br><span class="line">        --fullchain-file /etc/nginx/certificates/example.com/cert.pem</span><br></pre></td></tr></table></figure>
 <p>最后把 nginx 配置从 HTTP 修改成 HTTPS：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443 ssl;</div><div class="line">    server_name www.example.com example.com;</div><div class="line"></div><div class="line">    ssl_certificate /etc/nginx/certificates/example.com/cert.pem;</div><div class="line">    ssl_certificate_key /etc/nginx/certificates/example.com/key.pem;</div><div class="line"></div><div class="line">    # other configurations ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name www.example.com example.com;</span><br><span class="line"></span><br><span class="line">    ssl_certificate /etc/nginx/certificates/example.com/cert.pem;</span><br><span class="line">    ssl_certificate_key /etc/nginx/certificates/example.com/key.pem;</span><br><span class="line"></span><br><span class="line">    # other configurations ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>重启 nginx，大功告成。</p>
 
       
@@ -554,6 +554,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             

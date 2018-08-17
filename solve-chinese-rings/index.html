@@ -358,10 +358,10 @@
 </ol>
 <p>（至于怎么操作……那是你的事情了）</p>
 <p>解法是递归过程。定义解开$n$连环的操作为$solve(n)$，它的逆过程为$rsovle(n)$，即把$n$连环套上去的过程。因为后者只是前者的逆过程，以下只讨论$solve(n)$。</p>
-<p>$n=1$和$n=2$的情形都是trivial的，很容易看出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">0 -&gt; 1</div><div class="line">00 -&gt; 01 -&gt; 11</div></pre></td></tr></table></figure></p>
-<p>$n&gt;2$的过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">solve(n - 2);</div><div class="line">flip(n - 1); // 翻转最高位</div><div class="line">rsolve(n - 2);</div><div class="line">solve(n - 1);</div></pre></td></tr></table></figure></p>
-<p>举个例子更好懂些：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">11111 ---&gt; 11000 -&gt; 01000 ---&gt; 01111 ---&gt; 00000</div></pre></td></tr></table></figure></p>
-<p>代码在<a href="https://gist.github.com/fuyufjh/6bb9ead7271d0320077859622b0c9c28" target="_blank" rel="external">这里</a>，可以输出解法和步骤。</p>
+<p>$n=1$和$n=2$的情形都是trivial的，很容易看出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0 -&gt; 1</span><br><span class="line">00 -&gt; 01 -&gt; 11</span><br></pre></td></tr></table></figure></p>
+<p>$n&gt;2$的过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solve(n - 2);</span><br><span class="line">flip(n - 1); // 翻转最高位</span><br><span class="line">rsolve(n - 2);</span><br><span class="line">solve(n - 1);</span><br></pre></td></tr></table></figure></p>
+<p>举个例子更好懂些：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111 ---&gt; 11000 -&gt; 01000 ---&gt; 01111 ---&gt; 00000</span><br></pre></td></tr></table></figure></p>
+<p>代码在<a href="https://gist.github.com/fuyufjh/6bb9ead7271d0320077859622b0c9c28" target="_blank" rel="noopener">这里</a>，可以输出解法和步骤。</p>
 
       
     </div>
@@ -560,6 +560,12 @@
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
                       <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
                 </span>
               
             
