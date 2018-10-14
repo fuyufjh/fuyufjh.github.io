@@ -101,7 +101,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-distributed-plan.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-plan-to-mr-stages.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/postgres-parallel-query-example.png">
-<meta property="og:updated_time" content="2018-10-14T07:03:27.949Z">
+<meta property="og:updated_time" content="2018-10-14T08:08:24.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 F1 Query 论文看 SQL 查询的执行模式">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; }    F1 是起源于 Google AdWords 的分布式 SQL 查询引擎，跟底下的 Spanner 分布式存储搭配，开启了分布式关系数据库——所谓 NewSQL 的时代。我们今天说的是 F1 团队在 VLDB2018 上发的文章 F1 Query: Declarative Querying at Scale">
@@ -391,7 +391,7 @@
 <p>下面的例子是一个 Join-Aggregation-Sort 的查询，它分成了 4 个阶段：</p>
 <ol>
 <li><code>Scan(Clicks)</code> 被分配给 1000 个 F1 Worker 上并行拉取数据，并根据每一行数据的 <code>Hash(AdID)</code> 发送给对应的 <code>HashJoin</code> 分片，即一般说的 shuffle 过程;</li>
-<li><code>Scan(Ads)</code> 被分配给 200 个 F1 Worker 上并行拉去数据，并且也以同样的方式做 shuffle；</li>
+<li><code>Scan(Ads)</code> 被分配给 200 个 F1 Worker 上并行拉取数据，并且也以同样的方式做 shuffle；</li>
 <li><code>HashJoin</code> 及 <code>PartialAggregation</code>：根据 Join Key 分成了 1000 个并行任务，各自做 Join 计算，并做一次聚合；</li>
 <li>最后，F1 Server 把各个分片的聚合结果再汇总起来，返回给客户端。</li>
 </ol>
@@ -412,18 +412,21 @@
 <p>但是出乎意料的是，F1 Query 采用的是前者，也就是 MR 模式。这其中的原因我们不得而知，我猜想和 Google 自家的 FlumeJava 不够给力有关系。</p>
 <p>如下图。左边的 Physical Plan 和上一节的分布式查询是一样的，不同之处是<strong>在批处理模式下，它被转换成一系列的 MR 任务</strong>，之后交给调度器（Scheduler）去处理即可。</p>
 <p><img src="/images/2018/10/f1-query-plan-to-mr-stages.jpg" alt=""></p>
-<p>相比分布式查询的执行方式，MapReduce 模式下各个步骤都会持久化到外部文件系统。不仅如此，<strong>Pipeline 的执行也没法进行</strong>。以上一节提到的 HashJoin 为例，左边 <code>Clicks</code> 的 Scan 和 HashJoin 原本是可以 Pipeline 执行的，但是在批处理模式下，必须等到 <code>Scan(Clicks)</code> 这个阶段完成才能进行下一步的 HashJoin 阶段。</p>
-<h2 id="单机并行执行"><a href="#单机并行执行" class="headerlink" title="单机并行执行"></a>单机并行执行</h2><p>除了上面聊的 F1 Query 所支持的 3 种查询模式之外，事实上还有一种处理模型位于单线程执行和分布式执行之间：单机的并行查询。初看这似乎与分布式查询很相似，但又有些不同：</p>
+<p>相比分布式执行，批处理模式下各个步骤都会持久化到外部文件系统（因为 MapReduce 的特性所致）。不仅如此，<strong>Pipeline 式的执行也没法进行</strong>。以上一节提到的 HashJoin 为例，左边 <code>Clicks</code> 的 Scan 和 HashJoin 原本是可以 Pipeline 执行的，但是在批处理模式下，必须等到 <code>Scan(Clicks)</code> 这个阶段完成才能进行下一步的 HashJoin 阶段。</p>
+<h2 id="单机并行执行"><a href="#单机并行执行" class="headerlink" title="单机并行执行"></a>单机并行执行</h2><p>除了上面聊的 F1 Query 所支持的 3 种查询模式之外，事实上还有一种处理模型位于单线程执行和分布式执行之间：单机的并行执行。初看这似乎与分布式执行很相似，但又有些不同：</p>
 <ul>
 <li>不用考虑单个 Worker 的失败恢复，因为它们都在同一个进程里；</li>
 <li>各个 Worker 线程的内存是共享的，它们之间交换数据无需考虑网络通讯代价。</li>
 </ul>
-<p>这种模式在传统的关系型数据库上也很常见，尤其是 Postgres、SQL Server 这类以 OLAP 查询见长的选手。以 Postgres 为例，在开启并行查询的情况下，查询优化器会根据代价选择是否生成并行执行计划；如果生成了并行执行计划，执行器会调度多个 Worker 一起完成工作。</p>
-<p>下图是一个 Postgres 上并行 Hash Join 的例子，从执行计划上看和上一节几乎一样，唯一区别是这里的 shuffle 过程变得容易多了，不再是一件代价很高的事情。</p>
+<p>这种模式在传统的关系型数据库上很常见，尤其是 Postgres、SQL Server 这类以 OLAP 查询见长的选手。以 Postgres 为例，在开启并行查询的情况下，查询优化器会根据代价选择是否生成并行执行计划；如果生成了并行执行计划，执行器会调度多个 Worker 一起完成工作。</p>
+<p>下图是一个 Postgres 上并行 Hash Join 的例子，从执行计划上看和上一节几乎一样，但是这里不再需要对数据做 Shuffle：Hash Join 所用的 Hash Table 本身是全局共享的。</p>
 <p><img src="/images/2018/10/postgres-parallel-query-example.png" alt="postgres-parallel-query-example"></p>
+<blockquote>
+<p>Parallel Hash Join 并非只有这一种做法。SQL Server 就更接近分布式执行的方案：把 Hash Key 相同的数据 shuffle 到同一个分片上——但这个 shuffle 只是逻辑上的，不需要真的做 IO。</p>
+</blockquote>
 <p>相比分布式查询，<strong>单机并行的最大优势在于响应速度更快</strong>，因为省去了大量的网络 IO 时间，而且调度一个 Worker 线程要比调度一个 Worker 机器快得多。</p>
 <p>但别忘了，单机运算能力的 scale up 成本非常高，并且是存在上限的。对于 Google 之类的互联网公司，绝大部分查询都超出了单机的存储或计算能力，我猜测这也是 F1 Query 并未考虑单机并行的理由。</p>
-<h2 id="对-F1-Query-的评价"><a href="#对-F1-Query-的评价" class="headerlink" title="对 F1 Query 的评价"></a>对 F1 Query 的评价</h2><p>从论文透露的情况来看，F1 Query 还不算个完善、成熟的系统，其定位更像是一个解决业务需求的胶水系统，而非 Spanner 这样的“硬核”技术。它追求的是够用就好，很多地方其实还有很大的改进空间，举几个例子：</p>
+<h2 id="对-F1-Query-的评价"><a href="#对-F1-Query-的评价" class="headerlink" title="对 F1 Query 的评价"></a>对 F1 Query 的评价</h2><p>从论文描述的情况来看，F1 Query 还不算个完善、成熟的系统，其定位更像是一个解决业务需求的胶水系统，而非 Spanner 这样的“硬核”技术。它追求的是够用就好。很多地方其实还有不小的改进空间，举几个例子：</p>
 <ul>
 <li>对交互式查询，选择分布式还是单机计算目前还是基于启发式规则。</li>
 <li>三种模式的执行计划是用一样的优化器生成的。但是客观的说，这其中的差别可是不小的。</li>
