@@ -101,7 +101,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-distributed-plan.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-plan-to-mr-stages.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/postgres-parallel-query-example.png">
-<meta property="og:updated_time" content="2018-10-14T08:08:24.884Z">
+<meta property="og:updated_time" content="2018-10-14T08:11:36.968Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 F1 Query 论文看 SQL 查询的执行模式">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; }    F1 是起源于 Google AdWords 的分布式 SQL 查询引擎，跟底下的 Spanner 分布式存储搭配，开启了分布式关系数据库——所谓 NewSQL 的时代。我们今天说的是 F1 团队在 VLDB2018 上发的文章 F1 Query: Declarative Querying at Scale">
@@ -430,10 +430,10 @@
 <ul>
 <li>对交互式查询，选择分布式还是单机计算目前还是基于启发式规则。</li>
 <li>三种模式的执行计划是用一样的优化器生成的。但是客观的说，这其中的差别可是不小的。</li>
-<li>优化器是基于规则的。之所以不做 CBO，论文给出的解释是数据源太多，不容易计算。</li>
+<li>优化器是基于规则的。之所以不做 CBO，论文给出的解释是数据源众多，不容易估算代价。</li>
 <li>批处理模式下用 Spark 取代 MR 的模式是更好的选择。</li>
 </ul>
-<p>F1 Query 希望用一套系统解决所有 OLTP、OLAP、ETL 需求、用一套系统访问数据中心里各种格式的数据，这两点才是 F1 Query 的核心竞争力。</p>
+<p>F1 Query 希望<strong>用一套系统解决所有 OLTP、OLAP、ETL 需求、用一套系统访问数据中心里各种格式的数据</strong>，这两点才是 F1 Query 的核心竞争力。</p>
 <h2 id="SQL-执行模式总结"><a href="#SQL-执行模式总结" class="headerlink" title="SQL 执行模式总结"></a>SQL 执行模式总结</h2><p>从数据库的视角看，理想的数据库应当隐藏掉查询执行的种种细节，只要用户输入一个声明（例如 SQL），就能以最优的方式进行执行并给出答案。F1 Query 做了个勇敢的尝试，<strong>它将多种执行模型揉合在一个系统中，共享同一套优化器和算子</strong>，以较低的开发成本获得其中最优的执行性能（在理想情况下）。</p>
 <p>下面的表格总结了 4 种执行模式的优势和不足。</p>
 <table>
