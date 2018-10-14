@@ -101,7 +101,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-distributed-plan.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-plan-to-mr-stages.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/postgres-parallel-query-example.png">
-<meta property="og:updated_time" content="2018-10-14T06:44:03.437Z">
+<meta property="og:updated_time" content="2018-10-14T07:01:15.478Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 F1 Query 论文看 SQL 查询的执行模式">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; }    F1 是起源于 Google AdWords 的分布式 SQL 查询引擎，跟底下的 Spanner 分布式存储搭配，开启了分布式关系数据库——所谓 NewSQL 的时代。我们今天说的是 F1 团队在 VLDB2018 上发的文章 F1 Query: Declarative Querying at Scale">
@@ -406,11 +406,11 @@
 <p>解决这个问题有两条路可走：一是 MapReduce 的模式，将计算分成若干个阶段（Stage），而中间结果持久化到 HDFS 这样的分布式文件系统上；二是 Spark RDD 模式，通过记录祖先（Lineage）信息，万一发生节点失败，就通过简单的重算来恢复丢失的数据分片，这样数据就可以放在内存里不用落盘。</p>
 <p>Spark 的做法显然是更先进的，原因有很多，这里只说最重要的 2 条。欲知详情可以看我之前的博客文章<a href="https://ericfu.me/apache-spark-in-nutshell/">《一文读懂 Apache Spark》</a>。</p>
 <ol>
-<li>Spark 的内存基本是基于内存的，而 MR 要写入外部文件系统。</li>
-<li>Spark 可以把执行计划 DAG 中相互不依赖的 Stage 并行执行，而 MR 只能线性的一个一个 Stage。</li>
+<li>Spark 的计算基本再内存中，只有内存不够时才会溢出到磁盘，而 MR 的中间结果必须写入外部文件系统；</li>
+<li>Spark 可以把执行计划 DAG 中相互不依赖的 Stage 并行执行，而 MR 只能线性的一个 Stage 执行。</li>
 </ol>
-<p>但是很不幸，F1 Query 采用的是前者，也就是 MR 模式。这其中的原因我们不得而知，我猜想是 Google 自家的 FlumeJava 不够给力有关系。</p>
-<p>如下图。左边的 Physical Plan 和上一节的分布式查询是一样的，不同之处是<strong>在批处理模式下，它被转换成一连串的 MR 任务</strong>，之后交给调度器（Scheduler）去处理即可。</p>
+<p>但是出乎意料的是，F1 Query 采用的是前者，也就是 MR 模式。这其中的原因我们不得而知，我猜想和 Google 自家的 FlumeJava 不够给力有关系。</p>
+<p>如下图。左边的 Physical Plan 和上一节的分布式查询是一样的，不同之处是<strong>在批处理模式下，它被转换成一系列的 MR 任务</strong>，之后交给调度器（Scheduler）去处理即可。</p>
 <p><img src="/images/2018/10/f1-query-plan-to-mr-stages.jpg" alt=""></p>
 <p>相比分布式查询的执行方式，MapReduce 模式下各个步骤都会持久化到外部文件系统。不仅如此，<strong>Pipeline 的执行也没法进行</strong>。以上一节提到的 HashJoin 为例，左边 <code>Clicks</code> 的 Scan 和 HashJoin 原本是可以 Pipeline 执行的，但是在批处理模式下，必须等到 <code>Scan(Clicks)</code> 这个阶段完成才能进行下一步的 HashJoin 阶段。</p>
 <h2 id="单机并行执行"><a href="#单机并行执行" class="headerlink" title="单机并行执行"></a>单机并行执行</h2><p>除了上面聊的 F1 Query 所支持的 3 种查询模式之外，事实上还有一种处理模型位于单线程执行和分布式执行之间：单机的并行查询。初看这似乎与分布式查询很相似，但又有些不同：</p>
@@ -423,15 +423,15 @@
 <p><img src="/images/2018/10/postgres-parallel-query-example.png" alt="postgres-parallel-query-example"></p>
 <p>相比分布式查询，<strong>单机并行的最大优势在于响应速度更快</strong>，因为省去了大量的网络 IO 时间，而且调度一个 Worker 线程要比调度一个 Worker 机器快得多。</p>
 <p>但别忘了，单机运算能力的 scale up 成本非常高，并且是存在上限的。对于 Google 之类的互联网公司，绝大部分查询都超出了单机的存储或计算能力，我猜测这也是 F1 Query 并未考虑单机并行的理由。</p>
-<h2 id="对-F1-Query-的评价"><a href="#对-F1-Query-的评价" class="headerlink" title="对 F1 Query 的评价"></a>对 F1 Query 的评价</h2><p>从论文透露的情况来看，F1 Query 还不算个完善、成熟的系统，其定位更像是一个解决业务需求的胶水系统，而非 Spanner 这样的“硬核”技术。它追求的是够用就好，很多地方其实都还有进一步改进的空间，比如：</p>
+<h2 id="对-F1-Query-的评价"><a href="#对-F1-Query-的评价" class="headerlink" title="对 F1 Query 的评价"></a>对 F1 Query 的评价</h2><p>从论文透露的情况来看，F1 Query 还不算个完善、成熟的系统，其定位更像是一个解决业务需求的胶水系统，而非 Spanner 这样的“硬核”技术。它追求的是够用就好，很多地方其实还有很大的改进空间，举几个例子：</p>
 <ul>
 <li>对交互式查询，选择分布式还是单机计算目前还是基于启发式规则。</li>
 <li>三种模式的执行计划是用一样的优化器生成的。但是客观的说，这其中的差别可是不小的。</li>
 <li>优化器是基于规则的。之所以不做 CBO，论文给出的解释是数据源太多，不容易计算。</li>
 <li>批处理模式下用 Spark 取代 MR 的模式是更好的选择。</li>
 </ul>
-<p>F1 Query 希望用一个系统解决所有 OLTP、OLAP、ETL 需求、用一个系统访问数据中心里任何格式的数据，这两点才是 F1 Query 的核心竞争力。</p>
-<h2 id="SQL-执行模式总结"><a href="#SQL-执行模式总结" class="headerlink" title="SQL 执行模式总结"></a>SQL 执行模式总结</h2><p>从数据库的视角看，理想的数据库应当隐藏掉查询执行的种种细节，只要用户输入一个声明（例如 SQL），就能以最优的方式进行执行并给出答案。F1 Query 做了个勇敢的尝试，<strong>它将多种执行模型糅合在统一的系统中，共享同一套优化器和算子</strong>，以较低的开发成本获得其中最优的执行性能——在理想情况下。</p>
+<p>F1 Query 希望用一套系统解决所有 OLTP、OLAP、ETL 需求、用一套系统访问数据中心里各种格式的数据，这两点才是 F1 Query 的核心竞争力。</p>
+<h2 id="SQL-执行模式总结"><a href="#SQL-执行模式总结" class="headerlink" title="SQL 执行模式总结"></a>SQL 执行模式总结</h2><p>从数据库的视角看，理想的数据库应当隐藏掉查询执行的种种细节，只要用户输入一个声明（例如 SQL），就能以最优的方式进行执行并给出答案。F1 Query 做了个勇敢的尝试，<strong>它将多种执行模型揉合在一个系统中，共享同一套优化器和算子</strong>，以较低的开发成本获得其中最优的执行性能（在理想情况下）。</p>
 <p>下面的表格总结了 4 种执行模式的优势和不足。</p>
 <table>
 <thead>
