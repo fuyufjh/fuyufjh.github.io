@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/f1-query-and-approaches-of-sql-execution/</loc>
+    
+    <lastmod>2018-10-14T06:19:12.318Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/apache-spark-in-nutshell/</loc>
     
     <lastmod>2018-06-20T11:23:35.256Z</lastmod>
