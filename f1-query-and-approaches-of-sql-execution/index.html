@@ -101,7 +101,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-distributed-plan.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/f1-query-plan-to-mr-stages.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/10/postgres-parallel-query-example.png">
-<meta property="og:updated_time" content="2018-10-14T06:19:12.318Z">
+<meta property="og:updated_time" content="2018-10-14T06:39:50.999Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 F1 Query 论文看 SQL 查询的执行模式">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; }    F1 是起源于 Google AdWords 的分布式 SQL 查询引擎，跟底下的 Spanner 分布式存储搭配，开启了分布式关系数据库——所谓 NewSQL 的时代。我们今天说的是 F1 团队在 VLDB2018 上发的文章 F1 Query: Declarative Querying at Scale">
@@ -371,8 +371,8 @@
 <li>分布式执行（Distributed Execution）</li>
 <li>批处理执行（Batch Execution）</li>
 </ol>
-<p>前两个是交互式查询，即客户端会等待结果返回。最后一个批处理更像是 ETL：客户端输入任务之后就不再管了，查询结果会被放到指定的地方去。</p>
-<h2 id="单机执行"><a href="#单机执行" class="headerlink" title="单机执行"></a>单机执行</h2><p>单机执行就是我们熟悉的 OLTP 查询，例如单表点查、带索引的 Join 等。这类查询本身已经足够简单，因此对待它们的最好方式就是在收到请求的机器上立即执行。</p>
+<p>前两个是交互式的，即客户端会等待结果返回。最后一个批处理更像是 ETL：客户端输入任务之后就不再管了，查询结果会被写到指定的地方。</p>
+<h2 id="单机执行"><a href="#单机执行" class="headerlink" title="单机执行"></a>单机执行</h2><p>单机执行对应我们熟悉的 OLTP 查询，例如单表点查、带索引的 Join 等。这类查询本身已经足够简单，只需几毫秒就能做完，处理它们的最好方式就是在收到请求的机器上立即执行。</p>
 <p>在 F1 Query 系统中有 F1 Server 和 F1 Worker 等角色。F1 Server 负责接收客户端请求，如果它判断这个查询应当使用单机而不是分布式方式执行，它就亲力亲为、直接执行并返回结果。</p>
 <p>这样的行为和绝大多数单机 OLTP 数据库是一致的，例如 MySQL 采用的是 Thread Pool + Dispatcher 的处理模型，Thread Pool 的规模是一定的，Dispatcher 根据高低优先级分派执行任务。最终一个请求只会被一个线程处理，换句话说，对某个查询来说其执行过程是单线程的。</p>
 <p><img src="/images/2018/10/mysql-thread-group.jpg" alt=""></p>
@@ -380,7 +380,7 @@
 
 <p>F1 Query 单机查询的执行器同样也是教科书式的 Valcano 模型，但也无可厚非——对 OLTP 来说这已经足够好。如下图所示，从顶层算子开始递归地调用 <code>GetNext()</code>，每次取出一行数据，直到没有更多数据为止。各个算子只需要实现 <code>GetNext()</code> 接口即可，简单清晰。</p>
 <p><img src="/images/2018/10/f1-query-valcano.jpg" alt=""></p>
-<h2 id="分布式查询"><a href="#分布式查询" class="headerlink" title="分布式查询"></a>分布式查询</h2><p>F1 对更复杂的查询，例如没有索引的 Join 或聚合等，则采取分布式查询的方式。大部分 OLAP 查询、尤其是 Ad-hoc 的查询都落在这一分类中。这种情况下，分布式导致的网络、调度等 Overhead 已经远小于查询本身的成本；而且随着数据量的增加，单节点内存显然不够用了。</p>
+<h2 id="分布式执行"><a href="#分布式执行" class="headerlink" title="分布式执行"></a>分布式执行</h2><p>F1 Query 对更复杂的查询，例如没有索引的 Join 或聚合等，则采取分布式查询的方式。大部分 OLAP 查询、尤其是 Ad-hoc 的查询都落在这一分类中。这种情况下，分布式导致的网络、调度等 Overhead 已经远小于查询本身的成本；而且随着数据量的增加，单节点内存显然不够用了。</p>
 <p><img src="/images/2018/10/f1-query-system-arch.jpg" alt=""></p>
 <p class="image-captain"> ▲ <em>F1 Query 的系统架构，主要包含 F1 Master、F1 Server、F1 Worker 三个角色，其他 Catalog、UDF Server、Batch Metadata 用于存储查询相关的 Metadata 等</em> </p>
 
@@ -401,7 +401,7 @@
 <li>纯内存的计算方式，无法利用磁盘的存储空间，某些查询可能面临内存不足；</li>
 <li>没有 Fault-tolerance，对于一个涉及上千台 Worker 的查询，任何一台的重启都会导致查询失败。</li>
 </ul>
-<h2 id="批处理查询"><a href="#批处理查询" class="headerlink" title="批处理查询"></a>批处理查询</h2><p>F1 Query 还有个独特的批处理查询，这个模式一方面是定位于更大的数据量、更久的查询时间；另一方面，它的结果不再是返回给客户端，二是将查询结果写到指定的地方，例如 Colossus（第二代 GFS）上。</p>
+<h2 id="批处理执行"><a href="#批处理执行" class="headerlink" title="批处理执行"></a>批处理执行</h2><p>F1 Query 还有个独特的批处理执行，这个模式定位于更大的数据量、更久的查询时间；另一方面，它的结果不再是返回给客户端，而是将查询结果写到指定的地方，例如 Colossus（第二代 GFS）上。</p>
 <p>上一节我们提道，Presto 的模式没有 Fault-tolerance，这对于长时间运行的批处理任务是致命的，查询失败的概率会大大增加。批处理查询首先要解决的就是 Fault-tolerance 问题：<strong>必须能以某种方式从 Worker 节点的失败中恢复</strong>。</p>
 <p>解决这个问题有两条路可走：一是 MapReduce 的模式，将计算分成若干个阶段（Stage），而中间结果持久化到 HDFS 这样的分布式文件系统上；二是 Spark RDD 模式，通过记录祖先（Lineage）信息，万一发生节点失败，就通过简单的重算来恢复丢失的数据分片，这样数据就可以放在内存里不用落盘。</p>
 <p>Spark 的做法显然是更先进的，原因有很多，这里只说最重要的 2 条。欲知详情可以看我之前的博客文章<a href="https://ericfu.me/apache-spark-in-nutshell/">《一文读懂 Apache Spark》</a>。</p>
@@ -413,13 +413,13 @@
 <p>如下图。左边的 Physical Plan 和上一节的分布式查询是一样的，不同之处是<strong>在批处理模式下，它被转换成一连串的 MR 任务</strong>，之后交给调度器（Scheduler）去处理即可。</p>
 <p><img src="/images/2018/10/f1-query-plan-to-mr-stages.jpg" alt=""></p>
 <p>相比分布式查询的执行方式，MapReduce 模式下各个步骤都会持久化到外部文件系统。不仅如此，<strong>Pipeline 的执行也没法进行</strong>。以上一节提到的 HashJoin 为例，左边 <code>Clicks</code> 的 Scan 和 HashJoin 原本是可以 Pipeline 执行的，但是在批处理模式下，必须等到 <code>Scan(Clicks)</code> 这个阶段完成才能进行下一步的 HashJoin 阶段。</p>
-<h2 id="补充：单机并行查询"><a href="#补充：单机并行查询" class="headerlink" title="补充：单机并行查询"></a>补充：单机并行查询</h2><p>除了上面聊的 F1 Query 所支持的 3 种查询模式之外，事实上还有一种处理模型位于单线程执行和分布式执行之间：单机的并行查询。初看这似乎与分布式查询很相似，但又有些不同：</p>
+<h2 id="单机并行执行"><a href="#单机并行执行" class="headerlink" title="单机并行执行"></a>单机并行执行</h2><p>除了上面聊的 F1 Query 所支持的 3 种查询模式之外，事实上还有一种处理模型位于单线程执行和分布式执行之间：单机的并行查询。初看这似乎与分布式查询很相似，但又有些不同：</p>
 <ul>
 <li>不用考虑单个 Worker 的失败恢复，因为它们都在同一个进程里；</li>
 <li>各个 Worker 线程的内存是共享的，它们之间交换数据无需考虑网络通讯代价。</li>
 </ul>
 <p>这种模式在传统的关系型数据库上也很常见，尤其是 Postgres、SQL Server 这类以 OLAP 查询见长的选手。以 Postgres 为例，在开启并行查询的情况下，查询优化器会根据代价选择是否生成并行执行计划；如果生成了并行执行计划，执行器会调度多个 Worker 一起完成工作。</p>
-<p>下图是一个 Postgres 上并行 Hash Join 的例子，从执行计划上看几乎是一样的。唯一区别是这里的 shuffle 过程变得容易多了，不再是一件代价很大的事情。</p>
+<p>下图是一个 Postgres 上并行 Hash Join 的例子，从执行计划上看和上一节几乎一样，唯一区别是这里的 shuffle 过程变得容易多了，不再是一件代价很高的事情。</p>
 <p><img src="/images/2018/10/postgres-parallel-query-example.png" alt="postgres-parallel-query-example"></p>
 <p>相比分布式查询，<strong>单机并行的最大优势在于响应速度更快</strong>，因为省去了大量的网络 IO 时间，而且调度一个 Worker 线程要比调度一个 Worker 机器快得多。</p>
 <p>但别忘了，单机运算能力的 scale up 成本非常高，并且是存在上限的。对于 Google 之类的互联网公司，绝大部分查询都超出了单机的存储或计算能力，我猜测这也是 F1 Query 并未考虑单机并行的理由。</p>
@@ -431,7 +431,8 @@
 <li>批处理模式下用 Spark 取代 MR 的模式是更好的选择。</li>
 </ul>
 <p>F1 Query 希望用一个系统解决所有 OLTP、OLAP、ETL 需求、用一个系统访问数据中心里任何格式的数据，这两点才是 F1 Query 的核心竞争力。</p>
-<h2 id="SQL-查询模式总结"><a href="#SQL-查询模式总结" class="headerlink" title="SQL 查询模式总结"></a>SQL 查询模式总结</h2><p>从数据库的视角看，理想的数据库应当隐藏掉查询执行的种种细节，只要用户输入一个声明（例如 SQL），就能以最优的方式进行执行并给出答案。F1 Query 做了个勇敢的尝试，<strong>它将多种执行模型糅合在统一的系统中，共享同一套优化器和算子</strong>，以较低的开发成本获得其中最优的执行性能——在理想情况下。</p>
+<h2 id="SQL-执行模式总结"><a href="#SQL-执行模式总结" class="headerlink" title="SQL 执行模式总结"></a>SQL 执行模式总结</h2><p>从数据库的视角看，理想的数据库应当隐藏掉查询执行的种种细节，只要用户输入一个声明（例如 SQL），就能以最优的方式进行执行并给出答案。F1 Query 做了个勇敢的尝试，<strong>它将多种执行模型糅合在统一的系统中，共享同一套优化器和算子</strong>，以较低的开发成本获得其中最优的执行性能——在理想情况下。</p>
+<p>下面的表格总结了 4 种执行模式的优势和不足。</p>
 <table>
 <thead>
 <tr>
@@ -468,7 +469,7 @@
 <td>Fault-Toralence</td>
 <td>无</td>
 <td>无</td>
-<td>重试查询</td>
+<td>重试整个查询</td>
 <td>Worker 级 fail-over</td>
 </tr>
 <tr>
@@ -487,7 +488,12 @@
 </tr>
 </tbody>
 </table>
-<p>总而言之，所谓 <a href="https://en.wikipedia.org/wiki/No_free_lunch_theorem" target="_blank" rel="noopener"><em>No Free Launch</em></a> ——没有最优的方案，数据量是决定能选用哪个执行模式的前提。实践中，先确保数据量能够承载的下，再谈优化也就明白多了。</p>
+<p>总而言之，所谓 <a href="https://en.wikipedia.org/wiki/No_free_lunch_theorem" target="_blank" rel="noopener"><em>No Free Launch</em></a> —— 没有最优的方案，<strong>数据量是决定能选用哪个执行模式的前提</strong>。实践中，先确保数据量能够承载的下，再谈优化也就明白多了。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<li><a href="http://www.vldb.org/pvldb/vol11/p1835-samwel.pdf" target="_blank" rel="noopener">F1 Query: Declarative Querying at Scale</a></li>
+<li><a href="https://www.programering.com/a/MTO5YDMwATI.html" target="_blank" rel="noopener">MySQL Thread Pool Implementation</a></li>
+<li><a href="https://tech.meituan.com/presto.html" target="_blank" rel="noopener">Presto 实现原理和美团的使用实践 - 美团技术团队</a></li>
+</ol>
 
       
     </div>
@@ -737,7 +743,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单机执行"><span class="nav-number">1.</span> <span class="nav-text">单机执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式查询"><span class="nav-number">2.</span> <span class="nav-text">分布式查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批处理查询"><span class="nav-number">3.</span> <span class="nav-text">批处理查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充：单机并行查询"><span class="nav-number">4.</span> <span class="nav-text">补充：单机并行查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-F1-Query-的评价"><span class="nav-number">5.</span> <span class="nav-text">对 F1 Query 的评价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-查询模式总结"><span class="nav-number">6.</span> <span class="nav-text">SQL 查询模式总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单机执行"><span class="nav-number">1.</span> <span class="nav-text">单机执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式执行"><span class="nav-number">2.</span> <span class="nav-text">分布式执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批处理执行"><span class="nav-number">3.</span> <span class="nav-text">批处理执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单机并行执行"><span class="nav-number">4.</span> <span class="nav-text">单机并行执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对-F1-Query-的评价"><span class="nav-number">5.</span> <span class="nav-text">对 F1 Query 的评价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-执行模式总结"><span class="nav-number">6.</span> <span class="nav-text">SQL 执行模式总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
