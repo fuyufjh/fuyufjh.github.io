@@ -85,19 +85,19 @@
 
 
 
-<meta name="description" content="Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。 于是问题来了，怎样定义一个 Rule 的优先级？在 Calci">
+<meta name="description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
 <meta name="keywords" content="selected,database,optimizer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对 Calcite 优化器中 Importance 的理解">
+<meta property="og:title" content="Calcite 对 Volcano 优化器优先队列的实现">
 <meta property="og:url" content="https://ericfu.me/understand-importance-in-calcite/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。 于是问题来了，怎样定义一个 Rule 的优先级？在 Calci">
+<meta property="og:description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2018/11/calcite-importance-parent-child.png">
-<meta property="og:updated_time" content="2018-11-05T08:15:55.607Z">
+<meta property="og:updated_time" content="2018-11-05T12:32:54.608Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对 Calcite 优化器中 Importance 的理解">
-<meta name="twitter:description" content="Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。 于是问题来了，怎样定义一个 Rule 的优先级？在 Calci">
+<meta name="twitter:title" content="Calcite 对 Volcano 优化器优先队列的实现">
+<meta name="twitter:description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
 <meta name="twitter:image" content="https://ericfu.me/images/2018/11/calcite-importance-parent-child.png">
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>对 Calcite 优化器中 Importance 的理解 | Coding Husky</title>
+  <title>Calcite 对 Volcano 优化器优先队列的实现 | Coding Husky</title>
   
 
 
@@ -285,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">对 Calcite 优化器中 Importance 的理解</h1>
+          <h1 class="post-title" itemprop="name headline">Calcite 对 Volcano 优化器优先队列的实现</h1>
         
 
         <div class="post-meta">
@@ -346,10 +346,10 @@
       
 
       
-        <p>Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。</p>
-<p>于是问题来了，怎样定义一个 Rule 的优先级？在 Calcite 中为此定义了 Importance 的概念。然而相关的资料非常少，本文总结一下我自己的猜测和理解，如果你有不同的观点，欢迎留言讨论。</p>
+        <p>Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。</p>
+<p>于是问题来了，怎样定义一个 Rule 的优先级？论文中并没有给出答案。Calcite 代码中为此定义了 Importance 的概念。然而相关的资料非常少，本文总结一下我自己的猜测和理解，如果你有不同的观点，欢迎留言讨论。</p>
 <a id="more"></a>
-<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><p>本文假设读者已经充分理解 Volcano 优化器。对以下概念有不理解的，请参考 Valcano/Cascades 原论文。</p>
+<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><p>本文假设读者已经充分理解 Volcano 优化器。对以下概念有疑问的，请参考 Valcano/Cascades 原论文。</p>
 <ul>
 <li><strong>RelSet</strong> 描述一组逻辑上相等的 Relation Expression</li>
 <li><strong>RelSubset</strong> 描述一组物理上相等的 Relation Expression，即具有相同的 Physical Properties</li>
@@ -363,7 +363,7 @@
 <li>同级的节点中，代价大的一边应该得到更多的优化。</li>
 </ol>
 <p>为了达成 1，我们只要把逻辑算子的代价设为无穷大即可。为了达成 2、3，我们将 importance 和 cost 关联起来——简单来说就是 cost 越大、importance 也越大。</p>
-<h2 id="实现分析"><a href="#实现分析" class="headerlink" title="实现分析"></a>实现分析</h2><p>原理上说，RuleQueue 是一个优先队列，包含当前所有可行的 RuleMatch，<code>findBestExpr()</code> 时每次循环中我们从中取出优先级最高的并 apply，再根据 apply 的结果更新队列……如此往复，直到找到一个解。</p>
+<h2 id="实现分析"><a href="#实现分析" class="headerlink" title="实现分析"></a>实现分析</h2><p>原理上说，RuleQueue 是一个优先队列，包含当前所有可行的 RuleMatch，<code>findBestExpr()</code> 时每次循环中我们从中取出优先级最高的并 apply，再根据 apply 的结果更新队列……如此往复。</p>
 <p>RuleMatch 的 importance 定义为以下两个中比较大的一个：</p>
 <ol>
 <li>输入的 RelSubset 的 importance</li>
@@ -403,11 +403,11 @@
 <p>PS. 理论上只要是一个小于 1 的系数都可以，不知道为什么这里两个系数不一样。</p>
 <p><strong>2. 如果某个 RelSubset 的 cost 降低了（例如找到了一种 Physical Plan），那么 importance 也应该相应的被更新。</strong></p>
 <ul>
-<li>注意，要更新的不仅是本身所在的一个或多个 RelSubset，还有可能是这些 RelSubset 的父节点、父节点的父节点……所以这是一个向上递归的过程（参考 <code>RelSubset:propagateCostImprovements</code>）</li>
+<li>要更新的不仅是本身所在的一个或多个 RelSubset，还有可能是这些 RelSubset 的父节点、父节点的父节点……所以这是一个向上递归的过程（参考 <code>RelSubset:propagateCostImprovements</code>）</li>
 </ul>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="https://pdfs.semanticscholar.org/a817/a3e74d1663d9eb35b4baf3161ab16f57df85.pdf" target="_blank" rel="noopener">The Volcano Optimizer Generator: Extensibility and Efficient Search - Goetz Graefe</a></li>
-<li>The Cascades Framework for Query Optimization</li>
+<li>The Cascades Framework for Query Optimization - Goetz Graefe</li>
 <li><a href="https://github.com/apache/calcite" target="_blank" rel="noopener">Apache Calcite Source Code</a></li>
 </ol>
 
@@ -430,7 +430,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://ericfu.me/understand-importance-in-calcite/" title="对 Calcite 优化器中 Importance 的理解">https://ericfu.me/understand-importance-in-calcite/</a>
+    <a href="https://ericfu.me/understand-importance-in-calcite/" title="Calcite 对 Volcano 优化器优先队列的实现">https://ericfu.me/understand-importance-in-calcite/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -835,7 +835,7 @@
         var disqus_config = function () {
           this.page.url = 'https://ericfu.me/understand-importance-in-calcite/';
           this.page.identifier = 'understand-importance-in-calcite/';
-          this.page.title = '对 Calcite 优化器中 Importance 的理解';
+          this.page.title = 'Calcite 对 Volcano 优化器优先队列的实现';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://ericfu.disqus.com/embed.js';

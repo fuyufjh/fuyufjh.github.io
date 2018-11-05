@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/understand-importance-in-calcite/" itemprop="url">对 Calcite 优化器中 Importance 的理解</a></h1>
+                <a class="post-title-link" href="/understand-importance-in-calcite/" itemprop="url">Calcite 对 Volcano 优化器优先队列的实现</a></h1>
         
 
         <div class="post-meta">
@@ -343,8 +343,8 @@
 
       
         
-          <p>Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。</p>
-<p>于是问题来了，怎样定义一个 Rule 的优先级？在 Calcite 中为此定义了 Importance 的概念。然而相关的资料非常少，本文总结一下我自己的猜测和理解，如果你有不同的观点，欢迎留言讨论。</p>
+          <p>Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。</p>
+<p>于是问题来了，怎样定义一个 Rule 的优先级？论文中并没有给出答案。Calcite 代码中为此定义了 Importance 的概念。然而相关的资料非常少，本文总结一下我自己的猜测和理解，如果你有不同的观点，欢迎留言讨论。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/understand-importance-in-calcite/#more" rel="contents">
