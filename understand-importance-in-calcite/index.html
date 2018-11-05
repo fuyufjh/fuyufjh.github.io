@@ -77,8 +77,6 @@
 
 
 
-  
-
 
   <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
@@ -96,7 +94,7 @@
 <meta property="og:description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2018/11/calcite-importance-parent-child.png">
-<meta property="og:updated_time" content="2018-11-05T14:34:49.933Z">
+<meta property="og:updated_time" content="2018-11-05T16:10:42.269Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Calcite 对 Volcano 优化器优先队列的实现">
 <meta name="twitter:description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
@@ -358,7 +356,7 @@
 <li><strong>RuleMatch</strong> 描述一次成功的匹配，包含 Rule 和被匹配的节点</li>
 <li><strong>Importance</strong> 描述 RuleMatch 的重要程度，越大越应该优先处理</li>
 </ul>
-<h2 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h2><p>为了能在短时间内得到一个较优解，我们的基本原则是：<strong>尽量对代价大的做优化</strong>，从而在有限时间内获得更大的收益。这又可以分成 3 个方面来说：</p>
+<h2 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h2><p>为了能在短时间内得到一个较优解，我们的基本原则是：<strong>尽量对代价大的做优化</strong>，从而尽可能在有限的优化次数内获得更大的收益。这又可以分成三个方面来说：</p>
 <ol>
 <li>优先应用 Transformation Rules 生成各式各样的关系表达式（即优先进行 explore 过程）；</li>
 <li>一般来说，父节点比子节点数据量更大，所以优先处理父节点；</li>
@@ -406,7 +404,7 @@
 <p>PS. 理论上只要是一个小于 1 的系数都可以，不知道为什么这里两个系数不一样。</p>
 <p><strong>2. 如果某个 RelSubset 的 cost 降低了（例如找到了一种 Physical Plan），那么 importance 也应该相应的被更新。</strong></p>
 <ul>
-<li>要更新的不仅是本身所在的一个或多个 RelSubset，还有可能是这些 RelSubset 的父节点、父节点的父节点……所以这是一个向上递归的过程（参考 <code>RelSubset:propagateCostImprovements</code>）</li>
+<li>要更新的不仅是该 Plan 本身所在的一个或多个 RelSubset，还有可能是这些 RelSubset 的父节点、父节点的父节点……所以这是一个向上递归的过程。（参考 <code>RelSubset:propagateCostImprovements</code>）</li>
 </ul>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="https://pdfs.semanticscholar.org/a817/a3e74d1663d9eb35b4baf3161ab16f57df85.pdf" target="_blank" rel="noopener">The Volcano Optimizer Generator: Extensibility and Efficient Search - Goetz Graefe</a></li>
