@@ -94,7 +94,7 @@
 <meta property="og:description" content="Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。 于是问题来了，怎样定义一个 Rule 的优先级？在 Calci">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2018/11/calcite-importance-parent-child.png">
-<meta property="og:updated_time" content="2018-11-05T08:08:26.738Z">
+<meta property="og:updated_time" content="2018-11-05T08:15:55.607Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对 Calcite 优化器中 Importance 的理解">
 <meta name="twitter:description" content="Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把整个搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，对看起来更有希望的 Rule 做处理。 于是问题来了，怎样定义一个 Rule 的优先级？在 Calci">
@@ -389,6 +389,9 @@
 </ul>
 <p><img src="/images/2018/11/calcite-importance-parent-child.png" alt="calcite-importance-parent-child"></p>
 <p>这里说的 cost 是 RelSubset 的 cost，也就是当前这个 RelSubset 的中最佳 Physical Plan 的 cost。DP 算法会保留每个 RelSubset 的最佳 plan 以及对应 cost。</p>
+<blockquote>
+<p>以上参考 <code>RuleQueue:computeImportance(RelSubset)</code></p>
+</blockquote>
 <p>这个定义又引出了下面两个问题：</p>
 <p><strong>1. 如果一个 RelSubset 里还没有 Physical Plan，那它的 cost 是无穷大，怎么处理？</strong></p>
 <ul>
