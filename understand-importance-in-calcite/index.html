@@ -77,6 +77,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
 
@@ -94,7 +96,7 @@
 <meta property="og:description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2018/11/calcite-importance-parent-child.png">
-<meta property="og:updated_time" content="2018-11-05T12:32:54.608Z">
+<meta property="og:updated_time" content="2018-11-05T14:34:49.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Calcite 对 Volcano 优化器优先队列的实现">
 <meta name="twitter:description" content="Apache Calcite 中的 VolcanoPlanner 是对 Volcano/Cascades 优化器的实现。我们知道，Volcano 优化器是在搜索空间中用动态规划（DP）的方式寻找最优解，即使在用了 DP 的情况下，我们也不大可能把搜索空间遍历完。Volcano 的解决方案是定义一个优先队列，优先采用看起来更有希望的 Rule。 于是问题来了，怎样定义一个 Rule 的优先级？论文中">
@@ -363,7 +365,8 @@
 <li>同级的节点中，代价大的一边应该得到更多的优化。</li>
 </ol>
 <p>为了达成 1，我们只要把逻辑算子的代价设为无穷大即可。为了达成 2、3，我们将 importance 和 cost 关联起来——简单来说就是 cost 越大、importance 也越大。</p>
-<h2 id="实现分析"><a href="#实现分析" class="headerlink" title="实现分析"></a>实现分析</h2><p>原理上说，RuleQueue 是一个优先队列，包含当前所有可行的 RuleMatch，<code>findBestExpr()</code> 时每次循环中我们从中取出优先级最高的并 apply，再根据 apply 的结果更新队列……如此往复。</p>
+<h2 id="实现分析"><a href="#实现分析" class="headerlink" title="实现分析"></a>实现分析</h2><p>原理上说，RuleQueue 是一个优先队列，包含当前所有可行的 RuleMatch，<code>findBestExpr()</code> 时每次循环中我们从中取出优先级最高的并 apply，再根据 apply 的结果更新队列……如此往复，直到满足终止条件。</p>
+<p>但因为性能原因，实际上 RuleQueue 没有使用最大堆之类的数据结构，而是每次选出 importance 最大的那个。这是因为经常需要对 RelSubset 的 importance 做大量调整，用最大堆处理得不偿失。</p>
 <p>RuleMatch 的 importance 定义为以下两个中比较大的一个：</p>
 <ol>
 <li>输入的 RelSubset 的 importance</li>
@@ -372,7 +375,7 @@
 <blockquote>
 <p>以上参考 <code>VolcanoRuleMatch:computeImportance</code></p>
 </blockquote>
-<p>那 RelSubset 的 importance 如何决定？这边的实现比较 tricky，<code>subsetImportances</code> 哈希表中保存的并不是 <code>getImportance()</code> 返回的结果。为了区分清楚，我们把 <code>getImportance()</code> 返回的结果称为调整后的 importance，把 <code>subsetImportances</code> 里存的值称为真实 importance。</p>
+<p>那 RelSubset 的 importance 如何决定？这边的实现比较 tricky：RuleQueue 的成员变量 <code>subsetImportances</code> 中保存了各个 RelSubset 的 importance，但这并不是 <code>getImportance()</code> 返回的结果。为了区分清楚，我们把 <code>getImportance()</code> 返回的结果称为调整后的 importance，把 <code>subsetImportances</code> 里存的值称为真实 importance。</p>
 <p><strong>调整后的 importance</strong> 定义为以下两个中比较大的一个：</p>
 <ul>
 <li>该 RelSubset 本身的真实 importance</li>
@@ -395,7 +398,7 @@
 <p>这个定义又引出了下面两个问题：</p>
 <p><strong>1. 如果一个 RelSubset 里还没有 Physical Plan，那它的 cost 是无穷大，怎么处理？</strong></p>
 <ul>
-<li><p>初始设置为 $0.9^n$，其中 n 是 RelSet 所在的层数（参考 <code>VolcanoPlanner:setInitialImportance</code>）</p>
+<li><p>初始设置为 $0.9^n$，其中 $n$ 是 RelSet 所在的层数（参考 <code>VolcanoPlanner:setInitialImportance</code>）</p>
 </li>
 <li><p>其他时候，比例 $\frac{c_{child}}{c_{parent}}$ 限制最大不超过 $0.99$（参考 <code>RuleQueue:computeImportanceOfChild</code>）</p>
 </li>
