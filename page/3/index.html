@@ -262,6 +262,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/docker-pid-1-process-and-zombie-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/docker-pid-1-process-and-zombie-process/" itemprop="url">Docker 容器中 PID 1 导致的 zombie 进程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T16:06:28+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/docker-pid-1-process-and-zombie-process/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="docker-pid-1-process-and-zombie-process/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="PID-1-的责任"><a href="#PID-1-的责任" class="headerlink" title="PID 1 的责任"></a>PID 1 的责任</h2><p>我们知道，在 Linux 内核启动的时候会先启动一个 <code>init</code> 进程，这个进程的 PID 始终为 1，通过 <code>ps</code> 命令你会发现这个进程是很多进程的父进程。</p>
+<p>在 Linux 中，进程是用树来组织的，这个 <code>init</code> 就是根结点，很多重要的系统服务进程例如 <code>sshd</code>，<code>cron</code> 都是 <code>init</code> 的子节点。</p>
+<p><code>init</code> 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起来。经常发生如下的情况，一个进程还没有等到子进程结束（<code>waitpid</code>），自己就因为某些原因退出了，那它的子进程就此时成为孤儿会被 <code>init</code> 接管，<code>init</code> 会很尽责的对他们做 <code>waitpid</code>，从而确保资源不被浪费。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/docker-pid-1-process-and-zombie-process/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ericfu.me/linux-network-namespace-practice/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1485,153 +1622,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/opencv-matrix-calc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/opencv-matrix-calc/" itemprop="url">OpenCV 矩阵运算小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-09T05:54:18+08:00">
-                2016-04-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/opencv-matrix-calc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="opencv-matrix-calc/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 <a href="http://docs.opencv.org/2.4.12/modules/core/doc/basic_structures.html" target="_blank" rel="noopener">这里</a>。</p>
-</blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenCV 里的矩阵分静态和动态两种：</p>
-<ul>
-<li>动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个<strong>头</strong>——包含矩阵内存区域的指针和矩阵的大小、类型等信息。</li>
-<li>静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，<strong>没有额外的存储空间</strong>，矩阵自身的信息都以模板的方式静态编译了。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/opencv-matrix-calc/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1681,7 +1676,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
