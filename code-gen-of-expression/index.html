@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/12/code-generation-banner.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/three-levels-of-code-gen.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/algebra-node-uml.png">
-<meta property="og:updated_time" content="2018-11-28T18:04:33.173Z">
+<meta property="og:updated_time" content="2018-11-29T01:34:03.631Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代码生成技术初探（一）表达式编译">
 <meta name="twitter:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。尤其是对于计算密集型查询、或频繁重复使用的计算过程，运用代码生成技术能达到数十倍的性能提升。">
@@ -378,7 +378,7 @@
 <p>无论是 LLVM IR 还是 Java 都是静态类型的语言，在生成的代码中再去判断类型显然不是个明智的选择。<strong>通常的做法是在编译之前就确定所有值的类型</strong>。幸运的是，表达式和 SQL 执行计划都可以事先做类型推导。</p>
 <p>所以，综上所述，代码生成往往是个 2-pass 的过程：<strong>先做类型推导，再做真正的代码生成</strong>。第一步中，类型推导的同时其实也是在检查表达式是否合法，因此很多地方也称之为<strong>验证（Validate）</strong>。</p>
 <p>在代码生成完成后，调用编译器，我们就编译出了所需的函数（类），直接调用即可得到计算结果。如果函数包含参数，例如上面例子中的 <code>X</code>，每次计算可以传入不同的参数，编译一次、计算多次。</p>
-<p>以下的代码实现都可以在 GitHub 项目 <a href="https://github.com/fuyufjh/calculator" target="_blank" rel="noopener">fuyufjh/calculator</a> 找到。</p>
+<p><strong>以下的代码实现都可以在 GitHub 项目 <a href="https://github.com/fuyufjh/calculator" target="_blank" rel="noopener">fuyufjh/calculator</a> 找到。</strong></p>
 <h2 id="验证（Validate）"><a href="#验证（Validate）" class="headerlink" title="验证（Validate）"></a>验证（Validate）</h2><blockquote>
 <p>为了尽可能简单，例子中仅涉及两种类型：Long 和 Double</p>
 </blockquote>
