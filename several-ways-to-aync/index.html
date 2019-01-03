@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/01/rxjava-example.gif">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/csp-background-problems.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/goroutine-illustration.png">
-<meta property="og:updated_time" content="2019-01-03T14:40:38.254Z">
+<meta property="og:updated_time" content="2019-01-03T14:42:56.882Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="异步编程的几种方式">
 <meta name="twitter:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、Promise、反应式、async/await、用户态线程等异步编程的实现方案。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
@@ -359,10 +359,10 @@
 <p>基于这个思想，线程（Thread）的个数并不受硬件限制：你的程序可以只有一个线程、也可以有成百上千个。操作系统会默默做好调度，让诸多线程共享有限的 CPU 时间片。这个调度的过程对线程是<strong>完全透明</strong>的。</p>
 <p>那么，操作系统是怎样做到在线程无感知的情况下调度呢？答案是<strong>上下文切换（Context Switch）</strong>，简单来说，操作系统利用软中断机制，把程序从任意位置打断，然后保存当前所有寄存器——包括最重要的指令寄存器 PC 和栈顶指针 SP，还有一些线程控制信息（TCB），整个过程会产生<a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">数个微秒的 overhead</a>。</p>
 <p><img src="/images/2019/01/cpu-threads-illustration.jpg" alt=""></p>
-<p>然而作为一位合格的程序员，你一定也听说过，进程是昂贵的：</p>
+<p>然而作为一位合格的程序员，你一定也听说过，线程是昂贵的：</p>
 <ul>
-<li>进程的上下文切换有不少的代价，占用宝贵的 CPU 时间；</li>
-<li>每个进程都会占用一些（至少 1 页）内存。</li>
+<li>线程的上下文切换有不少的代价，占用宝贵的 CPU 时间；</li>
+<li>每个线程都会占用一些（至少 1 页）内存。</li>
 </ul>
 <p>这两个原因驱使我们<strong>尽可能避免创建太多的线程</strong>，而异步编程的目的就是消除 IO wait 阻塞——绝大多数时候，这是我们创建一堆线程、甚至引入线程池的罪魁祸首。</p>
 <h2 id="Continuation"><a href="#Continuation" class="headerlink" title="Continuation"></a>Continuation</h2><p>回调函数知道的人很多，但了解 Continuation 的人不多。Continuation 有时被晦涩地翻译成“计算续体”，咱们还是直接用单词好了。</p>
