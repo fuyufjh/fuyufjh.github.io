@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/01/rxjava-example.gif">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/csp-background-problems.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/goroutine-illustration.png">
-<meta property="og:updated_time" content="2019-01-03T12:05:47.597Z">
+<meta property="og:updated_time" content="2019-01-03T12:08:27.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="异步编程的几种方式">
 <meta name="twitter:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、反应式、async/await 等一系列异步编程的设计模式。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
@@ -382,7 +382,7 @@
 <p>而异步 IO 中，进程发起 IO 操作时也会一并输入回调（也就是 Continuation），这大大解放了生产力——现场无需等待，可以立即返回去做其他事情。一旦IO 成功后，AIO 的 Event Loop 会调用刚刚设置的回调函数，把剩下的工作完成。这种模式有时也被称为 Fire and Forget。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">recv_from_socket((input) -&gt; &#123;</span><br><span class="line">    var result = calculator.calculate(input)</span><br><span class="line">    send_to_socket(result) <span class="comment">// ignore result</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>就这么简单，通过我们自己实现的 Continuation，线程不再受 IO 阻塞，可以自由自在地跑满 CPU。</p>
-<h2 id="一颗语法糖：Promise"><a href="#一颗语法糖：Promise" class="headerlink" title="一颗语法糖：Promise"></a>一颗语法糖：Promise</h2><p>回调函数哪里都好，就是太难用，不然这篇文章到这儿就可以结束了。</p>
+<h2 id="一颗语法糖：Promise"><a href="#一颗语法糖：Promise" class="headerlink" title="一颗语法糖：Promise"></a>一颗语法糖：Promise</h2><p>回调函数哪里都好，就是不大好用，以及太丑了。</p>
 <p>第一个问题是可读性大大下降，由于我们绕开操作系统自制 Continuation，所有函数调用都要传入一个 lambda 表达式，你的代码看起来就像要起飞一样，缩进止不住地往右挪（the “Callback Hell”）。</p>
 <p>第二个问题是各种细节处理起来很麻烦，比如，考虑下异常处理，看来传一个 Continuation 还不够，最好再传个异常处理的 callback。</p>
 <p><strong>Promise 是对异步调用结果的一个封装</strong>，在 Java 中它叫作 CompletableFuture (JDK) 或者 ListenableFuture (Guava)。Promise 有两层含义：</p>
