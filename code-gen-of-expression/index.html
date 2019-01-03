@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/12/three-levels-of-code-gen.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/ast-to-algebra-tree.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/algebra-node-uml.png">
-<meta property="og:updated_time" content="2018-11-30T02:47:03.532Z">
+<meta property="og:updated_time" content="2018-11-30T06:50:54.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代码生成技术初探（一）表达式编译">
 <meta name="twitter:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。尤其是对于计算密集型查询、或频繁重复使用的计算过程，运用代码生成技术能达到数十倍的性能提升。">
@@ -377,11 +377,8 @@
 <h2 id="代码生成基本过程"><a href="#代码生成基本过程" class="headerlink" title="代码生成基本过程"></a>代码生成基本过程</h2><p>代码生成执行，顾名思义，最核心的部分是生成出我们需要的执行代码。</p>
 <p>拜编译器所赐，我们并不需要写难懂的汇编或字节码。在 native 程序中，通常用 LLVM 的中间语言（IR）作为生成代码的语言。而 JVM 上更简单，因为 Java 编译本身很快，利用运行在 JVM 上的轻量级编译器 janino，我们可以直接生成 Java 代码。</p>
 <p>无论是 LLVM IR 还是 Java 都是静态类型的语言，在生成的代码中再去判断类型显然不是个明智的选择。<strong>通常的做法是在编译之前就确定所有值的类型</strong>。幸运的是，表达式和 SQL 执行计划都可以事先做类型推导。</p>
-<p>所以，综上所述，代码生成往往是个 2-pass 的过程：</p>
-<ol>
-<li><strong>先做类型推导，再做真正的代码生成</strong>。第一步中，类型推导的同时其实也是在检查表达式是否合法，因此很多地方也称之为<strong>验证（Validate）</strong>。</li>
-<li>在代码生成完成后，<strong>调用编译器编译</strong>，我们得到了所需的函数（类），调用它即可得到计算结果。如果函数包含参数，例如上面例子中的 <code>X</code>，每次计算可以传入不同的参数，<strong>编译一次、计算多次</strong>。</li>
-</ol>
+<p>所以，综上所述，代码生成往往是个 2-pass 的过程：<strong>先做类型推导，再做真正的代码生成</strong>。第一步中，类型推导的同时其实也是在检查表达式是否合法，因此很多地方也称之为<strong>验证（Validate）</strong>。</p>
+<p>在代码生成完成后，<strong>调用编译器编译</strong>，我们得到了所需的函数（类），调用它即可得到计算结果。如果函数包含参数，例如上面例子中的 <code>X</code>，每次计算可以传入不同的参数，<strong>编译一次、计算多次</strong>。</p>
 <p><strong>以下的代码实现都可以在 GitHub 项目 <a href="https://github.com/fuyufjh/calculator" target="_blank" rel="noopener">fuyufjh/calculator</a> 找到。</strong></p>
 <h2 id="验证（Validate）"><a href="#验证（Validate）" class="headerlink" title="验证（Validate）"></a>验证（Validate）</h2><blockquote>
 <p>为了尽可能简单，例子中仅涉及两种类型：Long 和 Double</p>
@@ -478,6 +475,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/several-ways-to-aync/" rel="prev" title="异步编程的几种方式">
+                异步编程的几种方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -567,7 +568,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-count">87</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -589,7 +590,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -689,7 +690,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
