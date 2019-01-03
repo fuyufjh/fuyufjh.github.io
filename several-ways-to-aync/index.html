@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/01/rxjava-example.gif">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/csp-background-problems.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/goroutine-illustration.png">
-<meta property="og:updated_time" content="2019-01-03T14:37:06.917Z">
+<meta property="og:updated_time" content="2019-01-03T14:40:38.254Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="异步编程的几种方式">
 <meta name="twitter:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、Promise、反应式、async/await、用户态线程等异步编程的实现方案。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
@@ -411,7 +411,7 @@
 <p><img src="/images/2019/01/goroutine-illustration.png" alt=""></p>
 <p>另一方面，所有可能阻塞系统级线程的事情，例如 <code>sleep()</code>、<code>recv()</code> 等，用户态线程一定不能碰，否则它一旦阻塞住也就带着那 8 个系统线程中的一个阻塞了。Go Runtime 接管了所有这样的系统调用，并用一个统一的 Event loop 来轮询和分发。</p>
 <p>另外，由于用户态线程很轻量，我们完全没必要再用线程池，如果需要开线程就直接创建。比如 Java 中的 WebServer 几乎一定有个线程池，而 Go 可以给每个请求开辟一个 goroutine 去处理。并发编程从未如此美好！</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上方案中，Promise、Reactive 本质上还是回调函数，只是框架的存在一定程度上降低了开发者的心智负担。而 <code>async/await</code> 和用户态线程的解决方案要优雅和彻底的多，前者通过编译期的 CPS 变换帮用户创造出 CPS 式的函数调用；后者则绕考操作系统、重新实现一套线程机制，一切调度工作由 Runtime 接管。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上方案中，Promise、Reactive 本质上还是回调函数，只是框架的存在一定程度上降低了开发者的心智负担。而 <code>async/await</code> 和用户态线程的解决方案要优雅和彻底的多，前者通过编译期的 CPS 变换帮用户创造出 CPS 式的函数调用；后者则绕开操作系统、重新实现一套线程机制，一切调度工作由 Runtime 接管。</p>
 <p>不知道是不是因为历史包袱太重，Java 语言本身提供的异步编程支持弱得可怜，即便是 CompletableFuture 还是在 Java 8 才引入，其后果就是很多库都没有异步的支持。虽然 Quasar 在没有语言级支持的情况下引入了 CPS 变换，但是由于缺少周边生态的支持，实际很难用在项目中。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">How long does it take to make a context switch?</a></li>
