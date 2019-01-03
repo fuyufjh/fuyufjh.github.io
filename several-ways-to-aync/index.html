@@ -85,13 +85,13 @@
 
 
 
-<meta name="description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、反应式、async/await 等一系列异步编程的设计模式。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
+<meta name="description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、Promise、反应式、async/await、用户态线程等异步编程的实现方案。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
 <meta name="keywords" content="selected,java,socket">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异步编程的几种方式">
 <meta property="og:url" content="https://ericfu.me/several-ways-to-aync/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、反应式、async/await 等一系列异步编程的设计模式。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
+<meta property="og:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、Promise、反应式、async/await、用户态线程等异步编程的实现方案。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/callbacks-vs-promises-vs-async-await.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/cpu-threads-illustration.jpg">
@@ -99,10 +99,10 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/01/rxjava-example.gif">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/csp-background-problems.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/goroutine-illustration.png">
-<meta property="og:updated_time" content="2019-01-03T12:20:28.454Z">
+<meta property="og:updated_time" content="2019-01-03T14:37:06.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="异步编程的几种方式">
-<meta name="twitter:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、反应式、async/await 等一系列异步编程的设计模式。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
+<meta name="twitter:description" content="近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。 这篇文章会涉及到回调、Promise、反应式、async/await、用户态线程等异步编程的实现方案。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。">
 <meta name="twitter:image" content="https://ericfu.me/images/2019/01/callbacks-vs-promises-vs-async-await.jpg">
 
 
@@ -353,9 +353,9 @@
       
         <p><img src="/images/2019/01/callbacks-vs-promises-vs-async-await.jpg" alt="banner"></p>
 <p>近期尝试在搬砖专用语言 Java 上实现异步，起因和过程就不再详述了，总而言之，心中一万头草泥马奔过。但这个过程也没有白白浪费，趁机回顾了一下各种异步编程的实现。</p>
-<p>这篇文章会涉及到回调、反应式、async/await 等一系列异步编程的设计模式。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。</p>
+<p>这篇文章会涉及到回调、Promise、反应式、async/await、用户态线程等异步编程的实现方案。如果你熟悉它们中的一两种，那应该也能很快理解其他几个。</p>
 <a id="more"></a>
-<h2 id="为什么需要异步？"><a href="#为什么需要异步？" class="headerlink" title="为什么需要异步？"></a>为什么需要异步？</h2><p>操作系统可以看作是个虚拟机（VM），进程都活在操作系统创造的虚拟世界里。进程不用知道到底有多少 core 多少内存，只要进程不要索取的太过分，操作系统就假装有无限多的资源可用。</p>
+<h2 id="为什么需要异步？"><a href="#为什么需要异步？" class="headerlink" title="为什么需要异步？"></a>为什么需要异步？</h2><p>操作系统可以看作是个虚拟机（VM），进程生活在操作系统创造的虚拟世界里。进程不用知道到底有多少 core 多少内存，只要进程不要索取的太过分，操作系统就假装有无限多的资源可用。</p>
 <p>基于这个思想，线程（Thread）的个数并不受硬件限制：你的程序可以只有一个线程、也可以有成百上千个。操作系统会默默做好调度，让诸多线程共享有限的 CPU 时间片。这个调度的过程对线程是<strong>完全透明</strong>的。</p>
 <p>那么，操作系统是怎样做到在线程无感知的情况下调度呢？答案是<strong>上下文切换（Context Switch）</strong>，简单来说，操作系统利用软中断机制，把程序从任意位置打断，然后保存当前所有寄存器——包括最重要的指令寄存器 PC 和栈顶指针 SP，还有一些线程控制信息（TCB），整个过程会产生<a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">数个微秒的 overhead</a>。</p>
 <p><img src="/images/2019/01/cpu-threads-illustration.jpg" alt=""></p>
@@ -393,7 +393,7 @@
 <h2 id="反应式编程"><a href="#反应式编程" class="headerlink" title="反应式编程"></a>反应式编程</h2><p>反应式（Reactive）最早源于函数式编程中的一种模式，随着微软发起 ReactiveX 项目并一步步壮大，被移植到各种语言和平台上。Reactive 最初在 GUI 编程中有广泛的应用，由于异步调用的高性能，很快也在服务器后端领域遍地开花。</p>
 <p><strong>Reactive 可以看作是对 Promise 的极大增强，相比 Promise，反应式引入了流（Flow）的概念</strong>。ReactiveX 中的事件流从一个 Observable 对象流出，这个对象可以是一个按钮，也可以是 Restful API，总之，它能被外界触发。与 Promise 不同的是，事件可能被触发多次，所以处理代码也会被多次调用。</p>
 <p>一旦允许调用多次，<strong>从数据流动的角度看，事实上模型已经是 Push 而非 Pull</strong>。那么问题来了，如果调用频率非常高，以至于我们处理速度跟不上了怎么办？所以 RX 框架又引入了  Backpressure 机制来进行流控，最简单的流控方式就是：一旦 buffer 满，就丢弃掉之后的事件。</p>
-<p>ReactiveX 框架的另一个优点是内置了很多好用的算子，比如：<code>merge</code>（Flow 合并），<code>debounce</code>（开关除颤）等等，方便了业务开发。</p>
+<p>ReactiveX 框架的另一个优点是内置了很多好用的算子，比如：<code>merge</code>（Flow 合并），<code>debounce</code>（开关除颤）等等，方便了业务开发。下面是一个 RxJava 的例子：</p>
 <p><img src="/images/2019/01/rxjava-example.gif" alt=""></p>
 <h2 id="CPS-变换：async-await"><a href="#CPS-变换：async-await" class="headerlink" title="CPS 变换：async/await"></a>CPS 变换：async/await</h2><p>无论是反应式还是 Promise，说到底仍然没有摆脱手工构造 Continuation：开发者要把业务逻辑写成回调函数。对于线性的逻辑基本可以应付自如，但是如果逻辑复杂一点呢？（比如，考虑下包含循环的情况）</p>
 <p><img src="/images/2019/01/csp-background-problems.jpg" alt=""></p>
@@ -411,15 +411,16 @@
 <p><img src="/images/2019/01/goroutine-illustration.png" alt=""></p>
 <p>另一方面，所有可能阻塞系统级线程的事情，例如 <code>sleep()</code>、<code>recv()</code> 等，用户态线程一定不能碰，否则它一旦阻塞住也就带着那 8 个系统线程中的一个阻塞了。Go Runtime 接管了所有这样的系统调用，并用一个统一的 Event loop 来轮询和分发。</p>
 <p>另外，由于用户态线程很轻量，我们完全没必要再用线程池，如果需要开线程就直接创建。比如 Java 中的 WebServer 几乎一定有个线程池，而 Go 可以给每个请求开辟一个 goroutine 去处理。并发编程从未如此美好！</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上方案中，Promise、Reactive 本质上还是回调函数，只是框架的存在一定程度上降低了开发者的心智负担。而 <code>async/await</code> 和用户态线程的解决方案要优雅和彻底的多，前者通过编译器的 CPS 变换帮助用户创造出 CPS 风格的调用；后者则避开操作系统重新实现线程机制，调度工作由 Runtime 接管。</p>
-<p>不知道是不是因为历史包袱太重，Java 语言本身提供的异步编程支持弱得可怜，即便是 CompletableFuture 还是在 Java 8 才引入，其后果就是很多库都没有异步的支持。即使 Quasar 在没有语言级支持的情况下引入了 CPS 变换，但是由于缺少周边生态的支持，实际很难用在项目中。</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上方案中，Promise、Reactive 本质上还是回调函数，只是框架的存在一定程度上降低了开发者的心智负担。而 <code>async/await</code> 和用户态线程的解决方案要优雅和彻底的多，前者通过编译期的 CPS 变换帮用户创造出 CPS 式的函数调用；后者则绕考操作系统、重新实现一套线程机制，一切调度工作由 Runtime 接管。</p>
+<p>不知道是不是因为历史包袱太重，Java 语言本身提供的异步编程支持弱得可怜，即便是 CompletableFuture 还是在 Java 8 才引入，其后果就是很多库都没有异步的支持。虽然 Quasar 在没有语言级支持的情况下引入了 CPS 变换，但是由于缺少周边生态的支持，实际很难用在项目中。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank" rel="noopener">How long does it take to make a context switch?</a></li>
 <li><a href="http://reactivex.io/" target="_blank" rel="noopener">ReactiveX</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/25964339" target="_blank" rel="noopener">考不上三本也能给自己心爱的语言加上 Coroutine</a></li>
 <li><a href="http://docs.paralleluniverse.co/quasar/" target="_blank" rel="noopener">Quasar</a></li>
 <li><a href="http://morsmachine.dk/go-scheduler" target="_blank" rel="noopener">The Go scheduler</a></li>
-</ul>
+<li><a href="https://medium.com/@ThatGuyTinus/callbacks-vs-promises-vs-async-await-f65ed7c2b9b4" target="_blank" rel="noopener">Callbacks VS Promises VS Async/Await</a></li>
+</ol>
 
       
     </div>
