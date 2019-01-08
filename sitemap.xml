@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/completable-future-not-so-bad/</loc>
+    
+    <lastmod>2019-01-08T16:48:43.666Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/several-ways-to-aync/</loc>
     
-    <lastmod>2019-01-04T07:57:45.057Z</lastmod>
+    <lastmod>2019-01-08T16:42:18.406Z</lastmod>
     
   </url>
   

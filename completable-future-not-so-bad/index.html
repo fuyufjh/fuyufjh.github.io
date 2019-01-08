@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=5.1.3" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="selected,java,async," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：  thenApply：拿到结果后对其 apply 一个函数，返回一个新的值 thenApply(T -&amp;gt; R) thenCompose：拿到结果后其 apply 一个函数，返回一个新">
+<meta name="keywords" content="selected,java,async">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CompletableFuture 也没有那么废柴嘛！">
+<meta property="og:url" content="https://ericfu.me/completable-future-not-so-bad/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：  thenApply：拿到结果后对其 apply 一个函数，返回一个新的值 thenApply(T -&amp;gt; R) thenCompose：拿到结果后其 apply 一个函数，返回一个新">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ericfu.me/images/2019/01/flow-graph-iterator.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/01/flow-graph-async.png">
+<meta property="og:updated_time" content="2019-01-08T16:48:43.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CompletableFuture 也没有那么废柴嘛！">
+<meta name="twitter:description" content="我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：  thenApply：拿到结果后对其 apply 一个函数，返回一个新的值 thenApply(T -&amp;gt; R) thenCompose：拿到结果后其 apply 一个函数，返回一个新">
+<meta name="twitter:image" content="https://ericfu.me/images/2019/01/flow-graph-iterator.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ericfu.me/completable-future-not-so-bad/"/>
+
+
+
+
+
+  <title>CompletableFuture 也没有那么废柴嘛！ | Coding Husky</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71209065-1', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/completable-future-not-so-bad/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CompletableFuture 也没有那么废柴嘛！</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-09T00:09:05+08:00">
+                2019-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/completable-future-not-so-bad/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="completable-future-not-so-bad/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：</p>
+<ul>
+<li><code>thenApply</code>：拿到结果后对其 apply 一个函数，返回一个新的值 <code>thenApply(T -&gt; R)</code></li>
+<li><code>thenCompose</code>：拿到结果后其 apply 一个函数，返回一个新的 CompletableFuture <code>thenCompose(T -&gt; CompletableFuture&lt;R&gt;)</code></li>
+<li><code>thenAccept</code>：拿到结果后消费它，不需要返回结果 <code>thenAccept(Consumer&lt;T&gt;)</code></li>
+</ul>
+<p>如果不引入任何第三方库，CompletableFuture 仍是目前 Java 上最好的异步编程方式。之前一直觉得这个东西难用，直到我想明白一件事，证明了 CompletableFuture 虽然麻烦了点但是能做任何事情，然后用它的时候心里就没有这么膈应了。</p>
+<p>本文会以一个例子来讲解：如何把<strong>任意函数</strong>转换成异步调用风格。用不用 CompletableFuture 倒是其次的，这项技术更多的是在于编程本身。 </p>
+<a id="more"></a>
+<p>这篇文章不会谈论太多 CompletableFuture 的用法，你可以参考 Javadoc 或者<a href="https://colobu.com/2016/02/29/Java-CompletableFuture/" target="_blank" rel="noopener">这篇文章</a>。</p>
+<h2 id="证明-CompletableFuture-是足够的"><a href="#证明-CompletableFuture-是足够的" class="headerlink" title="证明 CompletableFuture 是足够的"></a>证明 CompletableFuture 是足够的</h2><p>首先来（极不严谨地）说明一件事情，<strong>为什么 CompletableFuture 是足够用的</strong>，换句话说，证明 <strong>CompletableFuture 能表达一切计算流程</strong>。</p>
+<p>如果你有一些函数式编程的基础，比如会一点 Haskell，这就是一句话的事情：CompletableFuture 其实是一个 Monad —— 因为它的 <code>thenCompose</code> 实现了 Monad 的 <code>&gt;&gt;=</code> 操作符。既然 Monad 能用来表示任何计算过程，CompletableFuture 当然也能。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="type">Applicative</span> m =&gt; <span class="type">Monad</span> (<span class="title">m</span> :: * -&gt; *) <span class="keyword">where</span></span></span><br><span class="line">  (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b  <span class="comment">-- thenCompose 实现了它 </span></span><br><span class="line">  (&gt;&gt;) :: m a -&gt; m b -&gt; m b</span><br><span class="line">  return :: a -&gt; m a</span><br><span class="line">  fail :: <span class="type">String</span> -&gt; m a</span><br><span class="line">  <span class="meta">&#123;-# MINIMAL (&gt;&gt;=) #-&#125;</span> <span class="comment">-- 这是在说：只要实现 (&gt;&gt;=) 就够了</span></span><br></pre></td></tr></table></figure>
+<p>其实想想也很明白，Monad 表示一个带 context 的计算过程，比如可能抛异常之类的（纯函数是不会抛异常的）。CompletableFuture 也一样，他包裹一串计算过程并且处理异常。</p>
+<p>如果看不懂上面的也没关系，我们用另一种方式再说明一下：</p>
+<p>任何程序的流程控制都可以用 <code>if</code> 和 <code>goto</code> 来组合起来。无论是 <code>for</code> 还是 <code>while</code> 循环，desurge 之后不过就是 <code>if</code> 和 <code>goto</code> 的组合。<strong>通过 <code>thenCompose</code> 就可以表达 <code>if</code> 和 <code>goto</code></strong>：</p>
+<blockquote>
+<p>这里说的不够严谨，其实 if 也是 surge，最终会变成条件跳转指令。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cf.thenCompose(v -&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (v &lt; <span class="number">100</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> doStage1(); <span class="comment">// doStage1() 返回一个 CompletableFuture，决定下一步做什么，相当于 goto</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> doStage2(); <span class="comment">// 同上</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>你看这个例子，<code>if</code> 和 <code>goto</code> 都有了，所以无论程序的控制流多复杂，我们都能组合出来。怎么组合？别急，下面我们就来讲这个。</p>
+<h2 id="CompletableFuture-in-Practice"><a href="#CompletableFuture-in-Practice" class="headerlink" title="CompletableFuture in Practice"></a>CompletableFuture in Practice</h2><p>我们从一个普通的函数开始。考虑到复杂性和完整性，我们用 <em>Merge 2 Sorted Streams</em> 作为演示，如果你不清楚这个是干嘛的，可以先做一下<a href="https://leetcode.com/problems/merge-sorted-array/" target="_blank" rel="noopener">这道算法题</a>。</p>
+<p>下面是最普通的实现，输入两个数组，输出一个数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream <span class="title">merge</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">    List&lt;Integer&gt; results = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    Integer headA = inputA.next();</span><br><span class="line">    Integer headB = inputB.next();</span><br><span class="line">    <span class="keyword">while</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">            results.add(headB);</span><br><span class="line">            headB = inputB.next();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            results.add(headA);</span><br><span class="line">            headA = inputA.next();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Stream(results);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stream</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Queue&lt;Integer&gt; numbers;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Stream</span><span class="params">(List&lt;Integer&gt; numbers)</span> </span>&#123; <span class="keyword">this</span>.numbers = <span class="keyword">new</span> LinkedList&lt;&gt;(numbers); &#125;</span><br><span class="line">    <span class="keyword">public</span> Integer &#123; <span class="keyword">return</span> numbers.poll(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个实现有什么问题呢？作为算法足够 OK。但是从工程意义上说，如果输入的 Stream 很大，包含 million 级的元素，那更好的方式是把 Stream 的输入输出作为 Iterator，只在 <code>next()</code> 的时候计算下一个需要的元素。这样内存占用是常数级的，完全不用担心数据量过大呢！</p>
+<p>为了看清一步一步的变化过程，我们先假装 Java 有 <a href="https://wiki.python.org/moin/Generators" target="_blank" rel="noopener">Generator 语法</a>。标记为 Generator 的函数不再是一个函数，而是类似一个 Iterator。一旦调用 <code>next()</code>，“函数”代码运行到 <code>yield</code> 返回一个值，然后函数似乎<strong>停在</strong>了这里。下次 <code>next()</code>，“函数”又接着刚刚的地方运行。</p>
+<p>如果有 Generator 的话，函数应该长下面这样，注意 <code>[yield]</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream <span class="title">merge</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">    Integer headA = inputA.next();</span><br><span class="line">    Integer headB = inputB.next();</span><br><span class="line">    <span class="keyword">while</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">            [yield] headB;</span><br><span class="line">            headB = inputB.next();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            [yield] headA;</span><br><span class="line">            headA = inputA.next();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    [yield] <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>哇，这个函数几乎没有改动，真是太方便了！（然而并没有卵用）</p>
+<h2 id="Function-→-Iterator"><a href="#Function-→-Iterator" class="headerlink" title="Function → Iterator"></a>Function → Iterator</h2><p>现在我们回到现实：Java 并没有 Generator 语法，所以我们要人肉实现一个 Generator。</p>
+<p>为了通用性，首先做一个 desurge，把 while 循环改成 <code>if</code> 和 <code>goto</code> 的组合，这太简单了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream <span class="title">merge</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">    Integer headA = inputA.next();</span><br><span class="line">    Integer headB = inputB.next();</span><br><span class="line">    WHILE_LOOP:</span><br><span class="line">    <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">            [yield] headB;</span><br><span class="line">            headB = inputB.next();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            [yield] headA;</span><br><span class="line">            headA = inputA.next();</span><br><span class="line">        &#125;</span><br><span class="line">        goto WHILE_LOOP; <span class="comment">// again，假设 Java 也有 goto</span></span><br><span class="line">    &#125;</span><br><span class="line">    [yield] <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下一步是去掉 <code>yield</code>，刚刚说到 Generator 的每次 <code>next()</code> 似乎会让函数<strong>停在</strong>一个地方，如何实现<strong>停在</strong>一个地方？记下来呗！加一个标记<strong>状态</strong>的变量，这个状态会告诉我下次 <code>next()</code> 的时候从哪里继续运行。</p>
+<p>首先画出函数的控制流图，然后做一件事：想象所有的 <code>yield</code> 之后都有一个断点，我们在断点处切开，标记它为某个 State，这样下次 <code>next()</code> 的时候就能从断点继续。</p>
+<p>下图的 S0 ～ S2 是我标记好的断点，S0 就是起始位置，S1 是两个 <code>yield result</code> 之后断下来的地方（恰好是同一个地方），S2 是 <code>yield null</code> 之后断下来的地方。</p>
+<p><img src="/images/2019/01/flow-graph-iterator.png" alt="flow-graph -1-"></p>
+<p>我们按照图中的 <code>State</code> 标记机械地把它切开，就得到了下面这个类，它就是由 <code>merge()</code> 变换得到的 Generator：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Merger</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123; </span><br><span class="line">    <span class="comment">// Arguments</span></span><br><span class="line">    <span class="keyword">final</span> Iterator inputA;</span><br><span class="line">    <span class="keyword">final</span> Iterator inputB;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Internal states</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> state = <span class="number">0</span>; <span class="comment">// 我们加上的状态变量</span></span><br><span class="line">    <span class="keyword">private</span> Integer headA; <span class="comment">// 变换前的局部变量，因为跨了多次 next() 调用，不能再是局部变量了</span></span><br><span class="line">    <span class="keyword">private</span> Integer headB; <span class="comment">// 同上</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Merger</span><span class="params">(Iterator inputA, Iterator inputB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.inputA = inputA;</span><br><span class="line">        <span class="keyword">this</span>.inputB = inputB;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123; <span class="comment">// 这个循环是有用的，往下看几行</span></span><br><span class="line">            <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                headA = inputA.next();</span><br><span class="line">                headB = inputB.next();</span><br><span class="line">                state = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>; <span class="comment">// 这里就用上了外层的循环</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB ) &#123;</span><br><span class="line">                        <span class="keyword">final</span> <span class="keyword">int</span> result = headB;</span><br><span class="line">                        headB = inputB.next();</span><br><span class="line">                        state = <span class="number">1</span>; <span class="comment">// 可以省略</span></span><br><span class="line">                        <span class="keyword">return</span> result; <span class="comment">// 变换前是 yield result</span></span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="keyword">final</span> <span class="keyword">int</span> result = headA;</span><br><span class="line">                        headA = inputA.next();</span><br><span class="line">                        state = <span class="number">1</span>; <span class="comment">// 可以省略</span></span><br><span class="line">                        <span class="keyword">return</span> result; <span class="comment">// 变换前是 yield result</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    state = <span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">null</span>; <span class="comment">// 变换前是 yield null</span></span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="comment">// Generator 已经终结了（变换前：函数已经走到底了）</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Generator has been exhausted!"</span>);</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"Unreachable!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>别急，最后我们会简化这些充满废话的代码。</p>
+</blockquote>
+<p>阶段性总结一下：到现在为止，我们做了一件伟大的事情——<strong>把一个函数变成了 Iterator，函数已经不再是函数，而是一个状态机，这个状态记录了下次调用 <code>next()</code> 需要从哪继续</strong>。</p>
+<blockquote>
+<p>套用一下术语：“从哪继续”就是 <a href="https://en.wikipedia.org/wiki/Continuation" target="_blank" rel="noopener">Continuation</a>，把 Continuation 搞出来的这个过程称为 <a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="_blank" rel="noopener">CPS 变换</a>。</p>
+</blockquote>
+<h2 id="Iterator-→-AsyncIterator"><a href="#Iterator-→-AsyncIterator" class="headerlink" title="Iterator → AsyncIterator"></a>Iterator → AsyncIterator</h2><p>呃…… 说好的 CompletableFuture 呢？离 CompletableFuture 只有一步之遥了！</p>
+<p>先从接口下手。想象两个 Stream Input 都是从 IO 拿到的数据，所以每次 <code>next()</code> 其实背后都是一次 IO，应该把它用 CompletableFuture 包成异步的，接口大概长这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">AsyncIterator</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">CompletableFuture&lt;T&gt; <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>类似刚刚引入 Generator 一样，我们再假装有 <code>await</code> 关键字。<code>await</code> 关键字表示异步地等待结果返回，有了它，函数就魔法般的暂停在等待异步 IO 的地方：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream <span class="title">merge</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">    Integer headA = inputA.next();</span><br><span class="line">    Integer headB = inputB.next();</span><br><span class="line">    WHILE_LOOP:</span><br><span class="line">    <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">            Integer result = headB;</span><br><span class="line">            headB = [await] inputB.next(); <span class="comment">// await 会魔法般地等待 next() 完成再继续运行</span></span><br><span class="line">            [yield] result;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Integer result = headA;</span><br><span class="line">            headA = [await] inputA.next();</span><br><span class="line">            [yield] result;</span><br><span class="line">        &#125;</span><br><span class="line">        goto WHILE_LOOP;</span><br><span class="line">    &#125;</span><br><span class="line">    [yield] <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为 <code>await</code> 也会暂停这个“函数”，所以和刚刚对 <code>yield</code> 的处理一样，我们想象 <code>await</code> 这里有一个断点，我们也要为它设置 State 标记：</p>
+<p><img src="/images/2019/01/flow-graph-async.png" alt="flow-graph -1-"></p>
+<p>糟糕！这状态数有点多啊！好在 Java 8 提供了 Lambda 表达式，和 CompletableFuture 搭配使用效果更佳。图中的大多数状态都可以借助 Lambda 表达式来实现，节约了不少代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Merger</span> <span class="keyword">implements</span> <span class="title">AsyncIterator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// Arguments</span></span><br><span class="line">    <span class="keyword">final</span> Stream inputA;</span><br><span class="line">    <span class="keyword">final</span> Stream inputB;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Internal states</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> state = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer headA;</span><br><span class="line">    <span class="keyword">private</span> Integer headB;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Merger</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.inputA = inputA;</span><br><span class="line">        <span class="keyword">this</span>.inputB = inputB;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CompletableFuture&lt;Integer&gt; <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> inputA.next().thenCompose(a -&gt; &#123; <span class="comment">// State 1 在这里！</span></span><br><span class="line">                headA = a;</span><br><span class="line">                <span class="keyword">return</span> inputB.next();</span><br><span class="line">            &#125;).thenCompose(b -&gt; &#123; <span class="comment">// State 2 在这里！</span></span><br><span class="line">                headB = b;</span><br><span class="line">                state = <span class="number">3</span>;</span><br><span class="line">                <span class="keyword">return</span> next(); <span class="comment">// 相当于原来的外层循环</span></span><br><span class="line">            &#125;);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headB;</span><br><span class="line">                    <span class="keyword">return</span> inputB.next().thenCompose(b -&gt; &#123; <span class="comment">// State 4 在这里！</span></span><br><span class="line">                        headB = b;</span><br><span class="line">                        state = <span class="number">3</span>; <span class="comment">// 可以省略</span></span><br><span class="line">                        <span class="keyword">return</span> CompletableFuture.completedFuture(result);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headA;</span><br><span class="line">                    <span class="keyword">return</span> inputA.next().thenCompose(a -&gt; &#123; <span class="comment">// State 5 在这里！</span></span><br><span class="line">                        headA = a;</span><br><span class="line">                        state = <span class="number">3</span>; <span class="comment">// 可以省略</span></span><br><span class="line">                        <span class="keyword">return</span> CompletableFuture.completedFuture(result);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                state = <span class="number">6</span>;</span><br><span class="line">                <span class="keyword">return</span> CompletableFuture.completedFuture(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Generator has been exhausted!"</span>);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"Unreachable!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Refinement"><a href="#Refinement" class="headerlink" title="Refinement"></a>Refinement</h2><p>上面我们只用了 <code>thenCompose</code>，理论上这是 OK 的，但是实际上 CompletableFuture 有上百个方法，最合适的才是坠吼的。</p>
+<ul>
+<li>如果仅仅是返回一个值（而非阶段），可以用 <code>thenApply</code>；</li>
+<li><code>thenCombine</code> 等待两个 CompletableFuture 都完成了再去调用 BiFunction <code>(T, U) -&gt; R</code> 来消费。</li>
+</ul>
+<blockquote>
+<p>思考题：有兴趣的读者可以思考一下 <code>thenCombine</code> 的实现。</p>
+</blockquote>
+<p>整理一下上面的代码，比如这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Merger</span> </span>&#123;</span><br><span class="line">    <span class="comment">// States</span></span><br><span class="line">    <span class="keyword">enum</span> State &#123; START, ITERATING, DONE &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Arguments</span></span><br><span class="line">    <span class="keyword">final</span> Stream inputA;</span><br><span class="line">    <span class="keyword">final</span> Stream inputB;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Internal states</span></span><br><span class="line">    <span class="keyword">private</span> State state = State.START;</span><br><span class="line">    <span class="keyword">private</span> Integer headA;</span><br><span class="line">    <span class="keyword">private</span> Integer headB;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Merger</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.inputA = inputA;</span><br><span class="line">        <span class="keyword">this</span>.inputB = inputB;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> CompletableFuture&lt;Integer&gt; <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">        <span class="keyword">case</span> START:</span><br><span class="line">            <span class="comment">// 这里做了小小的优化：这两个 next() 可以并行等待</span></span><br><span class="line">            <span class="keyword">return</span> inputA.next().thenCombine(inputB.next(), (a, b) -&gt; &#123;</span><br><span class="line">                headA = a;</span><br><span class="line">                headB = b;</span><br><span class="line">                state = State.ITERATING;</span><br><span class="line">                <span class="keyword">return</span> (Void)<span class="keyword">null</span>;</span><br><span class="line">            &#125;).thenCompose(__ -&gt; next());</span><br><span class="line">        <span class="keyword">case</span> ITERATING:</span><br><span class="line">            <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headB;</span><br><span class="line">                    <span class="keyword">return</span> inputB.next().thenApply(b -&gt; &#123; <span class="comment">// thenCompose 某个值 &lt;=&gt; thenApply</span></span><br><span class="line">                        headB = b;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headA;</span><br><span class="line">                    <span class="keyword">return</span> inputA.next().thenApply(a -&gt; &#123; <span class="comment">// 同上</span></span><br><span class="line">                        headA = a;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                state = State.DONE;</span><br><span class="line">                <span class="keyword">return</span> CompletableFuture.completedFuture(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> DONE:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Generator has been exhausted!"</span>);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"Unreachable!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>任何函数都可以用 CompletableFuture 实现异步化，最通用的方式如下：</p>
+<ol>
+<li>在函数里加上 <code>yield</code>（返回下一个结果）和 <code>await</code>（等待输入值）来标记断点；</li>
+<li>画出控制流图，注意要在 <code>yield</code> 和 <code>await</code> 处断开，断开处标记为状态；</li>
+<li>实现一个状态机类，把控制流图中的代码块、状态都无脑填进去，搞定。</li>
+</ol>
+<p>这一刻，我们都是（人肉）编译器。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Eric Fu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://ericfu.me/completable-future-not-so-bad/" title="CompletableFuture 也没有那么废柴嘛！">https://ericfu.me/completable-future-not-so-bad/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+          
+            
+              <a href="/tags/java/" rel="tag"># java</a>
+            
+          
+            
+              <a href="/tags/async/" rel="tag"># async</a>
+            
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/several-ways-to-aync/" rel="next" title="异步编程的几种方式">
+                <i class="fa fa-chevron-left"></i> 异步编程的几种方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/2015/12/HuskyAvatar.jpg"
+                alt="Eric Fu" />
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#证明-CompletableFuture-是足够的"><span class="nav-number">1.</span> <span class="nav-text">证明 CompletableFuture 是足够的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CompletableFuture-in-Practice"><span class="nav-number">2.</span> <span class="nav-text">CompletableFuture in Practice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function-→-Iterator"><span class="nav-number">3.</span> <span class="nav-text">Function → Iterator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Iterator-→-AsyncIterator"><span class="nav-number">4.</span> <span class="nav-text">Iterator → AsyncIterator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refinement"><span class="nav-number">5.</span> <span class="nav-text">Refinement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ericfu.me/completable-future-not-so-bad/';
+          this.page.identifier = 'completable-future-not-so-bad/';
+          this.page.title = 'CompletableFuture 也没有那么废柴嘛！';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ericfu.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

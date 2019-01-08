@@ -262,6 +262,148 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/completable-future-not-so-bad/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/completable-future-not-so-bad/" itemprop="url">CompletableFuture 也没有那么废柴嘛！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-09T00:09:05+08:00">
+                2019-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/completable-future-not-so-bad/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="completable-future-not-so-bad/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：</p>
+<ul>
+<li><code>thenApply</code>：拿到结果后对其 apply 一个函数，返回一个新的值 <code>thenApply(T -&gt; R)</code></li>
+<li><code>thenCompose</code>：拿到结果后其 apply 一个函数，返回一个新的 CompletableFuture <code>thenCompose(T -&gt; CompletableFuture&lt;R&gt;)</code></li>
+<li><code>thenAccept</code>：拿到结果后消费它，不需要返回结果 <code>thenAccept(Consumer&lt;T&gt;)</code></li>
+</ul>
+<p>如果不引入任何第三方库，CompletableFuture 仍是目前 Java 上最好的异步编程方式。之前一直觉得这个东西难用，直到我想明白一件事，证明了 CompletableFuture 虽然麻烦了点但是能做任何事情，然后用它的时候心里就没有这么膈应了。</p>
+<p>本文会以一个例子来讲解：如何把<strong>任意函数</strong>转换成异步调用风格。用不用 CompletableFuture 倒是其次的，这项技术更多的是在于编程本身。 </p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/completable-future-not-so-bad/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ericfu.me/several-ways-to-aync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1496,143 +1638,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/index-fund-guide-notes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/index-fund-guide-notes/" itemprop="url">《指数基金投资指南》读书笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T00:08:14+08:00">
-                2018-02-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/index-fund-guide-notes/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="index-fund-guide-notes/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="/images/2018/02/index-fund-guide-book.jpg" alt=""></p>
-<p>最近程序员圈子悄悄流行起斯坦福的 <a href="https://cs007.blog/" target="_blank" rel="noopener">CS 007: Personal Finance For Engineers</a> 课程，每个人都应该有所了解。但在如何投资的问题上，课程并没有给出适合我国国情的操作建议。</p>
-<p>在雪球潜水多年，其中有位大 V 近期出版了适合所有人的《指数基金投资指南》，读后收益良多，故将读书笔记分享到这里，备忘。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/index-fund-guide-notes/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1687,7 +1692,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1709,7 +1714,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
