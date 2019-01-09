@@ -78,8 +78,6 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="Coding Husky" type="application/atom+xml" />
-
 
 
 
@@ -95,7 +93,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/flow-graph-iterator.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/01/flow-graph-async.png">
-<meta property="og:updated_time" content="2019-01-08T17:00:36.756Z">
+<meta property="og:updated_time" content="2019-01-09T02:14:59.959Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CompletableFuture 也没有那么废柴嘛！">
 <meta name="twitter:description" content="我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：  thenApply：拿到结果后对其 apply 一个函数，返回一个新的值 thenApply(T -&amp;gt; R) thenCompose：拿到结果后其 apply 一个函数，返回一个新">
@@ -109,7 +107,7 @@
     root: '/',
     scheme: 'Gemini',
     version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -410,7 +408,7 @@
 <p>思考题：有兴趣的读者可以思考一下 <code>thenCombine</code> 的实现。</p>
 </blockquote>
 <p>整理一下上面的代码，比如这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Merger</span> </span>&#123;</span><br><span class="line">    <span class="comment">// States</span></span><br><span class="line">    <span class="keyword">enum</span> State &#123; START, ITERATING, DONE &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Arguments</span></span><br><span class="line">    <span class="keyword">final</span> Stream inputA;</span><br><span class="line">    <span class="keyword">final</span> Stream inputB;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Internal states</span></span><br><span class="line">    <span class="keyword">private</span> State state = State.START;</span><br><span class="line">    <span class="keyword">private</span> Integer headA;</span><br><span class="line">    <span class="keyword">private</span> Integer headB;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Merger</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.inputA = inputA;</span><br><span class="line">        <span class="keyword">this</span>.inputB = inputB;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> CompletableFuture&lt;Integer&gt; <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">        <span class="keyword">case</span> START:</span><br><span class="line">            <span class="comment">// 这里做了小小的优化：这两个 next() 可以并行等待</span></span><br><span class="line">            <span class="keyword">return</span> inputA.next().thenCombine(inputB.next(), (a, b) -&gt; &#123;</span><br><span class="line">                headA = a;</span><br><span class="line">                headB = b;</span><br><span class="line">                state = State.ITERATING;</span><br><span class="line">                <span class="keyword">return</span> (Void)<span class="keyword">null</span>;</span><br><span class="line">            &#125;).thenCompose(__ -&gt; next());</span><br><span class="line">        <span class="keyword">case</span> ITERATING:</span><br><span class="line">            <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headB;</span><br><span class="line">                    <span class="keyword">return</span> inputB.next().thenApply(b -&gt; &#123; <span class="comment">// thenCompose 某个值 &lt;=&gt; thenApply</span></span><br><span class="line">                        headB = b;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headA;</span><br><span class="line">                    <span class="keyword">return</span> inputA.next().thenApply(a -&gt; &#123; <span class="comment">// 同上</span></span><br><span class="line">                        headA = a;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                state = State.DONE;</span><br><span class="line">                <span class="keyword">return</span> CompletableFuture.completedFuture(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> DONE:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Generator has been exhausted!"</span>);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"Unreachable!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Merger</span> <span class="keyword">implements</span> <span class="title">AsyncIterator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// States</span></span><br><span class="line">    <span class="keyword">enum</span> State &#123; START, ITERATING, DONE &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Arguments</span></span><br><span class="line">    <span class="keyword">final</span> Stream inputA;</span><br><span class="line">    <span class="keyword">final</span> Stream inputB;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Internal states</span></span><br><span class="line">    <span class="keyword">private</span> State state = State.START;</span><br><span class="line">    <span class="keyword">private</span> Integer headA;</span><br><span class="line">    <span class="keyword">private</span> Integer headB;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Merger</span><span class="params">(Stream inputA, Stream inputB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.inputA = inputA;</span><br><span class="line">        <span class="keyword">this</span>.inputB = inputB;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> CompletableFuture&lt;Integer&gt; <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">        <span class="keyword">case</span> START:</span><br><span class="line">            <span class="comment">// 这里做了小小的优化：这两个 next() 可以并行等待</span></span><br><span class="line">            <span class="keyword">return</span> inputA.next().thenCombine(inputB.next(), (a, b) -&gt; &#123;</span><br><span class="line">                headA = a;</span><br><span class="line">                headB = b;</span><br><span class="line">                state = State.ITERATING;</span><br><span class="line">                <span class="keyword">return</span> (Void)<span class="keyword">null</span>;</span><br><span class="line">            &#125;).thenCompose(__ -&gt; next());</span><br><span class="line">        <span class="keyword">case</span> ITERATING:</span><br><span class="line">            <span class="keyword">if</span> (headA != <span class="keyword">null</span> || headB != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB != <span class="keyword">null</span> &amp;&amp; headA &gt; headB) &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headB;</span><br><span class="line">                    <span class="keyword">return</span> inputB.next().thenApply(b -&gt; &#123; <span class="comment">// thenCompose 某个值 &lt;=&gt; thenApply</span></span><br><span class="line">                        headB = b;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">final</span> Integer result = headA;</span><br><span class="line">                    <span class="keyword">return</span> inputA.next().thenApply(a -&gt; &#123; <span class="comment">// 同上</span></span><br><span class="line">                        headA = a;</span><br><span class="line">                        <span class="keyword">return</span> result;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                state = State.DONE;</span><br><span class="line">                <span class="keyword">return</span> CompletableFuture.completedFuture(<span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> DONE:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Generator has been exhausted!"</span>);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"Unreachable!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>任何函数都可以用 CompletableFuture 实现异步化，最通用的方式如下：</p>
 <ol>
 <li>在函数里加上 <code>yield</code>（返回下一个结果）和 <code>await</code>（等待输入值）来标记断点；</li>
@@ -604,13 +602,6 @@
           </nav>
 
           
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
 
           <div class="links-of-author motion-element">
             
@@ -618,19 +609,25 @@
                 <span class="links-of-author-item">
                   <a href="https://github.com/fuyufjh" target="_blank" title="GitHub">
                     
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                      <i class="iconfont icon-github"></i></a>
                 </span>
               
                 <span class="links-of-author-item">
                   <a href="https://www.zhihu.com/people/fuyufjh" target="_blank" title="Zhihu">
                     
-                      <i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                      <i class="iconfont icon-zhihu"></i></a>
                 </span>
               
                 <span class="links-of-author-item">
                   <a href="https://twitter.com/fuyufjh" target="_blank" title="Twitter">
                     
-                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                      <i class="iconfont icon-twitter"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.linkedin.com/in/njufuyu/" target="_blank" title="LinkedIn">
+                    
+                      <i class="iconfont icon-linkedin"></i></a>
                 </span>
               
             
@@ -640,24 +637,6 @@
           
 
           
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Links
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://blog.crazyark.me/" title="crazy.ark" target="_blank">crazy.ark</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://kaimingwan.com/" title="Blog of Kami Wan" target="_blank">Blog of Kami Wan</a>
-                  </li>
-                
-              </ul>
-            </div>
           
 
           
@@ -684,6 +663,11 @@
       
 
       
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
 
     </div>
   </aside>
@@ -695,7 +679,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -726,11 +710,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     
