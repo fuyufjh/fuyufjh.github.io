@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Coding Husky</title>
   
-  <subtitle>Thoughts, stories and ideas.</subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ericfu.me/"/>
