@@ -393,7 +393,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-01-12 14:41:36" itemprop="dateModified" datetime="2019-01-12T14:41:36+08:00">2019-01-12</time>
+                <time title="修改时间：2019-01-17 17:14:24" itemprop="dateModified" datetime="2019-01-17T17:14:24+08:00">2019-01-17</time>
               
             
           </span>
@@ -438,14 +438,9 @@
 
       
         
-          <p>我们知道，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，CompletableFuture 新增了很多方法用于串联异步事件，比如常用的一些：</p>
-<ul>
-<li><code>thenApply</code>：拿到结果后对其 apply 一个函数，返回一个新的值 <code>thenApply(T -&gt; R)</code></li>
-<li><code>thenCompose</code>：拿到结果后其 apply 一个函数，返回一个新的 CompletableFuture <code>thenCompose(T -&gt; CompletableFuture&lt;R&gt;)</code></li>
-<li><code>thenAccept</code>：拿到结果后消费它，不需要返回结果 <code>thenAccept(Consumer&lt;T&gt;)</code></li>
-</ul>
-<p>如果不引入任何第三方库，CompletableFuture 仍是目前 Java 上最好的异步编程方式。之前一直觉得这个东西难用，直到我想明白一件事，证明了 CompletableFuture 虽然麻烦了点但是能做任何事情，然后用它的时候心里就没有这么膈应了。</p>
-<p>本文会以一个例子来讲解：如何把<strong>任意函数</strong>转换成异步调用风格。用不用 CompletableFuture 倒是其次的，这项技术更多的是在于编程本身。 </p>
+          <p><a href="/several-ways-to-aync">上篇文章</a>中提到，Java 里把 Promise 叫作 CompletableFuture，相比那个只能用于线程同步的 Future，它新增了很多方法用于串联异步事件，比如常用的 <code>thenApply</code>、<code>thenCompose</code>、<code>thenAccept</code> 等。</p>
+<p>如果不引入任何第三方库，CompletableFuture 仍是目前 Java 上最好的异步编程方式。之前一直觉得这个东西难用，直到我想明白一件事，证明了 CompletableFuture 虽然麻烦了点但是能做任何事情，然后用它的时候心里就没那么膈应了。</p>
+<p>本文会以一个例子来讲解：<strong>如何把任意函数转换成异步调用风格</strong>。其实不一定要用 CompletableFuture，任何语言和框架都是适用的。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
