@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
+    
+    <lastmod>2019-01-31T14:59:00.194Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/completable-future-not-so-bad/</loc>
     
     <lastmod>2019-01-17T09:14:24.382Z</lastmod>

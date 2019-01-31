@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Gloria Hallelujah:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=6.7.0" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml">
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Weld 是一个用于数据计算分析的高性能 Runtime（High-performance runtime for data analytics applications），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp;amp; Pandas、TensorFlow 等，带来大幅的性能提升。 除了 Weld 本身的贡献，论文中提到的各种用于执">
+<meta name="keywords" content="selected,database">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Weld 论文看执行器的优化技术">
+<meta property="og:url" content="https://ericfu.me/weld-the-query-exeution-engine/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="Weld 是一个用于数据计算分析的高性能 Runtime（High-performance runtime for data analytics applications），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp;amp; Pandas、TensorFlow 等，带来大幅的性能提升。 除了 Weld 本身的贡献，论文中提到的各种用于执">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-banner.jpg">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-architecture.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-example-of-builders.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-optimizing.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/hyper-pipeline-codegen.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-pipeline-optimize.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-horizontal-fusion.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/simd-illustrate.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-adaptive-hash-table.png">
+<meta property="og:image" content="https://ericfu.me/images/2019/02/weld-evaluation.png">
+<meta property="og:updated_time" content="2019-01-31T14:59:00.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 Weld 论文看执行器的优化技术">
+<meta name="twitter:description" content="Weld 是一个用于数据计算分析的高性能 Runtime（High-performance runtime for data analytics applications），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp;amp; Pandas、TensorFlow 等，带来大幅的性能提升。 除了 Weld 本身的贡献，论文中提到的各种用于执">
+<meta name="twitter:image" content="https://ericfu.me/images/2019/02/weld-banner.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://ericfu.me/weld-the-query-exeution-engine/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>从 Weld 论文看执行器的优化技术 | Coding Husky</title>
+  
+
+
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71209065-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-71209065-1');
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/weld-the-query-exeution-engine/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">从 Weld 论文看执行器的优化技术
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-31 09:50:17 / 修改时间：22:59:00" itemprop="dateCreated datePublished" datetime="2019-01-31T09:50:17+08:00">2019-01-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/weld-the-query-exeution-engine/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="weld-the-query-exeution-engine/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/2019/02/weld-banner.jpg" alt=""></p>
+<p><a href="https://weld.rs/" target="_blank" rel="noopener">Weld</a> 是一个用于数据计算分析的高性能 Runtime（<em>High-performance runtime for data analytics applications</em>），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp; Pandas、TensorFlow 等，带来大幅的性能提升。</p>
+<p>除了 Weld 本身的贡献，论文中提到的各种用于执行阶段的优化技术也很有意思，其中的大部分都借鉴于关系型数据库或编译器。本文除了介绍 Weld 之外，也是想对这些技术做一个梳理。</p>
+<p>本文主要内容来自于 Weld 发表在 <a href="https://anilshanbhag.in/static/papers/weld_vldb18.pdf" target="_blank" rel="noopener">VLDB’18 的论文</a>。</p>
+<a id="more"></a>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>之前说到，Weld 是一个用于数据计算的 Runtime，它的上层通常是一些计算框架，例如 Spark SQL、NumPy 等。用户用这些计算框架编写程序，这些框架将用户需要的计算翻译成 Weld 中间表示（IR），然后 Weld 对其进行一系列的优化，最后生成代码并编译运行。</p>
+<p>做个类比，这就像 LLVM 的工作方式一样：各种语言的编译前端将高级语言翻译成 LLVM IR，LLVM 再对 IR 做一系列的优化，最后再编译成二进制。</p>
+<p>虽然都是 IR，但实际上 Weld IR 和 LLVM IR 有很大不同：</p>
+<ul>
+<li><strong>Weld IR 是声明式的</strong>：只表达计算流程，不包含具体的实现。比如下面会提到的 Builder，上层不需要指定用什么方式构建数组或是哈希表等数据结构，这些是由 Weld 优化器决定的；</li>
+<li><strong>Weld IR 是 Lazy 的</strong>：只有当需要输出结果时，相应的 DAG 计算才会真正开始运行。</li>
+</ul>
+<p><img src="/images/2019/02/weld-architecture.png" alt="WX20190131-154527@2x"></p>
+<p>上图是 Weld 的整体工作过程：</p>
+<ol>
+<li>上层调用 Weld 的 API 输入需要计算的 IR 程序，它会被解析成 AST；</li>
+<li>当需要执行时，相关的函数 IR 会被拼在一起，方便进行整体优化；</li>
+<li>Weld 优化器使用一系列的启发式规则进行优化，注意结果仍然是 AST；</li>
+<li>最后生成代码并借助 LLVM 编译成二进制。</li>
+</ol>
+<p>可以看出，Weld 主要由两个部分组成：IR 和 Runtime，接下来我们依次进行介绍。</p>
+<h2 id="Weld-IR"><a href="#Weld-IR" class="headerlink" title="Weld IR"></a>Weld IR</h2><p>Weld IR 支持 int、float 等基本数据类型，以及两种容器类型：<code>vec</code> 和 <code>dict</code>，顾名思义，分别是数组和字典。另外还支持他们的各种组合，就像 JSON 那样。</p>
+<p><strong>Weld IR 的计算都通过 Builder 和 Merger 来完成</strong>，由于 Merger 和 Builder 的接口是一样的，Weld 论文中并没有把二者区分开来。下面我们统称为 Builder。</p>
+<table>
+<thead>
+<tr>
+<th>Builder</th>
+<th>输入</th>
+<th>输出</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vecbuilder[T]</code></td>
+<td><code>T</code></td>
+<td><code>vec[T]</code></td>
+<td>通过 append 构建数组</td>
+</tr>
+<tr>
+<td><code>dictmerger[K,V,op]</code></td>
+<td><code>(K,V)</code></td>
+<td><code>dict[K,V]</code></td>
+<td>通过 put 构建字典</td>
+</tr>
+<tr>
+<td><code>merger[T,op]</code></td>
+<td><code>T</code></td>
+<td><code>T</code></td>
+<td>聚合计算（例如 add）</td>
+</tr>
+<tr>
+<td><code>vecmerger[T, op]</code></td>
+<td><code>(idx,T)</code></td>
+<td><code>vec[T]</code></td>
+<td>把 T 填在给定位置 idx 上</td>
+</tr>
+<tr>
+<td><code>groupbuilder[K,V]</code></td>
+<td><code>(K,V)</code></td>
+<td><code>dict[K,vec[V]]</code></td>
+<td>对数据分组 Group by K</td>
+</tr>
+</tbody>
+</table>
+<p>Builder 要求实现两个方法：</p>
+<ul>
+<li><code>merge(b, v)</code>：向 Builder <code>b</code> 添加新的元素；</li>
+<li><code>result(b)</code>：拿到 <code>b</code> 的结果，注意之后不能再添加元素了。</li>
+</ul>
+<p>下面是使用 Builder 的例子：</p>
+<p><img src="/images/2019/02/weld-example-of-builders.png" alt="WX20190131-172512@2x"></p>
+<p>图中还有个 <code>for</code>，它的语法是 <code>for(vector, builders, (builders, index, elem) =&gt; builders)</code>，用来<strong>并行地</strong>对数据做处理——也就是往 Builder 里加元素，这是 Weld 中唯一的计算方式。</p>
+<p><code>for</code> 还可以同时处理多个 Builder，这个特性在优化的时候很有用，可以避免扫描多次数据。</p>
+<p>Weld IR 还有些别的特性（比如方便编程的 macro），但不是本文的重点，有兴趣的同学自己看原文吧。</p>
+<h2 id="Weld-Runtime"><a href="#Weld-Runtime" class="headerlink" title="Weld Runtime"></a>Weld Runtime</h2><p><img src="/images/2019/02/weld-optimizing.png" alt="WX20190131-173344@2x"></p>
+<p>当上层输入 IR 并发出开始计算的指令时，就轮到 Weld Runtime 登场了。在代码生成之前，Weld Runtime 会对 IR 做优化，优化可以分为两种：</p>
+<ol>
+<li>Rule-Based Optimizer (RBO)：和我们熟悉的 RBO 优化类似，是基于规则匹配的优化；</li>
+<li>Adaptive Optimizer：运行时 sample 数据，然后决定用哪种算法执行，勉强可以对应 CBO。</li>
+</ol>
+<p>为什么不是 CBO？关系型数据库的 CBO 是需要以统计信息为基础的，但是 Weld 作为一个通用的 Runtime，上层框架不一定能提供统计信息（比如 NumPy）。</p>
+<p><strong>Weld 应用规则是依次进行的，每次运行一种优化之后（称为一个 pass）。但 pass 之间会进行剪枝，去掉无用的代码。</strong>以下我们逐条看看 Weld 做了哪些优化。</p>
+<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><p>Pipeline 在 OLAP 系统中很常见，最经典的是 HyPer 团队提出的 <a href="http://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">consumer/produce 代码生成机制</a>，可以在代码生成时尽可能生成 pipeline 的代码。</p>
+<p><img src="/images/2019/02/hyper-pipeline-codegen.png" alt="WX20190131-175558@2x"></p>
+<p>为什么需要 Pipeline？设想一下使用代码生成、但是不使用 Pipeline 会怎么样，那么 $R_1$ 和 $\sigma_{x=7}$ 就会分成独立的两步，$R_1$ (即 TableScan）的结果被物化到内存中，再进行 $\sigma_{x=7}$。</p>
+<p>而 Pipeline 的代码省略了中间的物化，仅仅用了一个 <code>if</code> 就解决了 filter，这个代价要低得多：进行 if 表达式计算时相关数据基本还在寄存器或 Cache 里，充分利用 Data Locality，这比去内存取数据快 1～2 个数量级。</p>
+<p>Pipeline 优化规则会在 AST 中匹配这样的模式：<strong>A的输出就是B的输入</strong>，对匹配到的节点应用 pipeline 优化，下面是一个简单例子：</p>
+<p><img src="/images/2019/02/weld-pipeline-optimize.png" alt="WX20190131-174938@2x"></p>
+<h2 id="Horizontal-Fusion"><a href="#Horizontal-Fusion" class="headerlink" title="Horizontal Fusion"></a>Horizontal Fusion</h2><p>Fusion 意为把两段代码融合成一段更精炼的代码，刚刚说的 Pipeline 也是一种 Fusion。所谓 Horizontal Fusion 是找出<strong>被重复处理的数据</strong>，然后将几次处理合在一起。</p>
+<p>例如下面图中的 IR，<code>v0</code> 原本被 loop over 了两次，如果把两次循环合成一次，能尽可能利用 Data Locality，减少一半的内存读取代价。</p>
+<p><img src="/images/2019/02/weld-horizontal-fusion.png" alt="WX20190131-201030@2x"></p>
+<p>硬要说的话，这个规则与关系代数优化中的 Project Merge 规则最相似。论文中给了一个更好的例子来说明它的用处：像 Pandas 这类的计算框架，由于 API 设计一次只能处理一列，必须借助 Horizontal Fusion 优化。</p>
+<h2 id="向量化和-Adaptive-优化"><a href="#向量化和-Adaptive-优化" class="headerlink" title="向量化和 Adaptive 优化"></a>向量化和 Adaptive 优化</h2><p>向量化（Vectorization）优化也不是新鲜事，很多编译器（比如 LLVM）都能自动把循环编译成 SIMD 指令，JVM 甚至可以在运行时生成 SIMD 代码。</p>
+<p>SIMD 全称是<strong>单条指令、多个数据</strong>，即用一条指令处理多个数据计算，比如原本计算 4 个整数加法要用 4 次加法指令，用了 SIMD 之后只要 1 次。没错，就这么简单！</p>
+<p><img src="/images/2019/02/simd-illustrate.png" alt=""></p>
+<p>在这个 pass 中仅处理简单的、没有条件分支的 for 循环，如果满足这一条件，优化器会将被循环的数据从 <code>T</code> 转换成 <code>simd[T]</code>，最后代码生成环节为其生成 SIMD 代码。</p>
+<p>那对于带有条件分支的 for 循环，能否进行向量化呢？答案是，<strong>可以，但是不一定有用。</strong></p>
+<p>我们先设想一下：对于有条件分支的 for 循环，它向量化之后是什么样的？SIMD 指令本身是没法处理分支的（compare 这种特别简单的除外），如果一定要用 SIMD，可以假设分支条件全都为 true 或 false，最后根据条件表达式的计算结果（true 或 false），利用 <code>select</code> 指令选出对应的结果。</p>
+<p>这种方式相比普通的带分支的指令，有得有失：</p>
+<ul>
+<li>优势：用 SIMD 指令集可以加速计算；</li>
+<li>劣势：原本只要算一个分支，现在两个分支都要算。</li>
+</ul>
+<blockquote>
+<p>注：另一个优势是，SIMD 去掉了条件跳转，不存在打断 CPU 流水线的问题。但是论文中没有提到这一点，我猜测可能是它的影响因素比较小，或是作者没有找到一个合适的代价计算方式。</p>
+</blockquote>
+<p>论文只给出了对 <code>expr = if(cond, merge(b, body), b)</code> 这样单分支条件的代价建模，有兴趣的同学可以看原论文上的公式。这里只说一个粗糙的结论：当选择率（即进入 body 的概率）很小时，有分支的代码更优；当选择率比较大时，SIMD 代码更优。</p>
+<p>我们之前说过，Weld 假设上层无法提供统计信息，因而在这一步，<strong>由于缺乏关键的选择率信息</strong>，它只能采取一种 Adaptive 的思路：<strong>同时生成有分支的代码和 SIMD 代码，运行时，首先对输入数据做个 Sample 估算一下选择率，再决定走哪个算法。</strong></p>
+<p>选择率（selectivity）这个概念在数据库优化器中也很常用，比如估算 Row Count 时就频繁用到了选择率估计。如果能在优化时直接拿到这个信息，想必不需要这么折腾。</p>
+<h2 id="Adaptive-Hash-Table"><a href="#Adaptive-Hash-Table" class="headerlink" title="Adaptive Hash Table"></a>Adaptive Hash Table</h2><p>在 Weld 的 <code>dictbuilder</code> 和 <code>groupbuilder</code> 中都需要构建哈希表，这里也有个 trade-off：是用 Partitioned Hash Table 还是 Global Hash Table？</p>
+<ul>
+<li>Partitioned Hash Table 是将 build 过程分成两步，先各个线程本地做 build，最后再 merge 成完整的结果；</li>
+<li>Global Hash Table 只有一张全局的哈希表，通过加锁等方式做了控制并发写入。</li>
+</ul>
+<p>一般而言，如果 Group by 的基数（Cardinality）比较小，Partitioned 方式更有优势，因为并发冲突会很多；相反，如果基数很大，Global 更占优势，因为无需再做多一次 merge。</p>
+<p>Weld 的做法很巧妙地实现了二者取折中：<strong>各线程先写到本地的哈希表，但如果大小超过阈值，就写到全局的哈希表</strong>。最后把本地数据再 merge 进全局哈希表。这个实现被它称为 Adaptive Hash Table。</p>
+<p><img src="/images/2019/02/weld-adaptive-hash-table.png" alt="weld-adaptive-hash-table"></p>
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc."></a>Misc.</h2><p>Weld 中还有还有一些优化手段，比较简单：</p>
+<p><strong>循环展开</strong>（Loop Unrolling）是编译器中很常见的优化，如果编译期已知 for 循环的次数很小（例如，对于一个 N*3 的矩阵，第二维度长度仅为 3），就将循环展开，避免条件跳转指令打断 CPU 流水线。</p>
+<p><strong>数组预分配</strong>（Preallocation）在矩阵运算中也很有用，例如，默认 <code>vecbuiler</code> 的实现是自动生长的动态数组。如果预先知道数组长度，就能避免数组生长的拷贝代价。</p>
+<h2 id="评估和总结"><a href="#评估和总结" class="headerlink" title="评估和总结"></a>评估和总结</h2><p>下面是 Weld 官网放出的性能评估，对于文中提到的这几个框架，的确做到了可观的性能提升。</p>
+<p><img src="/images/2019/02/weld-evaluation.png" alt="WX20190131-153639@2x"></p>
+<blockquote>
+<p>注：这里 TensorFlow 性能是用 CPU 运行的，而非 GPU。</p>
+</blockquote>
+<p><strong>Weld 的最大贡献是抽象出了一个通用的执行器 Runtime</strong>。这个抽象的层级要比“代码生成”中的“代码”（比如 LLVM IR）高级（high-level）不少，但又比关系代数或是线性代数低级（low-level）的多。更可贵的是，Weld IR 仅仅包含 Builder 以及 for、if 这些最基本的语句，极其之简单。</p>
+<p>上文提到的很多优化规则，不少来源于编译器或关系型数据库。例如 Pipeline Fusion 的思想，在编译器中其实也有体现——编译器会尽可能连续的利用寄存器、避免 store/load。但是 Weld IR 独特的抽象层级令它能做层级更高的优化，达到和数据库的 Pipeline 一样的效果。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<li><a href="https://anilshanbhag.in/static/papers/weld_vldb18.pdf" target="_blank" rel="noopener">Evaluating End-to-End Optimization for Data Analytics Applications in Weld (VLDB’18)</a></li>
+<li><a href="http://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">Efficiently Compiling Efficient Query Plans for Modern Hardware (VLDB’11)</a></li>
+<li><a href="https://weld.rs/" target="_blank" rel="noopener">Weld - Official Website</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Eric Fu</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ericfu.me/weld-the-query-exeution-engine/" title="从 Weld 论文看执行器的优化技术">https://ericfu.me/weld-the-query-exeution-engine/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/selected/" rel="tag"># selected</a>
+          
+            <a href="/tags/database/" rel="tag"># database</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/completable-future-not-so-bad/" rel="next" title="CompletableFuture 也没有那么废柴嘛！">
+                <i class="fa fa-chevron-left"></i> CompletableFuture 也没有那么废柴嘛！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/2015/12/HuskyAvatar.jpg" alt="Eric Fu">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/fuyufjh" title="GitHub &rarr; https://github.com/fuyufjh" rel="noopener" target="_blank"><i class="iconfont icon-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/fuyufjh" title="Zhihu &rarr; https://www.zhihu.com/people/fuyufjh" rel="noopener" target="_blank"><i class="iconfont icon-zhihu"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/fuyufjh" title="Twitter &rarr; https://twitter.com/fuyufjh" rel="noopener" target="_blank"><i class="iconfont icon-twitter"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/njufuyu/" title="LinkedIn &rarr; https://www.linkedin.com/in/njufuyu/" rel="noopener" target="_blank"><i class="iconfont icon-linkedin"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构"><span class="nav-number">1.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weld-IR"><span class="nav-number">2.</span> <span class="nav-text">Weld IR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weld-Runtime"><span class="nav-number">3.</span> <span class="nav-text">Weld Runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pipeline"><span class="nav-number">4.</span> <span class="nav-text">Pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Horizontal-Fusion"><span class="nav-number">5.</span> <span class="nav-text">Horizontal Fusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量化和-Adaptive-优化"><span class="nav-number">6.</span> <span class="nav-text">向量化和 Adaptive 优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adaptive-Hash-Table"><span class="nav-number">7.</span> <span class="nav-text">Adaptive Hash Table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Misc"><span class="nav-number">8.</span> <span class="nav-text">Misc.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评估和总结"><span class="nav-number">9.</span> <span class="nav-text">评估和总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">10.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+    
+  <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function () {
+    this.page.url = "https://ericfu.me/weld-the-query-exeution-engine/";
+    this.page.identifier = "weld-the-query-exeution-engine/";
+    this.page.title = '从 Weld 论文看执行器的优化技术';
+    };
+  function loadComments () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ericfu.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/pangu/dist/pangu.min.js?v=3.3"></script>
+  <script>pangu.spacingPage();</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+</body>
+</html>
