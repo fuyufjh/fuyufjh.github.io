@@ -150,7 +150,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/02/simd-illustrate.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/02/weld-adaptive-hash-table.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/02/weld-evaluation.png">
-<meta property="og:updated_time" content="2019-01-31T14:59:00.194Z">
+<meta property="og:updated_time" content="2019-01-31T15:57:41.048Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 Weld 论文看执行器的优化技术">
 <meta name="twitter:description" content="Weld 是一个用于数据计算分析的高性能 Runtime（High-performance runtime for data analytics applications），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp;amp; Pandas、TensorFlow 等，带来大幅的性能提升。 除了 Weld 本身的贡献，论文中提到的各种用于执">
@@ -421,7 +421,7 @@
                 
               
 
-              <time title="创建时间：2019-01-31 09:50:17 / 修改时间：22:59:00" itemprop="dateCreated datePublished" datetime="2019-01-31T09:50:17+08:00">2019-01-31</time>
+              <time title="创建时间：2019-01-31 09:50:17 / 修改时间：23:57:41" itemprop="dateCreated datePublished" datetime="2019-01-31T09:50:17+08:00">2019-01-31</time>
             
 
             
@@ -472,7 +472,7 @@
       
         <p><img src="/images/2019/02/weld-banner.jpg" alt=""></p>
 <p><a href="https://weld.rs/" target="_blank" rel="noopener">Weld</a> 是一个用于数据计算分析的高性能 Runtime（<em>High-performance runtime for data analytics applications</em>），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp; Pandas、TensorFlow 等，带来大幅的性能提升。</p>
-<p>除了 Weld 本身的贡献，论文中提到的各种用于执行阶段的优化技术也很有意思，其中的大部分都借鉴于关系型数据库或编译器。本文除了介绍 Weld 之外，也是想对这些技术做一个梳理。</p>
+<p>除了 Weld 本身的贡献，论文中提到的各种用于执行阶段的优化技术也很有意思，其中的大部分都借鉴自关系型数据库或编译器。本文除了介绍 Weld 之外，也是想对这些技术做个梳理。</p>
 <p>本文主要内容来自于 Weld 发表在 <a href="https://anilshanbhag.in/static/papers/weld_vldb18.pdf" target="_blank" rel="noopener">VLDB’18 的论文</a>。</p>
 <a id="more"></a>
 <h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>之前说到，Weld 是一个用于数据计算的 Runtime，它的上层通常是一些计算框架，例如 Spark SQL、NumPy 等。用户用这些计算框架编写程序，这些框架将用户需要的计算翻译成 Weld 中间表示（IR），然后 Weld 对其进行一系列的优化，最后生成代码并编译运行。</p>
@@ -543,7 +543,7 @@
 <p>下面是使用 Builder 的例子：</p>
 <p><img src="/images/2019/02/weld-example-of-builders.png" alt="WX20190131-172512@2x"></p>
 <p>图中还有个 <code>for</code>，它的语法是 <code>for(vector, builders, (builders, index, elem) =&gt; builders)</code>，用来<strong>并行地</strong>对数据做处理——也就是往 Builder 里加元素，这是 Weld 中唯一的计算方式。</p>
-<p><code>for</code> 还可以同时处理多个 Builder，这个特性在优化的时候很有用，可以避免扫描多次数据。</p>
+<p><code>for</code> 还可以同时处理多个 Builder，这个特性在优化的时候很有用，可以避免同一个数据扫描多次。</p>
 <p>Weld IR 还有些别的特性（比如方便编程的 macro），但不是本文的重点，有兴趣的同学自己看原文吧。</p>
 <h2 id="Weld-Runtime"><a href="#Weld-Runtime" class="headerlink" title="Weld Runtime"></a>Weld Runtime</h2><p><img src="/images/2019/02/weld-optimizing.png" alt="WX20190131-173344@2x"></p>
 <p>当上层输入 IR 并发出开始计算的指令时，就轮到 Weld Runtime 登场了。在代码生成之前，Weld Runtime 会对 IR 做优化，优化可以分为两种：</p>
@@ -552,8 +552,8 @@
 <li>Adaptive Optimizer：运行时 sample 数据，然后决定用哪种算法执行，勉强可以对应 CBO。</li>
 </ol>
 <p>为什么不是 CBO？关系型数据库的 CBO 是需要以统计信息为基础的，但是 Weld 作为一个通用的 Runtime，上层框架不一定能提供统计信息（比如 NumPy）。</p>
-<p><strong>Weld 应用规则是依次进行的，每次运行一种优化之后（称为一个 pass）。但 pass 之间会进行剪枝，去掉无用的代码。</strong>以下我们逐条看看 Weld 做了哪些优化。</p>
-<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><p>Pipeline 在 OLAP 系统中很常见，最经典的是 HyPer 团队提出的 <a href="http://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">consumer/produce 代码生成机制</a>，可以在代码生成时尽可能生成 pipeline 的代码。</p>
+<p><strong>Weld 应用规则是依次进行的，每次运行一种优化之后（称为一个 pass）</strong>。Pass 之间会进行剪枝，去掉无用的代码。以下我们逐条看看 Weld 做了哪些优化。</p>
+<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><p>Pipeline 在 OLAP 系统中很常见，最经典的是 HyPer 团队提出的 <a href="http://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">consume/produce 代码生成机制</a>，可以在代码生成时尽可能生成 Pipeline 的代码。</p>
 <p><img src="/images/2019/02/hyper-pipeline-codegen.png" alt="WX20190131-175558@2x"></p>
 <p>为什么需要 Pipeline？设想一下使用代码生成、但是不使用 Pipeline 会怎么样，那么 $R_1$ 和 $\sigma_{x=7}$ 就会分成独立的两步，$R_1$ (即 TableScan）的结果被物化到内存中，再进行 $\sigma_{x=7}$。</p>
 <p>而 Pipeline 的代码省略了中间的物化，仅仅用了一个 <code>if</code> 就解决了 filter，这个代价要低得多：进行 if 表达式计算时相关数据基本还在寄存器或 Cache 里，充分利用 Data Locality，这比去内存取数据快 1～2 个数量级。</p>
@@ -568,7 +568,7 @@
 <p><img src="/images/2019/02/simd-illustrate.png" alt=""></p>
 <p>在这个 pass 中仅处理简单的、没有条件分支的 for 循环，如果满足这一条件，优化器会将被循环的数据从 <code>T</code> 转换成 <code>simd[T]</code>，最后代码生成环节为其生成 SIMD 代码。</p>
 <p>那对于带有条件分支的 for 循环，能否进行向量化呢？答案是，<strong>可以，但是不一定有用。</strong></p>
-<p>我们先设想一下：对于有条件分支的 for 循环，它向量化之后是什么样的？SIMD 指令本身是没法处理分支的（compare 这种特别简单的除外），如果一定要用 SIMD，可以假设分支条件全都为 true 或 false，最后根据条件表达式的计算结果（true 或 false），利用 <code>select</code> 指令选出对应的结果。</p>
+<p>我们先设想一下：对于有条件分支的 for 循环，它向量化之后是什么样的？SIMD 指令本身是没法处理分支的（compare 这种特别简单的除外），如果一定要用 SIMD，可以假设分支条件全都为 true 或 false，最后根据条件表达式的计算结果（true 或 false），利用 <code>select</code> 指令选出相应的结果。</p>
 <p>这种方式相比普通的带分支的指令，有得有失：</p>
 <ul>
 <li>优势：用 SIMD 指令集可以加速计算；</li>
