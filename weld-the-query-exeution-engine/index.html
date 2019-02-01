@@ -150,7 +150,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/02/simd-illustrate.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/02/weld-adaptive-hash-table.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/02/weld-evaluation.png">
-<meta property="og:updated_time" content="2019-02-01T05:25:13.714Z">
+<meta property="og:updated_time" content="2019-02-01T05:33:08.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 Weld 论文看执行器的优化技术">
 <meta name="twitter:description" content="Weld 是一个用于数据计算分析的高性能 Runtime（High-performance runtime for data analytics applications），使用 Rust 编写，可以很容易地集成到各种大数据计算框架中，比如 Spark SQL、NumPy &amp;amp; Pandas、TensorFlow 等，带来大幅的性能提升。 除了 Weld 本身的贡献，论文中提到的各种用于执">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-02-01 13:25:13" itemprop="dateModified" datetime="2019-02-01T13:25:13+08:00">2019-02-01</time>
+                <time title="修改时间：2019-02-01 13:33:08" itemprop="dateModified" datetime="2019-02-01T13:33:08+08:00">2019-02-01</time>
               
             
           </span>
@@ -609,7 +609,7 @@
 <blockquote>
 <p>注：这里 TensorFlow 性能是用 CPU 运行的，而非 GPU。</p>
 </blockquote>
-<p><strong>Weld 的最大贡献是抽象出了一个通用的执行器 Runtime</strong>。这个抽象的层级要比“代码生成”中的“代码”（比如 LLVM IR）高级（high-level）不少，但又比关系代数或是线性代数低级（low-level）的多。更可贵的是，Weld IR 仅仅包含 Builder 以及 for、if 这些最基本的语句，极其之简单。</p>
+<p><strong>Weld 的最大贡献是抽象出了一个通用的执行器 Runtime</strong>。这个抽象的层级要比“代码生成”中的“代码”（比如 LLVM IR）高级（high-level）不少，但又比关系代数或是线性代数低级（low-level），从而有更好的通用性。更可贵的是，Weld IR 仅仅包含 Builder 以及 for、if 这些最基本的语句，极其之简单。</p>
 <p>上文提到的很多优化规则，不少来源于编译器或关系型数据库。例如 Pipeline Fusion 的思想，在编译器中其实也有体现——编译器会尽可能连续的利用寄存器、避免 store/load。但是 Weld IR 独特的抽象层级令它能做层级更高的优化，达到和数据库的 Pipeline 一样的效果。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="https://anilshanbhag.in/static/papers/weld_vldb18.pdf" target="_blank" rel="noopener">Evaluating End-to-End Optimization for Data Analytics Applications in Weld (VLDB’18)</a></li>
