@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/code-gen-of-query/</loc>
+    
+    <lastmod>2019-03-03T13:18:08.292Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/code-gen-of-expression/</loc>
+    
+    <lastmod>2019-02-28T12:15:18.534Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
     
-    <lastmod>2019-02-01T05:33:08.393Z</lastmod>
+    <lastmod>2019-02-01T05:35:41.425Z</lastmod>
     
   </url>
   
@@ -19,13 +33,6 @@
     <loc>https://ericfu.me/several-ways-to-aync/</loc>
     
     <lastmod>2019-01-12T06:33:57.858Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/code-gen-of-expression/</loc>
-    
-    <lastmod>2018-11-30T06:50:54.568Z</lastmod>
     
   </url>
   

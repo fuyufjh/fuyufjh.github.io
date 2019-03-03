@@ -363,6 +363,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/code-gen-of-query/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/code-gen-of-query/" class="post-title-link" itemprop="url">代码生成技术（二）查询编译执行</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-28 20:14:27" itemprop="dateCreated datePublished" datetime="2019-02-28T20:14:27+08:00">2019-02-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-03 21:18:08" itemprop="dateModified" datetime="2019-03-03T21:18:08+08:00">2019-03-03</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/code-gen-of-query/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="code-gen-of-query/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="/images/2018/12/code-generation-banner.png" alt="code-generation-banne"></p>
+<p><strong>代码生成（Code Generation）</strong>技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。</p>
+<p>上一篇文章 <a href="/code-gen-of-expression">代码生成技术（一）表达式编译</a> 中提到，虽然表面上都叫“代码生成”，但是实际可以分出几种粒度的实现方式，比如表达式的代码生成、查询的代码生成、存储过程的代码生成等。今天我们要讲的是<strong>查询级别</strong>的代码生成，有时也称作<strong>算子间</strong>（intra-operator）级别，这也是主流数据系统所用的编译执行方式。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/code-gen-of-query/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ericfu.me/weld-the-query-exeution-engine/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -425,7 +598,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-02-01 13:33:08" itemprop="dateModified" datetime="2019-02-01T13:33:08+08:00">2019-02-01</time>
+                <time title="修改时间：2019-02-01 13:35:41" itemprop="dateModified" datetime="2019-02-01T13:35:41+08:00">2019-02-01</time>
               
             
           </span>
@@ -903,7 +1076,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/code-gen-of-expression/" class="post-title-link" itemprop="url">代码生成技术初探（一）表达式编译</a>
+                <a href="/code-gen-of-expression/" class="post-title-link" itemprop="url">代码生成技术（一）表达式编译</a>
               
             
           </h2>
@@ -945,7 +1118,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-30 14:50:54" itemprop="dateModified" datetime="2018-11-30T14:50:54+08:00">2018-11-30</time>
+                <time title="修改时间：2019-02-28 20:15:18" itemprop="dateModified" datetime="2019-02-28T20:15:18+08:00">2019-02-28</time>
               
             
           </span>
@@ -1916,178 +2089,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/lets-encrypt-wildcard-cert/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/lets-encrypt-wildcard-cert/" class="post-title-link" itemprop="url">Let's Encrypt 免费的通配符域名证书</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-15 14:15:14" itemprop="dateCreated datePublished" datetime="2018-03-15T14:15:14+08:00">2018-03-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-03-17 00:31:48" itemprop="dateModified" datetime="2018-03-17T00:31:48+08:00">2018-03-17</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/lets-encrypt-wildcard-cert/#comments" itemprop="discussionUrl">
-                
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="lets-encrypt-wildcard-cert/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>免费 SSL 证书提供商 Let’s Encrypt 去年承诺的 ACME v2 以及通配符证书（Wildcard Certificate）终于在 3 月 14 日<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579" target="_blank" rel="noopener">正式发布</a>了。ACME 全称“自动化证书管理环境”，用于自动验证域名所有权并颁发 SSL 证书；本次发布的新版 ACME v2 添加了通配符证书的支持，再也不用每次添加子域名都重新申请证书。</p>
-<p>ACME v2 目前只有一种方案支持通配符证书的验证—— DNS-01 challenge，即：通过向域名添加一条 TXT 记录来证明用户对域名的所有权。一般只要提供了 Token 访问的 DNS 服务商都可以支持，例如 GoDaddy、CloudFlare、DNSPod 等。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/lets-encrypt-wildcard-cert/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2137,7 +2138,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-count">90</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
