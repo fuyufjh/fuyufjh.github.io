@@ -146,7 +146,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/03/code-gen-example-2.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/03/code-gen-interface-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/03/code-gen-demo-animated.gif">
-<meta property="og:updated_time" content="2019-03-03T14:29:43.648Z">
+<meta property="og:updated_time" content="2019-03-03T14:45:29.215Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代码生成技术（二）查询编译执行">
 <meta name="twitter:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。 上一篇文章 代码生成技术（一）表达式编译 中提到，虽然表面上都叫“代码生成”，但是实际可以分出几种粒度的实现方式，比如表达式的代码生成、查询的代码生成、存储过程的代码生成等。今天我们要讲的是查询级别的代码生成，">
@@ -434,7 +434,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-03 22:29:43" itemprop="dateModified" datetime="2019-03-03T22:29:43+08:00">2019-03-03</time>
+                <time title="修改时间：2019-03-03 22:45:29" itemprop="dateModified" datetime="2019-03-03T22:45:29+08:00">2019-03-03</time>
               
             
           </span>
@@ -483,7 +483,9 @@
 <p>上一篇文章 <a href="/code-gen-of-expression">代码生成技术（一）表达式编译</a> 中提到，虽然表面上都叫“代码生成”，但是实际可以分出几种粒度的实现方式，比如表达式的代码生成、查询的代码生成、存储过程的代码生成等。今天我们要讲的是<strong>查询级别</strong>的代码生成，有时也称作<strong>算子间</strong>（intra-operator）级别，这也是主流数据系统所用的编译执行方式。</p>
 <a id="more"></a>
 <p>本文主要参考了 HyPer 团队发表在 VLDB’11 的文章 <a href="https://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">Efficiently Compiling Efficient Query Plans for Modern Hardware</a>。</p>
-<h2 id="背景：Volcano-经典执行模型"><a href="#背景：Volcano-经典执行模型" class="headerlink" title="背景：Volcano 经典执行模型"></a>背景：Volcano 经典执行模型</h2><p>为什么要用编译执行？编译执行有哪几种实现？这些问题的答案都写在前一篇文章里，还有困惑的同学务必先看完 <a href="/code-gen-of-expression">前一篇文章</a> 再回来。</p>
+<h2 id="Volcano-经典执行模型"><a href="#Volcano-经典执行模型" class="headerlink" title="Volcano 经典执行模型"></a>Volcano 经典执行模型</h2><blockquote>
+<p>为什么要用编译执行？编译执行有哪几种实现？这些问题的答案都写在前一篇文章里，还有困惑的同学务必先看完 <a href="/code-gen-of-expression">前一篇文章</a> 再回来。</p>
+</blockquote>
 <p>今天说的主角是查询（Query）的编译执行，在讲它之前，看看经典 Volcano 模型是怎么做的。Volcano 模型十分简单（这也是它流行的主要原因）：<strong>每个算子需要实现一个 <code>next()</code> 接口，意为返回下一个 Tuple</strong>。</p>
 <p><img src="/images/2019/03/volcano-execution-example.png" alt="volcano-execution-example"></p>
 <p><strong>Query 1</strong> 是一个很简单的查询，Project 会调用 Filter 的 <code>next()</code> 获得数据，Filter 的 <code>next()</code> 又会调用 TableScan 的 <code>next()</code>，TableScan 读出表中的一行数据并返回。如此往复，直到数据全部处理完。</p>
@@ -506,20 +508,20 @@
 <li>每产生一条结果就要做很多次虚函数调用，消耗了大量的 CPU 时间；</li>
 <li>过多的函数调用导致不能很好的利用寄存器。</li>
 </ul>
-<p>我们来思考一个问题，<strong>如果让你去把 Query 1 写成代码来执行，会是什么样的呢</strong>？</p>
-<p>答案非常短，短的令人惊讶：</p>
+<p>我们来思考一个问题，<strong>如果让你去把 Query 1 写成代码来执行，会是什么样的呢</strong>？答案非常短，短的令人惊讶：</p>
 <p><img src="/images/2019/03/code-gen-example-1.png" alt="code-gen-example-1"></p>
 <p>右图中用不同颜色标出了原来的算子，其中 <code>condition = true</code> 是一个表达式，<strong>按照上一篇文章讲解的方法就能生成出代码</strong>，然后放到这边 <code>if</code> 的条件上即可。</p>
-<p>这两个的执行效率应该很容易看出差距吧！论文中提到，随便找个本科生手写代码，执行性能都能甩迭代模型几条街。</p>
-<p>再看个更复杂的例子找找感觉，以下查询混合了 Join、Aggragate 甚至子查询（记作 Query 4），有不止一个阶段：</p>
+<p>这两个的执行效率应该很容易看出差距吧！生成出的代码完全消除了虚函数调用，而且 Tuple 几乎一直在高速缓存甚至寄存器中。论文中也提到，随便找个本科生手写代码，执行性能都能甩迭代模型几条街。</p>
+<p>再看个更复杂的例子找找感觉，以下查询混合了 Join、Aggragate 甚至子查询（记作 Query 4），之前我们说到，这些段子是 Pipeline Breaker，查询被不可避免的分成几个阶段。除此以外，我们希望其他部分尽可能地做到 Pipeline 执行。</p>
 <p><img src="/images/2019/03/code-gen-example-2.png" alt="code-gen-example-from-pape"></p>
 <p>这个例子有点长，但如果你能花上两三分钟看懂它，相信你对代码生成已经有了些直觉上的理解，这对你理解掌握下一章节的内容大有帮助。</p>
-<p>图中我依旧标用不同颜色出了 HashJoin、HashAgg 三个算子各自的代码，可以看出，它们各自的代码逻辑被“分散到”了不止一处地方，甚至代码中已经很难找出算子的影子，而是全都<strong>融合</strong>（Fusion）到一块儿了。</p>
-<blockquote>
-<p>很多人有个错觉，以为数据库查询过程那么复杂，生成的代码一定也很复杂吧。其实不然，查询中复杂的部分，例如哈希表实现、磁盘读取数据的实现等，<strong>这些只要调用现有的函数即可</strong>，比如 LLVM IR 可以调用 native 函数。</p>
-</blockquote>
+<p>图中我用不同颜色出了 HashJoin、HashAgg 三个算子各自的代码，可以看出，它们各自的代码逻辑被“分散”到了不止一处地方，甚至代码中已经很难找出算子的影子，而是全都<strong>融合</strong>（Fusion）到一块儿了。</p>
 <p>这就是我们想要的结果！好了，下一步终于进入了正题：如何自动生成出这样的代码呢？</p>
-<h2 id="HyPer-的解决方案"><a href="#HyPer-的解决方案" class="headerlink" title="HyPer 的解决方案"></a>HyPer 的解决方案</h2><p>代码生成是个纯粹的工程问题。工程问题没有什么不能解的，难就难在找到其中最漂亮的解。比如现在这个问题，为了编程的优雅，我们最希望的是造一个可扩展的框架：<strong>不论哪个算子，只要实现某种接口</strong>（就像 Volcano 模型要求实现 <code>next()</code> 接口一样）<strong>，就能进行代码生成</strong>。</p>
+<blockquote>
+<p>很多人有个错觉，以为数据库查询过程那么复杂，生成的代码一定也很复杂吧。其实不然，查询中复杂的部分，例如 HashJoin 中哈希表实现、TableScan 读取数据的实现等，<strong>这些并不用生成很多代码，仅仅只是调用现有的函数即可</strong>，比如 LLVM IR 可以调用已存在的任何函数。</p>
+<p>换个角度看，生成的代码不过是把这些算子的实现以更高效的方式串联在了一起：算子自身逻辑就像齿轮，生成的代码好比连接齿轮的链条。</p>
+</blockquote>
+<h2 id="HyPer-的解决方案"><a href="#HyPer-的解决方案" class="headerlink" title="HyPer 的解决方案"></a>HyPer 的解决方案</h2><p>代码生成是个纯粹的工程问题。工程问题没有什么不能解的，难就难在找到其中最漂亮的解。比如现在这个问题，为了编程的优雅，我们希望造一个可扩展的框架：<strong>不论哪个算子，只要实现某种接口</strong>（就像 Volcano 模型要求实现 <code>next()</code> 接口一样）<strong>，就能参与到代码生成中</strong>。</p>
 <p>论文中给出的解法可以说是十分优雅了，模型要求所有算子实现以下两个接口函数：</p>
 <ul>
 <li><code>produce()</code></li>
@@ -528,10 +530,10 @@
 <p>代码生成的过程总是从调用根节点的 <code>produce()</code> 开始；而 <code>consume()</code> 类似于一个回调函数，当下层的算子完成自己的使命之后，调用上层的 <code>consume()</code> 来消费刚刚产生的 tuples——注意这里并不是真的消费。</p>
 <p>用例子来说明。下面是一个伪代码版本的若干算子实现。<code>produce()</code> 和 <code>consume()</code> 返回的类型都是生成的代码片段，这里为了方便演示直接用字符串表示。真实世界中当然要更复杂一些。</p>
 <p><img src="/images/2019/03/code-gen-interface-example.png" alt="code-gen-interface-example"></p>
-<p>表中红色的字符串是生成的代码，黑色的则是 code-gen 本身的代码。回忆一下：代码生成其实就是拼接出一堆字符串（在这里是拼出伪代码）。没什么神秘的。</p>
+<p>表中红色的字符串是生成的代码，黑色的则是 code-gen 本身的代码。回忆一下：代码生成其实就是用各种手段拼出代码（字符串）来，没什么神秘的。</p>
 <p><img src="/images/2019/03/code-gen-demo-animated.gif" alt="ezgif.com-gif-maker -1-"></p>
-<p>不满足于伪代码的同学可以尝试阅读 <a href="https://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">原论文</a>（生成 LLVM IR） Spark SQL 中的 <a href="https://github.com/apache/spark/blob/master/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/expressions/codegen/CodeGenerator.scala" target="_blank" rel="noopener">CodeGenerator 实现</a>（生成 Java 代码），后者的代码相对更容易理解些。</p>
-<h2 id="思考：这是唯一的方案吗（可选）"><a href="#思考：这是唯一的方案吗（可选）" class="headerlink" title="思考：这是唯一的方案吗（可选）"></a>思考：这是唯一的方案吗（可选）</h2><p>为什么是 produce/consume 呢？是否存在更简单的解呢？<strong>这里给出我的推导思路，你可以跳过这一段</strong>，毕竟每个人的脑回路是不一样的。</p>
+<p>不满足于伪代码的同学可以尝试阅读 HyPer 的 <a href="https://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">论文</a>（生成 LLVM IR） 或者 Spark SQL 中的 <a href="https://github.com/apache/spark/blob/master/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/expressions/codegen/CodeGenerator.scala" target="_blank" rel="noopener">CodeGenerator 实现</a>（生成 Java 代码），后者的代码相对更容易理解些。</p>
+<h2 id="思考：这是唯一的解法吗？"><a href="#思考：这是唯一的解法吗？" class="headerlink" title="思考：这是唯一的解法吗？*"></a>思考：这是唯一的解法吗？*</h2><p>为什么是 produce/consume 呢？是否存在更简单的解呢？<strong>这里给出我的推导思路，你可以跳过这一段</strong>，毕竟每个人的脑回路是不一样的。</p>
 <p>首先，如果只有一个接口函数，不妨叫它 <code>produce()</code>，一定是不够用的。为什么这么说呢？一个函数充其量只能做出类似 DFS 的效果：每个算子只会被经过一次。这对 Query 1 还不是问题，但对于上文中复杂的 Query 4，HashJoin 的两部分代码离得那么远，用 DFS 就很难做到了。</p>
 <p>为了处理 HashJoin，我们该增加一个怎样的函数呢？<strong>我认为它应该类似于一个回调</strong>，比如当 DFS 进行到 $\Join_{a=b}$ 时，我希望通过一种某种方式告诉下面的 $\sigma_{x=7}$：当你拿到结果后，只要用我传给你的方法去消费这些结果。这个方法，不妨叫做 <code>consume()</code>。</p>
 <p>顺理成章的，<code>consume()</code> 至少有个参数来传递需要消费的 tuples 有哪些列。另外，还需要一个参数用来指示：调用者左孩子还是右孩子？这等价于传 <code>this</code>。</p>
@@ -847,7 +849,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景：Volcano-经典执行模型"><span class="nav-number">1.</span> <span class="nav-text">背景：Volcano 经典执行模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Volcano-的性能问题"><span class="nav-number">2.</span> <span class="nav-text">Volcano 的性能问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HyPer-的解决方案"><span class="nav-number">3.</span> <span class="nav-text">HyPer 的解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考：这是唯一的方案吗（可选）"><span class="nav-number">4.</span> <span class="nav-text">思考：这是唯一的方案吗（可选）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Volcano-经典执行模型"><span class="nav-number">1.</span> <span class="nav-text">Volcano 经典执行模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Volcano-的性能问题"><span class="nav-number">2.</span> <span class="nav-text">Volcano 的性能问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HyPer-的解决方案"><span class="nav-number">3.</span> <span class="nav-text">HyPer 的解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考：这是唯一的解法吗？"><span class="nav-number">4.</span> <span class="nav-text">思考：这是唯一的解法吗？*</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
