@@ -157,7 +157,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-outer-join-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-general-unnesting.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-general-unnesting-example.png">
-<meta property="og:updated_time" content="2019-03-25T12:31:38.265Z">
+<meta property="og:updated_time" content="2019-03-25T12:42:14.007Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL 子查询的优化">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; } .marked-code {     color:red;     font-weight:bold; }   子查询（Subquery）的优化一直以来都是 SQL 查询优化中的难点之一。关联子查询的基本执行方式类似于 Nested-Loop，但是这种执行方式的效率常常低到难以忍受。当数据量稍大时，必须在优化器">
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-25 20:31:38" itemprop="dateModified" datetime="2019-03-25T20:31:38+08:00">2019-03-25</time>
+                <time title="修改时间：2019-03-25 20:42:14" itemprop="dateModified" datetime="2019-03-25T20:42:14+08:00">2019-03-25</time>
               
             
           </span>
@@ -607,7 +607,7 @@ WHERE c_nationkey <> ALL (SELECT s_nationkey FROM SUPPLIER)
 <p>如果 R 没有主键或唯一键，理论上，我们可以在 Scan 时生成一个。</p>
 </blockquote>
 <p>为什么变换前后是等价的呢？变换前，我们是给每个 R 的行做了一次 ScalarAgg 聚合计算，然后再把聚合的结果合并起来；变换后，我们先是将所有要聚合的数据准备好（这被称为 augment），然后使用 GroupAgg 一次性地做完所有聚合。</p>
-<p>这也解释了为什么我们要用 $A^{LOJ}$ 而不是原本的 $A^{\times}$ ：原来的 ScalarAgg 上，即使输入是空集，也会输出一个 NULL。如果我们这里用 $A^{LOJ}$，恰好也会得到一样的行为（＊）；反之，如果用 $A^{\times}$ 就有问题了——没有对应 ORDERS 的客户在结果就不见了！</p>
+<p>这也解释了为什么我们要用 $A^{LOJ}$ 而不是原本的 $A^{\times}$ ：原来的 ScalarAgg 上，即使输入是空集，也会输出一个 NULL。如果我们这里用 $A^{LOJ}$，恰好也会得到一样的行为（＊）；反之，如果用 $A^{\times}$ 就有问题了——没有对应 ORDERS 的客户在结果中消失了！</p>
 <p>规则 (8) 处理的是 GroupAgg，道理也是一样的，只不过原来的分组列也要留着。</p>
 <p><strong>ScalarAgg 转换中的细节＊</strong></p>
 <p>细心的读者可能注意到，规则 (9) 右边产生的聚合函数是 $F’$，多了一个单引号，这暗示它和原来的聚合函数 $F$ 可能是有些不同的。那什么情况下会不同呢？这个话题比较深入了，不感兴趣的同学可以跳过。</p>
@@ -621,7 +621,7 @@ FROM CUSTOMER
 </code></pre>
 
 <p>设想一下：客户 Eric 没有任何订单，那么这个查询应当返回一个 <code>[&#39;Eric&#39;, 0]</code> 的行。但是，当我们应用了规则 (9) 做变换之后，却得到了一个 <code>[&#39;Eric&#39;, 1]</code> 的值，结果出错了！</p>
-<p>为何会这样呢？变换之后，我们是先用 LeftOuterJoin 准备好中间数据（augment），然后用 GroupAgg 做聚合。LeftOuterJoin 为用户 Eric 生成了一个 <code>[&#39;Eric&#39;, NULL, NULL, ...]</code> 的行；之后的 GroupAgg 中，聚合函数 <code>COUNT(*)</code> 认为 Eric 这个分组有 1 行数据，所以输出了 <code>[&#39;Eric&#39;, 1]</code>。</p>
+<p>为何会这样呢？变换之后，我们是先用 LeftOuterJoin 准备好中间数据（augment），然后用 GroupAgg 做聚合。LeftOuterJoin 为客户 Eric 生成了一个 <code>[&#39;Eric&#39;, NULL, NULL, ...]</code> 的行；之后的 GroupAgg 中，聚合函数 <code>COUNT(*)</code> 认为 Eric 这个分组有 1 行数据，所以输出了 <code>[&#39;Eric&#39;, 1]</code>。</p>
 <p>下面是个更复杂的例子，也有类似的问题：</p>
 <pre><code class="language-text">SELECT c_custkey
 FROM CUSTOMER
