@@ -132,13 +132,13 @@
 
 
 
-  <meta name="description" content="Google Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。 不过，论文对存储层实现只作了模糊的阐述：原文中说">
+  <meta name="description" content="F1/Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。 不过，论文对存储层实现只作了模糊的阐述：原文中说到 ta">
 <meta name="keywords" content="selected">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Google Spanner 事务在存储层的实现">
+<meta property="og:title" content="谈谈如何实现具备 ACID 事务的分布式 KV 存储">
 <meta property="og:url" content="https://ericfu.me/google-spanner-storage-impl/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Google Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。 不过，论文对存储层实现只作了模糊的阐述：原文中说">
+<meta property="og:description" content="F1/Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。 不过，论文对存储层实现只作了模糊的阐述：原文中说到 ta">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2018/03/banner-google-spanner.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/03/commit-4-steps.svg">
@@ -151,10 +151,10 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/03/serializable-2.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/03/read-write-conflict-1.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2018/03/read-write-conflict-2.jpg">
-<meta property="og:updated_time" content="2018-04-13T02:10:32.065Z">
+<meta property="og:updated_time" content="2019-03-05T02:37:53.959Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Google Spanner 事务在存储层的实现">
-<meta name="twitter:description" content="Google Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。 不过，论文对存储层实现只作了模糊的阐述：原文中说">
+<meta name="twitter:title" content="谈谈如何实现具备 ACID 事务的分布式 KV 存储">
+<meta name="twitter:description" content="F1/Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。 不过，论文对存储层实现只作了模糊的阐述：原文中说到 ta">
 <meta name="twitter:image" content="https://ericfu.me/images/2018/03/banner-google-spanner.jpg">
 
 
@@ -172,7 +172,7 @@
   };
 </script>
 
-  <title>Google Spanner 事务在存储层的实现 | Coding Husky</title>
+  <title>谈谈如何实现具备 ACID 事务的分布式 KV 存储 | Coding Husky</title>
   
 
 
@@ -396,7 +396,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Google Spanner 事务在存储层的实现
+          <h2 class="post-title" itemprop="name headline">谈谈如何实现具备 ACID 事务的分布式 KV 存储
 
               
             
@@ -439,7 +439,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-04-13 10:10:32" itemprop="dateModified" datetime="2018-04-13T10:10:32+08:00">2018-04-13</time>
+                <time title="修改时间：2019-03-05 10:37:53" itemprop="dateModified" datetime="2019-03-05T10:37:53+08:00">2019-03-05</time>
               
             
           </span>
@@ -484,16 +484,16 @@
 
       
         <p><img src="/images/2018/03/banner-google-spanner.jpg" alt="banner-google-spanne"></p>
-<p>Google Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。</p>
+<p>F1/Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。</p>
 <p>不过，<strong>论文对存储层实现只作了模糊的阐述</strong>：原文中说到 tablet 的实现类似于 Bigtable（复用了不少 Bigtable 的代码），底层基于 Colossus —— 继承 GFS 的下一代分布式文件系统。可以确定的一点是，存储层要为 read-only 和 read-write 事务提供支持：</p>
 <ul>
 <li><strong>read-only 事务</strong>: 读取最新或给定时间戳 $t_{read}$ 的快照，也就是 snapshot read</li>
 <li><strong>read-write 事务</strong>：读取事务开始时间戳 $t_{start}$ 的快照，而写入操作在提交时间戳 $t_{commit}$ 生效</li>
 </ul>
-<p>本文从 Spanner 本身设计出发，并结合开源实现 TiDB 和 CockroachDB，谈谈如何为 Spanner 设计一个存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database</a>。</p>
+<p>本文从 F1/Spanner 论文出发，结合开源实现 TiDB 和 CockroachDB，谈谈如何设计一个具备 ACID 事务存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database</a>。</p>
 <a id="more"></a>
-<h2 id="数据的-KV-表示"><a href="#数据的-KV-表示" class="headerlink" title="数据的 KV 表示"></a>数据的 KV 表示</h2><p>Spanner 对外提供（半）关系型数据模型：每张表定义了一个或多个主键列，以及其他的非主键列。这和我们熟知的 SQL 关系型模型几乎一摸一样，唯一的不同是 schema 定义中必须含有主键。</p>
-<p>Spanner 早期的设计中大量复用了 BigTable（开源实现即 HBase）的代码。回忆一下 BigTable 的数据模型：每一条数据包含 <code>(Key, Column, Timestamp)</code> 三个维度，满足我们需要的 MVCC 特性。从 BigTable 开始的确是个不错的选择。</p>
+<h2 id="数据的-KV-表示"><a href="#数据的-KV-表示" class="headerlink" title="数据的 KV 表示"></a>数据的 KV 表示</h2><p>F1/Spanner 对外提供（半）关系型数据模型：每张表定义了一个或多个主键列，以及其他的非主键列。这和我们熟知的 SQL 关系型模型几乎一摸一样，唯一的不同是 schema 定义中必须含有主键。</p>
+<p>F1/Spanner 早期的设计中大量复用了 BigTable（开源实现即 HBase）的代码。回忆一下 BigTable 的数据模型：每一条数据包含 <code>(Key, Column, Timestamp)</code> 三个维度，满足我们需要的 MVCC 特性。从 BigTable 开始的确是个不错的选择。</p>
 <p>不过，从性能上考虑 Bigtable 毕竟是分布式的 KV 存储系统，在存储这一层我们大可不用搞的那么复杂，分布式的问题例如 scale-out 和 replication 应当留给上层的 sharding 机制和 Paxos 解决。事实上，一个单机的存储引擎足矣。</p>
 <p>Google 自家的 LSM-Tree + SSTable 的实现 LevelDB 是个可选项。它接口非常简单，是一个标准的 KV 存储，可以方便的在它基础上实现我们想要的数据模型。主要接口其实就是两个：</p>
 <ul>
@@ -557,7 +557,7 @@
 <p>上述过程很容易的能映射到 KV 存储模型上。按照前一节描述的方法，将 lock 和 write 列都视作普通的列即可。这里不再赘述。</p>
 <h2 id="事务的隔离性"><a href="#事务的隔离性" class="headerlink" title="事务的隔离性"></a>事务的隔离性</h2><p>上述的讨论只考虑了单个事务的原子性保证——如何<strong>确保</strong>能从从中间状态恢复到未提交或已提交的状态，而没有考虑多线程并发的情况。如果同时有多个 client 在运行多个事务，如何保证严格互相隔离？（Serializable级别）</p>
 <p>Percolator 是一个典型的 Snapshot Isolation 实现。Percolator 包含一个被称为 Strict-SI 的改进：在事务 commit 中，如果发现有一个高于 $t_{start}$ 的版本出现，则放弃 commit。这能避免 lost update 问题。但是 write-skew 问题依然存在。</p>
-<p>Spanner 提供 Serializable 隔离性保证，其算法被称为 Serializable Snapshot Isolation (SSI)。</p>
+<p>F1/Spanner 提供 Serializable 隔离性保证。相应的算法被称为 Serializable Snapshot Isolation (SSI)。</p>
 <h3 id="冲突图理论"><a href="#冲突图理论" class="headerlink" title="冲突图理论"></a>冲突图理论</h3><p>首先对以上问题建模。考虑两个事务对同一条数据先后发生两次读或写操作，于是有 4 种情况：</p>
 <ul>
 <li>Read-Read：这是OK的，它不会引起冲突；</li>
@@ -644,7 +644,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="https://ericfu.me/google-spanner-storage-impl/" title="Google Spanner 事务在存储层的实现">https://ericfu.me/google-spanner-storage-impl/</a>
+    <a href="https://ericfu.me/google-spanner-storage-impl/" title="谈谈如何实现具备 ACID 事务的分布式 KV 存储">https://ericfu.me/google-spanner-storage-impl/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -761,7 +761,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">90</span>
+                    <span class="site-state-item-count">91</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -843,7 +843,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1071,7 +1077,7 @@
   var disqus_config = function () {
     this.page.url = "https://ericfu.me/google-spanner-storage-impl/";
     this.page.identifier = "google-spanner-storage-impl/";
-    this.page.title = 'Google Spanner 事务在存储层的实现';
+    this.page.title = '谈谈如何实现具备 ACID 事务的分布式 KV 存储';
     };
   function loadComments () {
     var d = document, s = d.createElement('script');

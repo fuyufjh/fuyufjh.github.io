@@ -135,7 +135,7 @@
   <meta name="description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。尤其是对于计算密集型查询、或频繁重复使用的计算过程，运用代码生成技术能达到数十倍的性能提升。">
 <meta name="keywords" content="selected,database,java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="代码生成技术（一）表达式编译">
+<meta property="og:title" content="JIT 代码生成技术（一）表达式编译">
 <meta property="og:url" content="https://ericfu.me/code-gen-of-expression/index.html">
 <meta property="og:site_name" content="Coding Husky">
 <meta property="og:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。尤其是对于计算密集型查询、或频繁重复使用的计算过程，运用代码生成技术能达到数十倍的性能提升。">
@@ -144,9 +144,9 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/12/three-levels-of-code-gen.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/ast-to-algebra-tree.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/algebra-node-uml.png">
-<meta property="og:updated_time" content="2019-02-28T12:15:18.534Z">
+<meta property="og:updated_time" content="2019-03-05T02:49:45.942Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="代码生成技术（一）表达式编译">
+<meta name="twitter:title" content="JIT 代码生成技术（一）表达式编译">
 <meta name="twitter:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。尤其是对于计算密集型查询、或频繁重复使用的计算过程，运用代码生成技术能达到数十倍的性能提升。">
 <meta name="twitter:image" content="https://ericfu.me/images/2018/12/code-generation-banner.png">
 
@@ -165,7 +165,7 @@
   };
 </script>
 
-  <title>代码生成技术（一）表达式编译 | Coding Husky</title>
+  <title>JIT 代码生成技术（一）表达式编译 | Coding Husky</title>
   
 
 
@@ -389,7 +389,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">代码生成技术（一）表达式编译
+          <h2 class="post-title" itemprop="name headline">JIT 代码生成技术（一）表达式编译
 
               
             
@@ -432,7 +432,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-02-28 20:15:18" itemprop="dateModified" datetime="2019-02-28T20:15:18+08:00">2019-02-28</time>
+                <time title="修改时间：2019-03-05 10:49:45" itemprop="dateModified" datetime="2019-03-05T10:49:45+08:00">2019-03-05</time>
               
             
           </span>
@@ -569,7 +569,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="https://ericfu.me/code-gen-of-expression/" title="代码生成技术（一）表达式编译">https://ericfu.me/code-gen-of-expression/</a>
+    <a href="https://ericfu.me/code-gen-of-expression/" title="JIT 代码生成技术（一）表达式编译">https://ericfu.me/code-gen-of-expression/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -690,7 +690,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">90</span>
+                    <span class="site-state-item-count">91</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -772,7 +772,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1000,7 +1006,7 @@
   var disqus_config = function () {
     this.page.url = "https://ericfu.me/code-gen-of-expression/";
     this.page.identifier = "code-gen-of-expression/";
-    this.page.title = '代码生成技术（一）表达式编译';
+    this.page.title = 'JIT 代码生成技术（一）表达式编译';
     };
   function loadComments () {
     var d = document, s = d.createElement('script');

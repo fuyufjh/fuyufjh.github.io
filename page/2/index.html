@@ -363,6 +363,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/columnar-storage-overview-storage/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/columnar-storage-overview-storage/" class="post-title-link" itemprop="url">处理海量数据：列式存储综述（存储篇）</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-12 13:17:02" itemprop="dateCreated datePublished" datetime="2018-04-12T13:17:02+08:00">2018-04-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-04-26 12:23:25" itemprop="dateModified" datetime="2018-04-26T12:23:25+08:00">2018-04-26</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/columnar-storage-overview-storage/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="columnar-storage-overview-storage/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="/images/2018/04/banner-warehouse.jpg" alt="banner-warehouse"></p>
+<p><strong>列式存储（Column-oriented Storage）</strong>并不是一项新技术，最早可以追溯到 1983 年的论文 Cantor。然而，受限于早期的硬件条件和使用场景，主流的事务型数据库（OLTP）大多采用行式存储，直到近几年分析型数据库（OLAP）的兴起，列式存储这一概念又变得流行。</p>
+<p>总的来说，列式存储的优势一方面体现在存储上能节约空间、减少 IO，另一方面依靠列式数据结构做了计算上的优化。本文中着重介绍列式存储的数据组织方式，包括数据的布局、编码、压缩等。在下一篇文章中将介绍计算层以及 DBMS 整体架构设计。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/columnar-storage-overview-storage/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ericfu.me/lets-encrypt-wildcard-cert/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -555,7 +728,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/google-spanner-storage-impl/" class="post-title-link" itemprop="url">Google Spanner 事务在存储层的实现</a>
+                <a href="/google-spanner-storage-impl/" class="post-title-link" itemprop="url">谈谈如何实现具备 ACID 事务的分布式 KV 存储</a>
               
             
           </h2>
@@ -597,7 +770,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-04-13 10:10:32" itemprop="dateModified" datetime="2018-04-13T10:10:32+08:00">2018-04-13</time>
+                <time title="修改时间：2019-03-05 10:37:53" itemprop="dateModified" datetime="2019-03-05T10:37:53+08:00">2019-03-05</time>
               
             
           </span>
@@ -643,13 +816,13 @@
       
         
           <p><img src="/images/2018/03/banner-google-spanner.jpg" alt="banner-google-spanne"></p>
-<p>Google Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。</p>
+<p>F1/Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。</p>
 <p>不过，<strong>论文对存储层实现只作了模糊的阐述</strong>：原文中说到 tablet 的实现类似于 Bigtable（复用了不少 Bigtable 的代码），底层基于 Colossus —— 继承 GFS 的下一代分布式文件系统。可以确定的一点是，存储层要为 read-only 和 read-write 事务提供支持：</p>
 <ul>
 <li><strong>read-only 事务</strong>: 读取最新或给定时间戳 $t_{read}$ 的快照，也就是 snapshot read</li>
 <li><strong>read-write 事务</strong>：读取事务开始时间戳 $t_{start}$ 的快照，而写入操作在提交时间戳 $t_{commit}$ 生效</li>
 </ul>
-<p>本文从 Spanner 本身设计出发，并结合开源实现 TiDB 和 CockroachDB，谈谈如何为 Spanner 设计一个存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database</a>。</p>
+<p>本文从 F1/Spanner 论文出发，结合开源实现 TiDB 和 CockroachDB，谈谈如何设计一个具备 ACID 事务存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database</a>。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1900,183 +2073,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ericfu.me/perf-test-blockingqueue-vs-channel/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eric Fu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coding Husky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/perf-test-blockingqueue-vs-channel/" class="post-title-link" itemprop="url">性能测试：ArrayBlockingQueue vs. Go channel</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-05-01 07:56:23" itemprop="dateCreated datePublished" datetime="2017-05-01T07:56:23+08:00">2017-05-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2017-08-19 15:28:08" itemprop="dateModified" datetime="2017-08-19T15:28:08+08:00">2017-08-19</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/perf-test-blockingqueue-vs-channel/#comments" itemprop="discussionUrl">
-                
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="perf-test-blockingqueue-vs-channel/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>测试方案：</p>
-<ol>
-<li>主线程将一个 Integer 对象发到 Channel 0</li>
-<li>线程 i 将对象从 Channel i 不断搬运到 Channel i+1</li>
-<li>最后一个线程从 Channel N-1 中拿到对象，做加和</li>
-</ol>
-<p>为了保证公平，Go 中自行封装一个 Integer 而不是用 int 型；考虑到实际中大多数情况下 channel 里走的都是对象而非基本类型，这样是合理的。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/perf-test-blockingqueue-vs-channel/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2126,7 +2122,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">90</span>
+                    <span class="site-state-item-count">91</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2208,7 +2204,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">27</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

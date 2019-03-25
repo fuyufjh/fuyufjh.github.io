@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/subquery-optimization/</loc>
+    
+    <lastmod>2019-03-25T02:22:35.418Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/code-gen-of-query/</loc>
     
-    <lastmod>2019-03-03T14:47:41.343Z</lastmod>
+    <lastmod>2019-03-13T09:24:42.718Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://ericfu.me/code-gen-of-expression/</loc>
     
-    <lastmod>2019-02-28T12:15:18.534Z</lastmod>
+    <lastmod>2019-03-05T02:49:45.942Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/google-spanner-storage-impl/</loc>
+    
+    <lastmod>2019-03-05T02:37:53.959Z</lastmod>
     
   </url>
   
@@ -75,13 +89,6 @@
     <loc>https://ericfu.me/about/index.html</loc>
     
     <lastmod>2018-04-26T04:20:59.603Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/google-spanner-storage-impl/</loc>
-    
-    <lastmod>2018-04-13T02:10:32.065Z</lastmod>
     
   </url>
   
