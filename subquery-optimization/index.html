@@ -157,7 +157,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-outer-join-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-general-unnesting.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-general-unnesting-example.png">
-<meta property="og:updated_time" content="2019-03-25T07:29:50.561Z">
+<meta property="og:updated_time" content="2019-03-25T12:31:38.265Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL 子查询的优化">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; } .marked-code {     color:red;     font-weight:bold; }   子查询（Subquery）的优化一直以来都是 SQL 查询优化中的难点之一。关联子查询的基本执行方式类似于 Nested-Loop，但是这种执行方式的效率常常低到难以忍受。当数据量稍大时，必须在优化器">
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-25 15:29:50" itemprop="dateModified" datetime="2019-03-25T15:29:50+08:00">2019-03-25</time>
+                <time title="修改时间：2019-03-25 20:31:38" itemprop="dateModified" datetime="2019-03-25T20:31:38+08:00">2019-03-25</time>
               
             
           </span>
@@ -569,14 +569,14 @@ WHERE c_nationkey <> ALL (SELECT s_nationkey FROM SUPPLIER)
 <p>根据连接方式（$\otimes$）的不同，Apply 又有 4 种形式：</p>
 <ul>
 <li><strong>Cross Apply</strong> $A^{\times}$：这是最基本的形式，行为刚刚我们已经描述过了；</li>
-<li><strong>Left Outer Apply</strong> $A^{LOJ}$：即使 $E(r)$ 为空，也生成一个 $r \circ {NULLs}$。</li>
+<li><strong>Left Outer Apply</strong> $A^{LOJ}$：即使 $E(r)$ 为空，也生成一个 $r \circ \{NULLs\}$。</li>
 <li><strong>Semi Apply</strong> $A^{\exists}$：如果 $E(r)$ 不为空则返回 $r$，否则丢弃；</li>
 <li><strong>Anti-Semi Apply</strong> $A^{\nexists}$：如果 $E(r)$ 为空则返回 $r$，否则丢弃；</li>
 </ul>
 <p>我们用刚刚定义的 Apply 算子来改写之前的例子：把子查询从 Expression 内部提取出来。结果如下：</p>
 <p><img src="/images/2019/04/subquery-optimization-subquery-using-apply.png" alt="subquery-optimization-subquery-using-apply"></p>
 <p>上面的例子中，我们可以肯定 Scalar Agg 子查询<strong>有且只有</strong>一行结果，所以可以直接转成 Apply。但某些情况下，可能无法肯定子查询一定能返回 0 或 1 行结果（例如，想象一下 Query 2 如果 c_custkey 不是唯一的），为了确保 SQL 语义，还要在 Apply 右边加一个 $\textit{Max1Row}$ 算子：</p>
-<p>$$<br>\textit{Max1Row}(E)=<br>\begin{cases}<br>    {\textit{Null}s}, &amp; \text{if}\ |E|=0 \\<br>    E, &amp; \text{if}\ |E|=1 \\<br>    \textit{error}, &amp; \text{otherwise}<br>\end{cases}<br>$$</p>
+<p>$$<br>\textit{Max1Row}(E)=<br>\begin{cases}<br>    \textit{Null}, &amp; \text{if}\ |E|=0 \\<br>    E, &amp; \text{if}\ |E|=1 \\<br>    \textit{error}, &amp; \text{otherwise}<br>\end{cases}<br>$$</p>
 <p>理论上，我们<strong>可以将所有的子查询转换成 Apply 算子</strong>，一个通用的方法如下：</p>
 <ol>
 <li>如果某个算子的表达式中出现了子查询，我们就把这个子查询提取到该算子下面（留下一个子查询的结果变量），构成一个 $A^{LOJ}$ 算子。如果不止一个子查询，则会产生多个 $A^{LOJ}$。必要的时候加上 $\textit{Max1Row}$ 算子。</li>
@@ -584,7 +584,7 @@ WHERE c_nationkey <> ALL (SELECT s_nationkey FROM SUPPLIER)
 </ol>
 <p>下面这个例子中，Filter 条件表达式中包含 $Q_1$、$Q_2$ 两个子查询。转换之后分别生成了对应的 Apply 算子。其中 $Q_2$ 无法确定只会生成恰好一条记录，所以还加上了 $\textit{Max1Row}$ 算子。</p>
 <p><img src="/images/2019/04/convert-subquery-to-apply.png" alt="convert-subquery-to-apply"></p>
-<h2 id="基本消除规则"><a href="#基本消除规则" class="headerlink" title="基本消除规则"></a>基本消除规则</h2><p>第一组规则是最基本的规则，等式中的 $\otimes$ 说明它不限制连接类型，可以是 ${ \times, LOJ, \exists, \nexists }$ 中的任意一个。</p>
+<h2 id="基本消除规则"><a href="#基本消除规则" class="headerlink" title="基本消除规则"></a>基本消除规则</h2><p>第一组规则是最基本的规则，等式中的 $\otimes$ 说明它不限制连接类型，可以是 $\{ \times, LOJ, \exists, \nexists \}$ 中的任意一个。</p>
 <p><img src="/images/2019/04/rule-set-1.png" alt="rule-set-1"></p>
 <p>这两条规则是非常显而易见的，翻译成大白话就是：如果 Apply 的右边不包含来自左边的参数，那它就和直接 Join 是等价的。</p>
 <p>下面是对 Query 3 应用规则 (2) 的例子：</p>
@@ -632,9 +632,9 @@ WHERE 200000 < (
 )
 </code></pre>
 
-<p>作为总结，问题的根源在于：$F(\emptyset) \neq F({\textit{NULL}, \textit{NULL}, \dots })$，这样的聚合函数 $F$ 都有这个问题。</p>
+<p>作为总结，问题的根源在于：$F(\emptyset) \neq F(\{\textit{NULL}\})$，这样的聚合函数 $F$ 都有这个问题。</p>
 <p><strong>变换后的 GroupAgg 无法区分它看到的 NULL 数据到底是 OuterJoin 产生的，还是原本就存在的</strong>，有时候，这两种情形在变换前的 ScalarAgg 中会产生不同的结果。</p>
-<p>幸运的是，SQL 标准中定义的聚合函数 $F(col)$ 都是 OK 的——它们都满足 $F(\emptyset) = F({\textit{NULL}, \textit{NULL}, \dots })$，我们只要对 $F$ 稍加变换就能解决这个问题。</p>
+<p>幸运的是，SQL 标准中定义的聚合函数 $F(col)$ 都是 OK 的——它们都满足 $F(\emptyset) = F(\{\textit{NULL}\})$，我们只要对 $F$ 稍加变换就能解决这个问题。</p>
 <ul>
 <li>对于例子一，将 <code>COUNT(*)</code> 替换成一个对非空列（例如主键）的 Count 即可，例如：<code>COUNT(o_orderkey)</code>；</li>
 <li>对于例子二，需要把 <code>MIN(IF_NULL(o_totalprice, 42))</code> 分成两步来做：定义中间变量 <code>X</code>，先用 Project 计算 <code>X = IF_NULL(o_totalprice, 42)</code>，再对聚合函数 <code>MIN(X)</code> 进行去关联化即可。</li>
