@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don’t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
+  <meta name="description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don&apos;t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
 <meta name="keywords" content="selected,os">
 <meta property="og:type" content="article">
 <meta property="og:title" content="译：Varnish 架构师笔记">
 <meta property="og:url" content="https://ericfu.me/varnish-notes-from-archetect/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don’t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
+<meta property="og:description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don&apos;t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-19T07:31:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="译：Varnish 架构师笔记">
-<meta name="twitter:description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don’t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
+<meta name="twitter:description" content="找到这篇文章是在阅读 Kafka 文档时，一个名为 “Don&apos;t fear the filesystem!”的段落中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：  因为操作系统 PageCache 的存在，磁盘操作可能很快 虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快 CPU Cache 常常被忽略了，了">
 
 
 
@@ -472,7 +472,7 @@
 
       
         <blockquote>
-<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="noopener">名为 “Don’t fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
+<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="noopener">名为 “Don't fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
 <ul>
 <li>因为操作系统 PageCache 的存在，磁盘操作可能很快</li>
 <li>虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快</li>
@@ -484,7 +484,8 @@
 <p>多年以来我的绝大部分时间花费在 FreeBSD 的内核开发上，而每每涉足用户空间编程，却总是毫无例外地发现那里的人们还在以1975年的方式工作。</p>
 <a id="more"></a>
 <p>所以 Varnish 这个项目一开始并没能激起我很大的兴趣。但我渐渐意识到 Varnish 虽然是一个用户态应用，但却也是一个能充分发挥我长久以来积累的关于硬件和内核的经验知识的理想场所。目前 Varnish 的开发已经进展到alpha版本的阶段，而我觉得应当承认自己相当享受这一段历程。</p>
-<h3 id="1975的编程方式到底出了什么问题？"><a href="#1975的编程方式到底出了什么问题？" class="headerlink" title="1975的编程方式到底出了什么问题？"></a>1975的编程方式到底出了什么问题？</h3><p>简而言之：计算机系统再也不应该被看作是由两个存储层次构成的了。</p>
+<h3 id="的编程方式到底出了什么问题">1975的编程方式到底出了什么问题？</h3>
+<p>简而言之：计算机系统再也不应该被看作是由两个存储层次构成的了。</p>
 <p>首先是主存：从水银延迟线，磁芯存储器，到现在可供随机访问的RAM。</p>
 <p>然后是辅存：从纸带，磁带，到磁盘。最早的磁盘有一屋子大，然后缩小到洗衣机的尺寸，到今天硬盘可以被放进随身携带的 MP3 播放器中。</p>
 <p>于是大家就按照这样的划分，在内存中分配变量，在磁盘中存取数据，以这样的方式进行编程工作。</p>
@@ -496,7 +497,7 @@
 <p>如果事情到此为止的话就好了，但接下来1975年式的编程风格就出现了。</p>
 <p>一段时间之后，Squid 也和内核一样注意到了这个对象闲置了，于是打算把它放到硬盘上去，省出一些内存来给更频繁访问的数据使用。所以它打开一个文件把这个对象写了进去。</p>
 <p>打开慢镜头来看这个写入的过程：</p>
-<p>Squid 通过系统调用 write 将 HTTP 对象的虚拟内存地址传递给内核。<br>由于物理页已经被内核交换出去，这个内存访问将引发一个缺页中断。<br>为了重新载入这个内存页，内核不得不交换出另一个正在使用的内存页（很可能包含另一 Squid 的对象），修复页表，然后继续执行系统调用。<br>Squid 对这些一无所知，它自以为只是进行了一次再普通不过的访存操作而已。</p>
+<p>Squid 通过系统调用 write 将 HTTP 对象的虚拟内存地址传递给内核。 由于物理页已经被内核交换出去，这个内存访问将引发一个缺页中断。 为了重新载入这个内存页，内核不得不交换出另一个正在使用的内存页（很可能包含另一 Squid 的对象），修复页表，然后继续执行系统调用。 Squid 对这些一无所知，它自以为只是进行了一次再普通不过的访存操作而已。</p>
 <p>接下来 Squid 可以终于拿这块内存放别的数据了。而当这个对象再次被访问到时，Squid 又不得不把它从硬盘中取回来。首先它需要空闲的内存来存放这个对象，于是它根据某种淘汰算法选中另一个最近不常用的对象，把它写到硬盘上去（上面那些步骤重演了一遍）。然后打开文件读出这次所需的那个对象，最后通过网络套接字发送出去。</p>
 <p>这一切显然充满了各种无用功。</p>
 <p>让我们看看 Varnish 是怎么做的</p>
@@ -505,7 +506,8 @@
 <p>Varnish 不去尝试控制哪些数据应该被缓存在内存中，哪些应该放到硬盘上去。内核代码和硬件会处理这些事情，而且处理得很漂亮。</p>
 <p>此外，与 Squid 不同的是 Varnish 只需要一个文件而不是为每个 HTTP 对象创建单独的文件。没有任何理由需要在 HTTP 对象和文件系统对象间建立一一对应的关系，也没有理由把时间浪费在文件系统的命名空间处理上。Varnish 需要处理的只是虚拟内存的指针和所需对象的长度值而已。</p>
 <p>虚拟内存的出现为数据大于物理内存的场景提供了一种便利的机制，但人们似乎并没有领悟这一点。</p>
-<h3 id="更多的缓存"><a href="#更多的缓存" class="headerlink" title="更多的缓存"></a>更多的缓存</h3><p>CPU 的时钟频率目前看来基本止步于4GHz了。即便如此，为了避免内存读写的瓶颈，硬件工程师们不得不使用使用一级，二级，有时候甚至是三级 CPU cache（现在我们可以认为 RAM 是第四级缓存了），此外还有写缓冲，流水线，页模式读取等各种技术，而这些都是为了加快访存来匹配CPU的处理速度。</p>
+<h3 id="更多的缓存">更多的缓存</h3>
+<p>CPU 的时钟频率目前看来基本止步于4GHz了。即便如此，为了避免内存读写的瓶颈，硬件工程师们不得不使用使用一级，二级，有时候甚至是三级 CPU cache（现在我们可以认为 RAM 是第四级缓存了），此外还有写缓冲，流水线，页模式读取等各种技术，而这些都是为了加快访存来匹配CPU的处理速度。</p>
 <p>虽然时钟频率方面受限，但硅工艺的进步缩小了器件尺寸，集成了更多的晶体管。所以多核 CPU 的设计逐渐成为主流，但这从编程模型角度看来实在是很糟糕的一件事。</p>
 <p>虽然多核系统存在已久，但编写能够利用上多个 CPU 的代码依然是一件棘手的事。而要在多核系统上写出高性能的程序就更是如此了。</p>
 <p>比如我们有两个计数器：</p>
@@ -516,7 +518,8 @@
 <p>我们终于可以修改 <code>n_foo</code> 的值了，但其实修改完了之后一般不会直接将它写回到内存中。为了之后操作的快速存取，很可能我们会把它缓存起来。</p>
 <p>现在假设另一个 CPU 需要执行 <code>n_bar++</code> 的操作，它能够直接进行吗？答案是否定的。因为缓存的单位并不是字节而是 cache-line（典型值是 8-128 个字节）。所以当第一个 CPU 忙着处理 <code>n_foo</code> 时，第二个 CPU 必须等待，因为虽然它想获取的是另一个变量，但却不幸落在了同一个 cache-line 中。</p>
 <p>明白了吧？没错，这有点丑。</p>
-<h3 id="我们该怎么办"><a href="#我们该怎么办" class="headerlink" title="我们该怎么办"></a>我们该怎么办</h3><p><strong>尽一切可能，减少内存操作。</strong></p>
+<h3 id="我们该怎么办">我们该怎么办</h3>
+<p><strong>尽一切可能，减少内存操作。</strong></p>
 <p>下面是 Varnish 的一些做法。</p>
 <p>当需要处理一个 HTTP 请求或响应时，我们会持有一组指针和一个内存工作区。我们并不需要在处理每个 HTTP 报头时都调用 malloc，而是一次性分配整个工作区的内存，然后按需从中获取所需空间。而当我们一次性释放全部报头时，只要将指针重置到工作区的起始位置即可。</p>
 <p>当需要将 HTTP 报头从一个请求拷贝到另一个请求（或从从一个响应复制到另一个响应）时，并不需要进行字符串拷贝，而只要拷贝指针。如果源报头在这个过程中不会被不释放或改写，这样做是非常安全的。比如从客户端请求到后台请求的拷贝就是这样一个例子。</p>
@@ -841,7 +844,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1975的编程方式到底出了什么问题？"><span class="nav-number">1.</span> <span class="nav-text">1975的编程方式到底出了什么问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多的缓存"><span class="nav-number">2.</span> <span class="nav-text">更多的缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我们该怎么办"><span class="nav-number">3.</span> <span class="nav-text">我们该怎么办</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#的编程方式到底出了什么问题"><span class="nav-number">1.</span> <span class="nav-text">1975的编程方式到底出了什么问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多的缓存"><span class="nav-number">2.</span> <span class="nav-text">更多的缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我们该怎么办"><span class="nav-number">3.</span> <span class="nav-text">我们该怎么办</span></a></li></ol></div>
             
 
           </div>

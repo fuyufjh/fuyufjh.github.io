@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="AWS 提供的数据库 RDS - OLTP SQL Server MySQL PostgreSQL Oracle Aurora MariaDB   DynamoDB - NoSQL RedShift - OLAP Elasticache - In Memory Caching Memcached Redis">
+  <meta name="description" content="AWS 提供的数据库  RDS - OLTP  SQL Server MySQL PostgreSQL Oracle Aurora MariaDB  DynamoDB - NoSQL RedShift - OLAP Elasticache - In Memory Caching  Memcached Redis">
 <meta name="keywords" content="aws">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS 学习笔记之数据库">
 <meta property="og:url" content="https://ericfu.me/aws-notes-database/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="AWS 提供的数据库 RDS - OLTP SQL Server MySQL PostgreSQL Oracle Aurora MariaDB   DynamoDB - NoSQL RedShift - OLAP Elasticache - In Memory Caching Memcached Redis">
+<meta property="og:description" content="AWS 提供的数据库  RDS - OLTP  SQL Server MySQL PostgreSQL Oracle Aurora MariaDB  DynamoDB - NoSQL RedShift - OLAP Elasticache - In Memory Caching  Memcached Redis">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-04-05T06:47:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS 学习笔记之数据库">
-<meta name="twitter:description" content="AWS 提供的数据库 RDS - OLTP SQL Server MySQL PostgreSQL Oracle Aurora MariaDB   DynamoDB - NoSQL RedShift - OLAP Elasticache - In Memory Caching Memcached Redis">
+<meta name="twitter:description" content="AWS 提供的数据库  RDS - OLTP  SQL Server MySQL PostgreSQL Oracle Aurora MariaDB  DynamoDB - NoSQL RedShift - OLAP Elasticache - In Memory Caching  Memcached Redis">
 
 
 
@@ -459,32 +459,35 @@
       
 
       
-        <h3 id="AWS-提供的数据库"><a href="#AWS-提供的数据库" class="headerlink" title="AWS 提供的数据库"></a>AWS 提供的数据库</h3><ul>
-<li>RDS - OLTP<ul>
+        <h3 id="aws-提供的数据库">AWS 提供的数据库</h3>
+<ul>
+<li>RDS - OLTP
+<ul>
 <li>SQL Server</li>
 <li>MySQL</li>
 <li>PostgreSQL</li>
 <li>Oracle</li>
 <li>Aurora</li>
 <li>MariaDB</li>
-</ul>
-</li>
+</ul></li>
 <li>DynamoDB - NoSQL</li>
 <li>RedShift - OLAP</li>
-<li>Elasticache - In Memory Caching<ul>
+<li>Elasticache - In Memory Caching
+<ul>
 <li>Memcached</li>
 <li>Redis</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <a id="more"></a>
-<h3 id="RDS-Relational-Database-Service"><a href="#RDS-Relational-Database-Service" class="headerlink" title="RDS - Relational Database Service"></a>RDS - Relational Database Service</h3><p>RDS 提供一系列关系型数据库的托管服务。</p>
+<h3 id="rds---relational-database-service">RDS - Relational Database Service</h3>
+<p>RDS 提供一系列关系型数据库的托管服务。</p>
 <p>RDS 的两种 Replica 方式的区别：</p>
 <ul>
 <li><strong>Multi-AZ</strong>：备份数据到多个可用区， 当一个可用区 fail 时，会自动 failover 到另一个可用区</li>
 <li><strong>Read Replica</strong>：创建只读的 Replica 数据库，减轻单个 DB instance 的读取压力。一个 instance 至多可以有 5 个 read replica</li>
 </ul>
-<h3 id="Aurora-数据库"><a href="#Aurora-数据库" class="headerlink" title="Aurora 数据库"></a>Aurora 数据库</h3><p>Aurora 是 AWS 提供的 MySQL 兼容的关系型数据库。</p>
+<h3 id="aurora-数据库">Aurora 数据库</h3>
+<p>Aurora 是 AWS 提供的 MySQL 兼容的关系型数据库。</p>
 <ul>
 <li>每个可用区有 2 份拷贝；考虑到至少有 3 个可用区，数据至少有 6 份拷贝</li>
 <li>Aurora 能自动处理不多余 2 份拷贝的数据丢失，而不影响写可用性；最多容忍不多余 3 份的数据丢失，而不影响读可用性。</li>
@@ -495,7 +498,8 @@
 <li>Aurora Replicas (至多 15 个)</li>
 <li>MySQL Read Replicas (至多 5 个)</li>
 </ul>
-<h3 id="DynamoDB"><a href="#DynamoDB" class="headerlink" title="DynamoDB"></a>DynamoDB</h3><p>DynamoDB 是 AWS 提供的 NoSQL 数据库服务。它有以下特性：</p>
+<h3 id="dynamodb">DynamoDB</h3>
+<p>DynamoDB 是 AWS 提供的 NoSQL 数据库服务。它有以下特性：</p>
 <ul>
 <li>数据存储在 SSD 介质上</li>
 <li>跨 3 个地理隔离的数据中心</li>
@@ -503,15 +507,17 @@
 <li>支持强一致性读（可选）</li>
 </ul>
 <p>DynamoDB 相比于 RDS 具有很强的<strong>伸缩性</strong>，可以随时 scale 数据库而不用关机；RDS 就没这么容易了，你可能要换更大的 instance，或者增加 read replica。</p>
-<h3 id="Redshift-数据库"><a href="#Redshift-数据库" class="headerlink" title="Redshift 数据库"></a>Redshift 数据库</h3><ul>
+<h3 id="redshift-数据库">Redshift 数据库</h3>
+<ul>
 <li>单节点模式：最大 160GB</li>
-<li>多节点模式：<ul>
+<li>多节点模式：
+<ul>
 <li>Leader Node: 管理客户端连接、接受查询</li>
 <li>Compute Node: 存储数据、执行查询和计算任务，最多 128 个</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="Elasticache-缓存服务"><a href="#Elasticache-缓存服务" class="headerlink" title="Elasticache 缓存服务"></a>Elasticache 缓存服务</h3><p>Elasticache 通过在内存中缓存信息，来减轻应用程序访问数据库的负担。它目前支持两种 caching engines:</p>
+<h3 id="elasticache-缓存服务">Elasticache 缓存服务</h3>
+<p>Elasticache 通过在内存中缓存信息，来减轻应用程序访问数据库的负担。它目前支持两种 caching engines:</p>
 <ul>
 <li>Memcached</li>
 <li>Redis</li>
@@ -828,7 +834,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AWS-提供的数据库"><span class="nav-number">1.</span> <span class="nav-text">AWS 提供的数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDS-Relational-Database-Service"><span class="nav-number">2.</span> <span class="nav-text">RDS - Relational Database Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Aurora-数据库"><span class="nav-number">3.</span> <span class="nav-text">Aurora 数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DynamoDB"><span class="nav-number">4.</span> <span class="nav-text">DynamoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redshift-数据库"><span class="nav-number">5.</span> <span class="nav-text">Redshift 数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Elasticache-缓存服务"><span class="nav-number">6.</span> <span class="nav-text">Elasticache 缓存服务</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#aws-提供的数据库"><span class="nav-number">1.</span> <span class="nav-text">AWS 提供的数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rds---relational-database-service"><span class="nav-number">2.</span> <span class="nav-text">RDS - Relational Database Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#aurora-数据库"><span class="nav-number">3.</span> <span class="nav-text">Aurora 数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dynamodb"><span class="nav-number">4.</span> <span class="nav-text">DynamoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redshift-数据库"><span class="nav-number">5.</span> <span class="nav-text">Redshift 数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#elasticache-缓存服务"><span class="nav-number">6.</span> <span class="nav-text">Elasticache 缓存服务</span></a></li></ol></div>
             
 
           </div>

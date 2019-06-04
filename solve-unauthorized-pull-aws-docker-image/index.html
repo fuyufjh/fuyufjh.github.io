@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：  Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: aut">
+  <meta name="description" content="在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：  Failed to pull image &quot;url&quot;: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: aut">
 <meta name="keywords" content="selected,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决本地 docker&#x2F;minikube 没有权限拉取 AWS 的镜像">
 <meta property="og:url" content="https://ericfu.me/solve-unauthorized-pull-aws-docker-image/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：  Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: aut">
+<meta property="og:description" content="在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：  Failed to pull image &quot;url&quot;: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: aut">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2016-12-08T20:16:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决本地 docker&#x2F;minikube 没有权限拉取 AWS 的镜像">
-<meta name="twitter:description" content="在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：  Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: aut">
+<meta name="twitter:description" content="在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：  Failed to pull image &quot;url&quot;: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: aut">
 
 
 
@@ -473,7 +473,7 @@
       
         <p>在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：</p>
 <blockquote>
-<p>Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: authentication required)</p>
+<p>Failed to pull image "url": image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: authentication required)</p>
 </blockquote>
 <p>解决方案是用AWS CLI工具登录Docker</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> `aws ecr get-login`</span><br></pre></td></tr></table></figure>

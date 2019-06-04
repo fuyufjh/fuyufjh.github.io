@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式静">
+  <meta name="description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述 OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式">
 <meta name="keywords" content="selected,cpp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenCV 矩阵运算小结">
 <meta property="og:url" content="https://ericfu.me/opencv-matrix-calc/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式静">
+<meta property="og:description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述 OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-19T08:59:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenCV 矩阵运算小结">
-<meta name="twitter:description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式静">
+<meta name="twitter:description" content="这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 这里。  概述 OpenCV 里的矩阵分静态和动态两种：  动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个头——包含矩阵内存区域的指针和矩阵的大小、类型等信息。 静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，没有额外的存储空间，矩阵自身的信息都以模板的方式">
 
 
 
@@ -474,14 +474,16 @@
         <blockquote>
 <p>这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 <a href="http://docs.opencv.org/2.4.12/modules/core/doc/basic_structures.html" target="_blank" rel="noopener">这里</a>。</p>
 </blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenCV 里的矩阵分静态和动态两种：</p>
+<h2 id="概述">概述</h2>
+<p>OpenCV 里的矩阵分静态和动态两种：</p>
 <ul>
 <li>动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个<strong>头</strong>——包含矩阵内存区域的指针和矩阵的大小、类型等信息。</li>
 <li>静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，<strong>没有额外的存储空间</strong>，矩阵自身的信息都以模板的方式静态编译了。</li>
 </ul>
 <a id="more"></a>
 <p>对于能确定大小和类型的矩阵，尽量使用静态的存储方式。</p>
-<h2 id="Matx-Vec"><a href="#Matx-Vec" class="headerlink" title="Matx \ Vec"></a>Matx \ Vec</h2><p>创建时需要给定模板参数（类型、行数、列数），例如：</p>
+<h2 id="matx-vec">Matx  Vec</h2>
+<p>创建时需要给定模板参数（类型、行数、列数），例如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Matx&lt;<span class="keyword">float</span>, <span class="number">3</span>, <span class="number">3</span>&gt; matrix;</span><br></pre></td></tr></table></figure>
 <p>Vec 向量就是列数为 1 的 Matxs</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Tp, <span class="keyword">int</span> n&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vec</span> :</span> <span class="keyword">public</span> Matx&lt;_Tp, n, <span class="number">1</span>&gt; &#123;...&#125;;</span><br></pre></td></tr></table></figure>
@@ -491,7 +493,8 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cv::Matx31f r1, r2, r3;</span><br><span class="line">r2 -= r1.dot(r2) * r1;</span><br><span class="line">r2 *= (<span class="number">1.f</span> / norm(r2));</span><br></pre></td></tr></table></figure>
 <p>稍复杂的就要转换成 Mat 来操作了，这里给个简单的例子</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r3 = Mat(r1, <span class="literal">false</span>).cross(r2);</span><br></pre></td></tr></table></figure>
-<h2 id="Mat"><a href="#Mat" class="headerlink" title="Mat"></a>Mat</h2><p>其实 Mat 才是矩阵运算的主角，各种矩阵运算都与这个类相关。但是 Mat 是动态分配的，涉及到内存分配释放的代价，请自己权衡。</p>
+<h2 id="mat">Mat</h2>
+<p>其实 Mat 才是矩阵运算的主角，各种矩阵运算都与这个类相关。但是 Mat 是动态分配的，涉及到内存分配释放的代价，请自己权衡。</p>
 <p>前面提到，Mat 是一个指针加上数据类型、步长等信息，为了减少不必要的拷贝，OpenCV 中经常会出现两个 Mat 指向同一片内存区域（比如 ROI 就用到了这个特性）。这时候，对他们的修改会相互影响。</p>
 <p>Mat 也可以从给定的指针初始化，这种情况下，Mat 不去管理内存。</p>
 <p>常用的构造函数</p>
@@ -501,11 +504,13 @@
 <p>静态构造方法，以 zeors() 为例</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mat::zeros(<span class="keyword">int</span> rows, <span class="keyword">int</span> cols, <span class="keyword">int</span> type)</span><br><span class="line">Mat::zeros(<span class="keyword">int</span> ndims, <span class="keyword">const</span> <span class="keyword">int</span>* sz, <span class="keyword">int</span> type)</span><br></pre></td></tr></table></figure>
 <p>此外还有 <code>Mat::ones()</code>, <code>Mat::eye()</code></p>
-<h2 id="MatExpr"><a href="#MatExpr" class="headerlink" title="MatExpr"></a>MatExpr</h2><p>这是 Mat 运算中经常出现的一个类，可以理解成还未计算的矩阵表达式。它和 Mat 可以隐式地相互转换。这一点很方便，但要小心</p>
+<h2 id="matexpr">MatExpr</h2>
+<p>这是 Mat 运算中经常出现的一个类，可以理解成还未计算的矩阵表达式。它和 Mat 可以隐式地相互转换。这一点很方便，但要小心</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cv::Mat A, B, C;</span><br><span class="line">A = B;     <span class="comment">// 调用 `operator=(Mat)`，A 指向 B 的内存区域，A 的内存区域引用数减一</span></span><br><span class="line">A = B + C; <span class="comment">// 调用 `operator=(MatExpr)`，A 的数据被写成 B + C 的结果</span></span><br></pre></td></tr></table></figure>
 <p>如果要实现矩阵拷贝，应该用</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">B.copyTo(A);</span><br></pre></td></tr></table></figure>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>用以下函数取出一个 ROI，返回值类型仍是 Mat，共享对应的内存区域。</p>
+<h2 id="其他">其他</h2>
+<p>用以下函数取出一个 ROI，返回值类型仍是 Mat，共享对应的内存区域。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Mat::row(<span class="keyword">int</span> x)</span><br><span class="line">Mat::col(<span class="keyword">int</span> x)</span><br><span class="line">Mat::rowRange(<span class="keyword">int</span> startrow, <span class="keyword">int</span> endrow)</span><br><span class="line">Mat::colRange(<span class="keyword">int</span> startcol, <span class="keyword">int</span> endcol)</span><br></pre></td></tr></table></figure>
 <p>resize 把一个矩阵改变形状而不改变实际内存数据</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mat::resize(<span class="keyword">size_t</span> sz)</span><br></pre></td></tr></table></figure>
@@ -823,7 +828,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Matx-Vec"><span class="nav-number">2.</span> <span class="nav-text">Matx \ Vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mat"><span class="nav-number">3.</span> <span class="nav-text">Mat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MatExpr"><span class="nav-number">4.</span> <span class="nav-text">MatExpr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matx-vec"><span class="nav-number">2.</span> <span class="nav-text">Matx  Vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mat"><span class="nav-number">3.</span> <span class="nav-text">Mat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matexpr"><span class="nav-number">4.</span> <span class="nav-text">MatExpr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>

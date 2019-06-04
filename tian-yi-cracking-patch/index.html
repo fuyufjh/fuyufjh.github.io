@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="本文转载自好友ZLM大神的博客 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。如果感到正文不明觉厉请直接跳到最后的patch">
+  <meta name="description" content="本文转载自好友ZLM大神的博客 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。 如果感到正文不明觉厉请直接跳到最后的patch">
 <meta name="keywords" content="selected,misc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="天翼校园客户端逆向工程">
 <meta property="og:url" content="https://ericfu.me/tian-yi-cracking-patch/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="本文转载自好友ZLM大神的博客 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。如果感到正文不明觉厉请直接跳到最后的patch">
+<meta property="og:description" content="本文转载自好友ZLM大神的博客 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。 如果感到正文不明觉厉请直接跳到最后的patch">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-31T04:06:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="天翼校园客户端逆向工程">
-<meta name="twitter:description" content="本文转载自好友ZLM大神的博客 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。如果感到正文不明觉厉请直接跳到最后的patch">
+<meta name="twitter:description" content="本文转载自好友ZLM大神的博客 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。 如果感到正文不明觉厉请直接跳到最后的patch">
 
 
 
@@ -472,17 +472,19 @@
 
       
         <blockquote>
-<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="noopener">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。<br>如果感到正文不明觉厉请直接跳到最后的patch</p>
+<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="noopener">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。 如果感到正文不明觉厉请直接跳到最后的patch</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>逆向工程得出结果如下：</p>
+<h2 id="原理">原理</h2>
+<p>逆向工程得出结果如下：</p>
 <p>首先，电信校园客户端并不是直接修改CHAP RESPONSE生成函数，而是通过它自己修改的RP-PPPoE对数据包的截取和修改来完成的。</p>
 <p>帐号的前缀不再是调用拨号的时候加上的，而是在拨号程序内部加上的，准确地说是拨号程序截取CHAP RESPONSE PACKET，然后对RESPONSE HASH进行修改，修改过后更改包中的NAME字段，在帐号前加前缀，并修改包中的LENGTH字段，使其正确反映包的长度，然后再将修改过的包发出。</p>
 <p>拨号程序默认内置了一份前缀和密码表。默认前缀是<code>^~3</code>，密码表长度为0x11，即共17个字节。对RESPONSE的修改选择是基于前缀的第二位。如果第二位为<code>#</code>，那么就采用新的方式做RESPONSE HASH修改；否则采用原来的方式。</p>
 <p><strong>原来的</strong>方式很简单。首先对CHALLENGE（没错，是CHALLENGE，拨号程序也会过滤进入的CHAP PACKET，然后如果是CHAP 0x1，也就是CHALLENGE包，那么就会将CHALLENGE保存在内存的某一位置共后续使用）按字节进行替换。假设某字节为a，密码表为key[]，密码表中元素个数为n，则其替换方式为a=a+key[a&amp;n]。替换完后，使用原来的RESPONSE，新的CHALLENGE来完成一次MD5 HASH。用这个结果作为新的RESPONSE交给服务器。即完成CHAP。</p>
 <p><strong>新的</strong>方式有些复杂。因为它不只一种方式……准确地说，它是使用一种块加密算法的变体的加密和解密，以及另一种还算有名的并且有一些缺憾的流加密算法。前一种有4个不同的参数，分别为加、解密16轮和加、解密32轮。它将原来的RESPONSE作为值，然后用上述方式将RESPONSE的每一个字节都走一遍，然后再发出去。采用什么参数、什么算法由RESPONSE第一个字节%5来决定……</p>
 <p>这次电信也确实学聪明了，如果你按过去的方法去查看前缀（通过netfilter.sys之类），那么你应该得到的前缀是<code>^~3</code>，但实际上5月更新已经把前缀更改为<code>^#02</code>了，其实这都在pdext的配置文件中。</p>
-<h2 id="Patch-File"><a href="#Patch-File" class="headerlink" title="Patch File"></a>Patch File</h2><p><a href="https://gist.github.com/fuyufjh/242a0ff959809e43f0c5a5f29be6cdfd" target="_blank" rel="noopener">https://gist.github.com/fuyufjh/242a0ff959809e43f0c5a5f29be6cdfd</a></p>
+<h2 id="patch-file">Patch File</h2>
+<p>https://gist.github.com/fuyufjh/242a0ff959809e43f0c5a5f29be6cdfd</p>
 <p><strong>使用这个做拨号时不要忘了在号码前加<code>^#03</code>。</strong></p>
 
       
@@ -798,7 +800,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Patch-File"><span class="nav-number">2.</span> <span class="nav-text">Patch File</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patch-file"><span class="nav-number">2.</span> <span class="nav-text">Patch File</span></a></li></ol></div>
             
 
           </div>

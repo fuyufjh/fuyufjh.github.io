@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="VPC 把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（peer">
+  <meta name="description" content="VPC  把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（pee">
 <meta name="keywords" content="aws">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS 学习笔记之 VPC">
 <meta property="og:url" content="https://ericfu.me/aws-notes-vpc/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="VPC 把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（peer">
+<meta property="og:description" content="VPC  把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（pee">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-04-09T22:57:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS 学习笔记之 VPC">
-<meta name="twitter:description" content="VPC 把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（peer">
+<meta name="twitter:description" content="VPC  把 VPC 想象成一个逻辑上的数据中心 包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups 1 个 Subnet = 1 个可用区 Security Group 是有状态的，Network ACL 是无状态的 VPC 可以连接（pee">
 
 
 
@@ -459,7 +459,8 @@
       
 
       
-        <h2 id="VPC"><a href="#VPC" class="headerlink" title="VPC"></a>VPC</h2><ul>
+        <h2 id="vpc">VPC</h2>
+<ul>
 <li>把 VPC 想象成一个逻辑上的数据中心</li>
 <li>包含一个 IGW （Internet Gateway）或者 Virtual Private Gateway，Route Tables，Network ACLs，Subnets，Security Groups</li>
 <li>1 个 Subnet = 1 个可用区</li>
@@ -468,7 +469,8 @@
 <li>不能 transitive peer！如果 A 和 B 相连，B 和 C 相连，A 和 C 是<strong>不</strong>联通的，必须手动连接 A 和 C</li>
 </ul>
 <a id="more"></a>
-<h3 id="NAT-Instance"><a href="#NAT-Instance" class="headerlink" title="NAT Instance"></a>NAT Instance</h3><ul>
+<h3 id="nat-instance">NAT Instance</h3>
+<ul>
 <li>创建 NAT instance 的时候要关掉 Source/Destination Check</li>
 <li>NAT instance 必须放在 public subnet 里</li>
 <li>必须有一个 Elastic IP</li>
@@ -476,7 +478,8 @@
 <li>NAT instance 支持的流量取决于 instance size，如果不够用只能增加 instance size</li>
 <li>如果要 HA，可以利用 Autoscaling Group 为不同 AZ 的 subnet 创建 NAT instance</li>
 </ul>
-<h3 id="NAT-Gateway"><a href="#NAT-Gateway" class="headerlink" title="NAT Gateway"></a>NAT Gateway</h3><ul>
+<h3 id="nat-gateway">NAT Gateway</h3>
+<ul>
 <li>很新，很可能不出现在考试中</li>
 <li>可以自动伸缩，最大支持 10Gbps</li>
 <li>不用管补丁</li>
@@ -485,7 +488,8 @@
 <li>自动分配 IP 地址</li>
 <li>记得要更新 Route table</li>
 </ul>
-<h3 id="Network-ACLs"><a href="#Network-ACLs" class="headerlink" title="Network ACLs"></a>Network ACLs</h3><ul>
+<h3 id="network-acls">Network ACLs</h3>
+<ul>
 <li>VPC 创建的时候会自动创建一个 default network ACL，允许所有 outbound 和 inbount 流量</li>
 <li>你可以创建自定义的 network ACL，默认情况下，新创建的 network ACL 阻止所有连接（为了安全考虑）</li>
 <li>VPC 里的每个 subnet 必须要指定一个 network ACL，如果你没有显式的指定 network ACL，那就是用 default network ACL</li>
@@ -495,17 +499,20 @@
 <li>Network ACL 是无状态的。也就是说，对允许进入的流量也可能会被拒绝出去，反之亦然（区别于 security group）</li>
 <li>可以用 Network ACL 来 block 某些 IP 地址（段），security group 则不行</li>
 </ul>
-<h3 id="NAT-vs-Bastions"><a href="#NAT-vs-Bastions" class="headerlink" title="NAT vs Bastions"></a>NAT vs Bastions</h3><ul>
+<h3 id="nat-vs-bastions">NAT vs Bastions</h3>
+<ul>
 <li>NAT 用来给 private subnet 里的机器提供 internet 访问</li>
 <li>Bastion 用来安全地管理 private subnet 里的机器，也可以称为跳板机</li>
 </ul>
-<h3 id="容灾架构"><a href="#容灾架构" class="headerlink" title="容灾架构"></a>容灾架构</h3><ul>
+<h3 id="容灾架构">容灾架构</h3>
+<ul>
 <li>如果你想保证容灾性，至少保证 2 个 public subnets 和 2 个 private subnets，保证它们不在一个可用区</li>
 <li>保证 ELB 横跨你的多个可用区</li>
 <li>对于 Bastion instance，把它放在 autoscaling group 里，保证至少有 2 个节点工作，用 Route53 来做 fail over</li>
 <li>NAT instance 就比较麻烦了，每个 public subnet 里需要放一个，各自分配一个 IP 地址，而且你要写一个脚本来做 fail over。如果可能的话，用 NAT gateway 来代替</li>
 </ul>
-<h3 id="VPC-Flow-Logs"><a href="#VPC-Flow-Logs" class="headerlink" title="VPC Flow Logs"></a>VPC Flow Logs</h3><p>用来监控 VPC 里的网络流量。</p>
+<h3 id="vpc-flow-logs">VPC Flow Logs</h3>
+<p>用来监控 VPC 里的网络流量。</p>
 
       
     </div>
@@ -818,7 +825,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#VPC"><span class="nav-number">1.</span> <span class="nav-text">VPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT-Instance"><span class="nav-number">1.1.</span> <span class="nav-text">NAT Instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT-Gateway"><span class="nav-number">1.2.</span> <span class="nav-text">NAT Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Network-ACLs"><span class="nav-number">1.3.</span> <span class="nav-text">Network ACLs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT-vs-Bastions"><span class="nav-number">1.4.</span> <span class="nav-text">NAT vs Bastions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容灾架构"><span class="nav-number">1.5.</span> <span class="nav-text">容灾架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VPC-Flow-Logs"><span class="nav-number">1.6.</span> <span class="nav-text">VPC Flow Logs</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vpc"><span class="nav-number">1.</span> <span class="nav-text">VPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nat-instance"><span class="nav-number">1.1.</span> <span class="nav-text">NAT Instance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nat-gateway"><span class="nav-number">1.2.</span> <span class="nav-text">NAT Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#network-acls"><span class="nav-number">1.3.</span> <span class="nav-text">Network ACLs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nat-vs-bastions"><span class="nav-number">1.4.</span> <span class="nav-text">NAT vs Bastions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容灾架构"><span class="nav-number">1.5.</span> <span class="nav-text">容灾架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vpc-flow-logs"><span class="nav-number">1.6.</span> <span class="nav-text">VPC Flow Logs</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="Bandit 是什么？Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
+  <meta name="description" content="Bandit 是什么？ Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
 <meta name="keywords" content="selected,python,security">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用 Bandit 做 Python 代码静态安全分析">
 <meta property="og:url" content="https://ericfu.me/bandit-the-python-static-analyzer/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Bandit 是什么？Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
+<meta property="og:description" content="Bandit 是什么？ Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-21T00:55:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用 Bandit 做 Python 代码静态安全分析">
-<meta name="twitter:description" content="Bandit 是什么？Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
+<meta name="twitter:description" content="Bandit 是什么？ Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。 安装说明：参见 GitHub 项目主页。">
 
 
 
@@ -471,33 +471,38 @@
       
 
       
-        <h2 id="Bandit-是什么？"><a href="#Bandit-是什么？" class="headerlink" title="Bandit 是什么？"></a>Bandit 是什么？</h2><p>Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。</p>
+        <h2 id="bandit-是什么">Bandit 是什么？</h2>
+<p>Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。</p>
 <p>安装说明：参见 <a href="https://github.com/openstack/bandit" target="_blank" rel="noopener">GitHub 项目主页</a>。</p>
 <a id="more"></a>
-<h2 id="编写自定义的检查"><a href="#编写自定义的检查" class="headerlink" title="编写自定义的检查"></a>编写自定义的检查</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@bandit.checks('Call')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prohibit_unsafe_deserialization</span><span class="params">(context)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'unsafe_load'</span> <span class="keyword">in</span> context.call_function_name_qual:</span><br><span class="line">        <span class="keyword">return</span> bandit.Issue(</span><br><span class="line">            severity=bandit.HIGH,</span><br><span class="line">            confidence=bandit.HIGH,</span><br><span class="line">            text=<span class="string">"Unsafe deserialization detected."</span></span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<h2 id="编写自定义的检查">编写自定义的检查</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@bandit.checks('Call')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prohibit_unsafe_deserialization</span><span class="params">(context)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'unsafe_load'</span> <span class="keyword">in</span> context.call_function_name_qual:</span><br><span class="line">        <span class="keyword">return</span> bandit.Issue(</span><br><span class="line">            severity=bandit.HIGH,</span><br><span class="line">            confidence=bandit.HIGH,</span><br><span class="line">            text=<span class="string">"Unsafe deserialization detected."</span></span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
 <ul>
-<li><a href="mailto:`@bandit.checks" target="_blank" rel="noopener">`@bandit.checks</a>(‘Call’)<code>: 仅仅检查类型为</code>Call` 的 AST Node</li>
+<li><code>@bandit.checks('Call')</code>: 仅仅检查类型为 <code>Call</code> 的 AST Node</li>
 <li><code>return bandit.Issue(...)</code>: 返回一个 Security Issue</li>
 </ul>
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>入口在 <code>cli/main.py</code> 的 <code>main()</code></p>
+<h2 id="源码分析">源码分析</h2>
+<p>入口在 <code>cli/main.py</code> 的 <code>main()</code></p>
 <p>先初始化了一堆参数，然后在这里创建了一个关键的 BanditManager 对象，之后的事情都是由它来完成的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b_mgr = b_manager.BanditManager(b_conf, args.agg_type, args.debug,</span><br><span class="line">                                profile=profile, verbose=args.verbose,</span><br><span class="line">                                ignore_nosec=args.ignore_nosec)</span><br></pre></td></tr></table></figure>
-<h3 id="扫描文件"><a href="#扫描文件" class="headerlink" title="扫描文件"></a>扫描文件</h3><p>紧接着就能看到这行代码：</p>
+<h3 id="扫描文件">扫描文件</h3>
+<p>紧接着就能看到这行代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># initiate file discovery step within Bandit Manager</span></span><br><span class="line">b_mgr.discover_files(args.targets, args.recursive, args.excluded_paths)</span><br></pre></td></tr></table></figure>
 <p>让我们跟进去，然后看看 <code>discover_files()</code> 都做了些什么：（代码太长就不贴了）</p>
 <ul>
-<li>处理 include/exclude 参数<ul>
+<li>处理 include/exclude 参数
+<ul>
 <li>如果有 include 就只看这里面的文件，否则扫描所有文件</li>
 <li>如果有 exclude，之后扫描的时候要去掉这些文件</li>
-</ul>
-</li>
-<li>对所有指定的目标进行扫描<ul>
+</ul></li>
+<li>对所有指定的目标进行扫描
+<ul>
 <li>如果设置了 recursive 选项，就递归地遍历子目录。</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <p>最后把遍历的结果排序并以列表的形式存放在 <code>self.files_list</code> 中。</p>
-<h3 id="运行-Tests"><a href="#运行-Tests" class="headerlink" title="运行 Tests"></a>运行 Tests</h3><p>回到 <code>main()</code> 函数中，再往下看一点</p>
+<h3 id="运行-tests">运行 Tests</h3>
+<p>回到 <code>main()</code> 函数中，再往下看一点</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># initiate execution of tests within Bandit Manager</span></span><br><span class="line">b_mgr.run_tests()</span><br></pre></td></tr></table></figure>
 <p>看来这里是核心的一步，当然要走进去看看：（代码不贴了）</p>
 <ul>
@@ -512,11 +517,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visit_Call</span><span class="params">(self, node)</span>:</span></span><br><span class="line">    self.context[<span class="string">'call'</span>] = node</span><br><span class="line">    qualname = b_utils.get_call_name(node, self.import_aliases)</span><br><span class="line">    name = qualname.split(<span class="string">'.'</span>)[<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">    self.context[<span class="string">'qualname'</span>] = qualname</span><br><span class="line">    self.context[<span class="string">'name'</span>] = name</span><br><span class="line"></span><br><span class="line">    self.update_scores(self.tester.run_tests(self.context, <span class="string">'Call'</span>))</span><br></pre></td></tr></table></figure>
 <p>其实很简单，把对应的一些上下文信息 extract 出来并存到 <code>self.context</code>，然后用 <code>tester.run_tests</code> 执行所有对应 Call Node 的检查。</p>
 <p>所以 <code>run_tests()</code> 的逻辑你应该能猜到个大概了：</p>
-<ol>
+<ol type="1">
 <li>拿到所有类型为 <code>checktype</code> 的检查</li>
 <li>对每个检查，以当前的 <code>context</code> 作为参数做检查，如果检查出问题就存起来</li>
 </ol>
-<h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><p>再回到 <code>main()</code> 函数中，再往下就是输出：</p>
+<h3 id="输出结果">输出结果</h3>
+<p>再回到 <code>main()</code> 函数中，再往下就是输出：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># trigger output of results by Bandit Manager</span></span><br><span class="line">sev_level = constants.RANKING[args.severity - <span class="number">1</span>]</span><br><span class="line">conf_level = constants.RANKING[args.confidence - <span class="number">1</span>]</span><br><span class="line">b_mgr.output_results(args.context_lines,</span><br><span class="line">                     sev_level,</span><br><span class="line">                     conf_level,</span><br><span class="line">                     args.output_file,</span><br><span class="line">                     args.output_format)</span><br></pre></td></tr></table></figure>
 <p>Severity 和 Confidence 都是用来过滤的。最后输出到指定的形式。</p>
 
@@ -835,7 +841,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bandit-是什么？"><span class="nav-number">1.</span> <span class="nav-text">Bandit 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写自定义的检查"><span class="nav-number">2.</span> <span class="nav-text">编写自定义的检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#扫描文件"><span class="nav-number">3.1.</span> <span class="nav-text">扫描文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行-Tests"><span class="nav-number">3.2.</span> <span class="nav-text">运行 Tests</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出结果"><span class="nav-number">3.3.</span> <span class="nav-text">输出结果</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#bandit-是什么"><span class="nav-number">1.</span> <span class="nav-text">Bandit 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写自定义的检查"><span class="nav-number">2.</span> <span class="nav-text">编写自定义的检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#扫描文件"><span class="nav-number">3.1.</span> <span class="nav-text">扫描文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行-tests"><span class="nav-number">3.2.</span> <span class="nav-text">运行 Tests</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出结果"><span class="nav-number">3.3.</span> <span class="nav-text">输出结果</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="Python 的参数很复杂，有命名、非命名、*args、**kwargs 等等，很容易混淆。记下来防止以后忘记。 参数类型其实文档里是有这个的，在 inspect.Parameter 里。从定义的角度看：">
+  <meta name="description" content="Python 的参数很复杂，有命名、非命名、*args、**kwargs 等等，很容易混淆。记下来防止以后忘记。 参数类型 其实文档里是有这个的，在 inspect.Parameter 里。从定义的角度看：">
 <meta name="keywords" content="selected,python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python 的函数参数详解">
 <meta property="og:url" content="https://ericfu.me/python-arguments/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Python 的参数很复杂，有命名、非命名、*args、**kwargs 等等，很容易混淆。记下来防止以后忘记。 参数类型其实文档里是有这个的，在 inspect.Parameter 里。从定义的角度看：">
+<meta property="og:description" content="Python 的参数很复杂，有命名、非命名、*args、**kwargs 等等，很容易混淆。记下来防止以后忘记。 参数类型 其实文档里是有这个的，在 inspect.Parameter 里。从定义的角度看：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2015-12-19T05:56:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 的函数参数详解">
-<meta name="twitter:description" content="Python 的参数很复杂，有命名、非命名、*args、**kwargs 等等，很容易混淆。记下来防止以后忘记。 参数类型其实文档里是有这个的，在 inspect.Parameter 里。从定义的角度看：">
+<meta name="twitter:description" content="Python 的参数很复杂，有命名、非命名、*args、**kwargs 等等，很容易混淆。记下来防止以后忘记。 参数类型 其实文档里是有这个的，在 inspect.Parameter 里。从定义的角度看：">
 
 
 
@@ -460,10 +460,59 @@
 
       
         <p>Python 的参数很复杂，有命名、非命名、<code>*args</code>、<code>**kwargs</code> 等等，很容易混淆。记下来防止以后忘记。</p>
-<h2 id="参数类型"><a href="#参数类型" class="headerlink" title="参数类型"></a>参数类型</h2><p>其实文档里是有这个的，在 <code>inspect.Parameter</code> 里。从<strong>定义</strong>的角度看：</p>
+<h2 id="参数类型">参数类型</h2>
+<p>其实文档里是有这个的，在 <code>inspect.Parameter</code> 里。从<strong>定义</strong>的角度看：</p>
 <a id="more"></a>
-<table><br>  <tr><br>    <th>Name</th><br>    <th>Meaning</th><br>  </tr><br>  <tr><br>    <td>POSITIONAL_ONLY</td><br>    <td>只能根据位置来赋值（Python 里无法定义这样的参数，但是很多内置函数是这样的）</td><br>  </tr><br>  <tr><br>    <td>POSITIONAL_OR_KEYWORD</td><br>    <td>可以根据位置来赋值，也可以通过 keyword 赋值（这是 Python 里函数的标准行为方式）</td><br>  </tr><br>  <tr><br>    <td>VAR_POSITIONAL</td><br>    <td>一个 tuple 表示多个参数，即 <code>*args</code></td><br>  </tr><br>  <tr><br>    <td>KEYWORD_ONLY</td><br>    <td>只能通过 keyword 赋值（指的是定义在 <code>*args</code> 之后的参数——<code>*args</code> 会取走所有 unnamed 参数，故不能根据位置获得参数值）</td><br>  </tr><br>  <tr><br>    <td>VAR_KEYWORD</td><br>    <td>一个 dict 表示多个 named 参数，即 <code>**kwargs</code></td><br>  </tr><br></table>
-
+<table>
+<tr>
+<th>
+Name
+</th>
+<th>
+Meaning
+</th>
+</tr>
+<tr>
+<td>
+POSITIONAL_ONLY
+</td>
+<td>
+只能根据位置来赋值（Python 里无法定义这样的参数，但是很多内置函数是这样的）
+</td>
+</tr>
+<tr>
+<td>
+POSITIONAL_OR_KEYWORD
+</td>
+<td>
+可以根据位置来赋值，也可以通过 keyword 赋值（这是 Python 里函数的标准行为方式）
+</td>
+</tr>
+<tr>
+<td>
+VAR_POSITIONAL
+</td>
+<td>
+一个 tuple 表示多个参数，即 <code>*args</code>
+</td>
+</tr>
+<tr>
+<td>
+KEYWORD_ONLY
+</td>
+<td>
+只能通过 keyword 赋值（指的是定义在 <code>*args</code> 之后的参数——<code>*args</code> 会取走所有 unnamed 参数，故不能根据位置获得参数值）
+</td>
+</tr>
+<tr>
+<td>
+VAR_KEYWORD
+</td>
+<td>
+一个 dict 表示多个 named 参数，即 <code>**kwargs</code>
+</td>
+</tr>
+</table>
 <p>注：用 <code>inspect.signature</code> 可以检视函数各个参数的详细信息。</p>
 <p>从<strong>调用</strong>的角度看，函数分为：</p>
 <ul>
@@ -471,7 +520,8 @@
 <li>unnamed 表示非命名参数</li>
 </ul>
 <p>但是实际中是有带<code>*</code>和<code>**</code>的东西出现的，接着看。</p>
-<h2 id="调用者传入参数"><a href="#调用者传入参数" class="headerlink" title="调用者传入参数"></a>调用者传入参数</h2><p>对于参数顺序，Python 本身有以下限制：</p>
+<h2 id="调用者传入参数">调用者传入参数</h2>
+<p>对于参数顺序，Python 本身有以下限制：</p>
 <ul>
 <li><code>**</code> 参数必须位于一般参数和 <code>*</code> 参数之后，即只能放最后（但是可以不止一个）</li>
 <li>named 参数必须在 unnamed 参数之后</li>
@@ -486,7 +536,8 @@
 </ul>
 <p>注意，以上过程都是 in place 的，即相对左右其他参数的位置保持不变。</p>
 <p><code>*</code> 和 <code>**</code> 只是一个语法糖，它做的事情很简单，就是碰到的时候立马展开，变成一排 unnamed 或 named 参数。怎么样，简单吧！</p>
-<h2 id="被调用者接收参数"><a href="#被调用者接收参数" class="headerlink" title="被调用者接收参数"></a>被调用者接收参数</h2><p>Python 对形参表有以下限制：</p>
+<h2 id="被调用者接收参数">被调用者接收参数</h2>
+<p>Python 对形参表有以下限制：</p>
 <ul>
 <li><code>*args</code> 和 <code>**kwargs</code> 只能出现一次</li>
 <li><code>**kwargs</code> 参数必须放在最后</li>
@@ -500,7 +551,8 @@
 <li><code>VAR_KEYWORD</code> 拿到所有剩下的 named 参数，包括没被<code>POSITIONAL_OR_KEYWORD</code> 拿走的和没被 <code>KEYWORD_ONLY</code> 拿走的</li>
 </ul>
 <p>每个参数不能被赋值两次（即使值一样），没有 default 的函数必须被赋值。否则，报 TypeError。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以把参数看成两部分：一个 unnamed 参数组成的序列（tuple）和一个 named 参数组成的 dict。</p>
+<h2 id="总结">总结</h2>
+<p>可以把参数看成两部分：一个 unnamed 参数组成的序列（tuple）和一个 named 参数组成的 dict。</p>
 <p>这也解释了为什么</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    fn(*args, **kwargs)</span><br></pre></td></tr></table></figure>
 <p>能实现转发。</p>

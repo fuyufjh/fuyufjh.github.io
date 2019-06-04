@@ -132,19 +132,19 @@
 
 
 
-  <meta name="description" content="Tips: 如果您已经充分理解问题是什么，请直接跳到 #问题出在哪里 一节。 字符串和编码先从概念说起，字符串和它的编码是两个不同的概念：  字符串是一段文字本身，可以是中文可以是英文，以及各种语言 字符串的编码是计算机存储、处理字符串的方式；作为一种数据，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。  字符串经过编码（encode） 就成为了一堆数据，反过来，数据经过解">
+  <meta name="description" content="Tips: 如果您已经充分理解问题是什么，请直接跳到 #问题出在哪里 一节。 字符串和编码 先从概念说起，字符串和它的编码是两个不同的概念：  字符串是一段文字本身，可以是中文可以是英文，以及各种语言 字符串的编码是计算机存储、处理字符串的方式；作为一种数据，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。  字符串经过编码（encode） 就成为了一堆数据，反过来，数据经过">
 <meta name="keywords" content="selected,python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python 2 字符串编码踩坑小结">
 <meta property="og:url" content="https://ericfu.me/python-2-str-and-unicode/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Tips: 如果您已经充分理解问题是什么，请直接跳到 #问题出在哪里 一节。 字符串和编码先从概念说起，字符串和它的编码是两个不同的概念：  字符串是一段文字本身，可以是中文可以是英文，以及各种语言 字符串的编码是计算机存储、处理字符串的方式；作为一种数据，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。  字符串经过编码（encode） 就成为了一堆数据，反过来，数据经过解">
+<meta property="og:description" content="Tips: 如果您已经充分理解问题是什么，请直接跳到 #问题出在哪里 一节。 字符串和编码 先从概念说起，字符串和它的编码是两个不同的概念：  字符串是一段文字本身，可以是中文可以是英文，以及各种语言 字符串的编码是计算机存储、处理字符串的方式；作为一种数据，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。  字符串经过编码（encode） 就成为了一堆数据，反过来，数据经过">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2017/09/encode_decode.png">
 <meta property="og:updated_time" content="2017-09-01T07:59:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 2 字符串编码踩坑小结">
-<meta name="twitter:description" content="Tips: 如果您已经充分理解问题是什么，请直接跳到 #问题出在哪里 一节。 字符串和编码先从概念说起，字符串和它的编码是两个不同的概念：  字符串是一段文字本身，可以是中文可以是英文，以及各种语言 字符串的编码是计算机存储、处理字符串的方式；作为一种数据，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。  字符串经过编码（encode） 就成为了一堆数据，反过来，数据经过解">
+<meta name="twitter:description" content="Tips: 如果您已经充分理解问题是什么，请直接跳到 #问题出在哪里 一节。 字符串和编码 先从概念说起，字符串和它的编码是两个不同的概念：  字符串是一段文字本身，可以是中文可以是英文，以及各种语言 字符串的编码是计算机存储、处理字符串的方式；作为一种数据，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。  字符串经过编码（encode） 就成为了一堆数据，反过来，数据经过">
 <meta name="twitter:image" content="https://ericfu.me/images/2017/09/encode_decode.png">
 
 
@@ -462,30 +462,34 @@
 
       
         <p><strong>Tips:</strong> 如果您已经充分理解问题是什么，请直接跳到 <a href="#问题出在哪里">#问题出在哪里</a> 一节。</p>
-<h2 id="字符串和编码"><a href="#字符串和编码" class="headerlink" title="字符串和编码"></a>字符串和编码</h2><p>先从概念说起，字符串和它的编码是两个不同的概念：</p>
+<h2 id="字符串和编码">字符串和编码</h2>
+<p>先从概念说起，字符串和它的编码是两个不同的概念：</p>
 <ul>
 <li><strong>字符串</strong>是一段文字本身，可以是中文可以是英文，以及各种语言</li>
 <li>字符串的<strong>编码</strong>是计算机存储、处理字符串的方式；作为一种<strong>数据</strong>，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。</li>
 </ul>
 <p>字符串经过<strong>编码（encode）</strong> 就成为了一堆数据，反过来，数据经过<strong>解码（decode）</strong> 就变回我们认识的字符串。</p>
-<p><img src="/images/2017/09/encode_decode.png" alt="encode_decode"></p>
+<p><img src="/images/2017/09/encode_decode.png"></p>
 <a id="more"></a>
-<h2 id="从-Python-3-说起"><a href="#从-Python-3-说起" class="headerlink" title="从 Python 3 说起"></a>从 Python 3 说起</h2><p>这个编码问题（坑）可以说是 Python 2 被吐槽最多的黑点，没有之一。为了防止上来就掉进 Python 2 的坑里，我们先来看看 Python 3 里“改进”后是什么样子的。</p>
+<h2 id="从-python-3-说起">从 Python 3 说起</h2>
+<p>这个编码问题（坑）可以说是 Python 2 被吐槽最多的黑点，没有之一。为了防止上来就掉进 Python 2 的坑里，我们先来看看 Python 3 里“改进”后是什么样子的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">"Hello, 世界"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">len</span><span class="params">(s)</span></span></span><br><span class="line"><span class="class">9</span></span><br></pre></td></tr></table></figure>
 <p>哈，没有任何问题！（数长度的时候别漏了空格）</p>
 <p>查阅文档，我们发现 <code>str</code> 有个函数叫 <code>encode()</code>，它看起来很眼熟，让我们来试试：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">"utf-8"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">b'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br></pre></td></tr></table></figure>
-<p>这个 <code>b&#39;&#39;</code> 的前缀表示返回值是一个 <code>bytes</code> 变量，也就是一堆数据了。</p>
+<p>这个 <code>b''</code> 的前缀表示返回值是一个 <code>bytes</code> 变量，也就是一堆数据了。</p>
 <blockquote>
-<p><strong>为什么这里面”Hello”还是原来的样子，但是“世界”变成一坨 <code>\x??</code> 了？</strong></p>
+<p><strong>为什么这里面"Hello"还是原来的样子，但是“世界”变成一坨 <code>\x??</code> 了？</strong></p>
 <p>这是因为 ASCII 实在太有名了，程序员们都看得懂：这个 <code>H</code> 其实表示的是一字节 <code>0x48</code>。而后面“世界”的编码不在 ASCII 的编码范围内，所以只能用 <code>\x??</code> 表示了。</p>
 <p>这样看起来也许更清晰一些：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; &gt;&gt;&gt; b.hex()</span><br><span class="line">&gt; <span class="string">'48656c6c6f2c20e4b896e7958c'</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<p>有 <code>encode()</code> 当然也有 <code>decode()</code>。我们对刚刚拿到的 <code>bytes</code>  <code>b</code> 解码，果然会变成原来的字符串。</p>
+<p>有 <code>encode()</code> 当然也有 <code>decode()</code>。我们对刚刚拿到的 <code>bytes</code> <code>b</code> 解码，果然会变成原来的字符串。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">'Hello, 世界'</span></span><br></pre></td></tr></table></figure>
 <p>OK，现在你已经明白了奥义所在，是时候去踩坑了。</p>
-<h2 id="Python-2-的世界"><a href="#Python-2-的世界" class="headerlink" title="Python 2 的世界"></a>Python 2 的世界</h2><h3 id="初见茅庐"><a href="#初见茅庐" class="headerlink" title="初见茅庐"></a>初见茅庐</h3><p>先来一道开胃菜：</p>
+<h2 id="python-2-的世界">Python 2 的世界</h2>
+<h3 id="初见茅庐">初见茅庐</h3>
+<p>先来一道开胃菜：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">"Hello, 世界"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;type <span class="string">'str'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(s)</span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure>
 <p>▲ 为什么这个长度是 13 ？明明是 9 个字符啊！</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br></pre></td></tr></table></figure>
@@ -495,25 +499,26 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">u'Hello, \u4e16\u754c'</span></span><br></pre></td></tr></table></figure>
 <p>▲ 喵喵喵？</p>
 <p><strong>以上，Python 2 中字符串并不像我们想的那样工作。</strong></p>
-<h3 id="问题出在哪里"><a href="#问题出在哪里" class="headerlink" title="问题出在哪里"></a>问题出在哪里</h3><p>其实说起来也简单，Python 是一门诞生于 1989 年的古老语言，比 Unicode 还要早两年，当时的程序员并不在乎编码问题，因为 ASCII 已经足够了。</p>
+<h3 id="问题出在哪里">问题出在哪里</h3>
+<p>其实说起来也简单，Python 是一门诞生于 1989 年的古老语言，比 Unicode 还要早两年，当时的程序员并不在乎编码问题，因为 ASCII 已经足够了。</p>
 <p>如果你熟悉 C/C++ 会发现同样的问题：<code>char*</code> 被同时用于表示字符串和字节数组。Python 2 里也是同样，<code>str</code> 其实是个字节数组，却被挂上了字符串的名字。二十年后用着中文字符的我们被坑惨了。</p>
 <p>后来 Python 2 为了支持 Unicode，增加了 <code>unicode</code> 类型，然而并没有卵用——程序员们不记得在每个字符串前面加上 <code>u</code>，这也不够优雅。</p>
 <p>Python 3 设计之初就立志解决这个问题，不惜<strong>彻底修改了<code>str</code>的定义，把 <code>str</code> 这个名字让给了原来的 <code>unicode</code>！</strong>，而新增的 <code>bytes</code> 类型才是字节数组。如下表所示：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th></th>
 <th>Python 2</th>
 <th>Python 3</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>字符串（Unicode）</td>
 <td>unicode</td>
 <td>str</td>
 </tr>
-<tr>
+<tr class="even">
 <td>字节数组</td>
 <td>str (bytes)</td>
 <td>bytes</td>
@@ -523,7 +528,8 @@
 <p>所以，在 Python 2 里，如果遇到非英语字符，一定要记得用 unicode。效果是这样的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">u'Hello, 世界'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">u'Hello, \u4e16\u754c'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(s)</span><br><span class="line">&lt;type <span class="string">'unicode'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(s)</span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">'Hello, \xe4\xb8\x96\xe7\x95\x8c'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">u'Hello, \u4e16\u754c'</span></span><br></pre></td></tr></table></figure>
 <p>至于为什么 <code>str</code> 也有 <code>encode()</code>，主要是为了尽可能保持和 Python 3 的兼容性，以让部分程序能在 2、3 同时运行。<del>于是事情变得更糟糕了。</del></p>
-<h3 id="原来如此"><a href="#原来如此" class="headerlink" title="原来如此"></a>原来如此</h3><p>现在我们可以解释刚刚遇到的奇怪情况了：</p>
+<h3 id="原来如此">原来如此</h3>
+<p>现在我们可以解释刚刚遇到的奇怪情况了：</p>
 <ul>
 <li>“为什么这个长度是 13 ？明明是 9 个字符啊！”——因为 Python 自动帮你编码了，编码后是 13 个字节，常见的汉字在 UTF-8 编码下为 3 个字节</li>
 <li>“<code>s</code> 你怎么坏掉了？” ——<code>str</code> 本来就是字节数组</li>
@@ -531,7 +537,8 @@
 <li>“喵喵喵？”——这是正常的，只是因为 Python 2 没有把 Unicode 字符显示成中文字符，用 print 就没问题了：</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> s</span><br><span class="line">Hello, 世界</span><br></pre></td></tr></table></figure>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
+<h2 id="解决方案">解决方案</h2>
+<ol type="1">
 <li>永远记住 str 其实是 bytes，字符串应该用 unicode，尤其是包含中文时</li>
 <li>如果能说服你的老板和同事，尽快把 Python 2 升级到 3</li>
 </ol>
@@ -850,7 +857,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串和编码"><span class="nav-number">1.</span> <span class="nav-text">字符串和编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从-Python-3-说起"><span class="nav-number">2.</span> <span class="nav-text">从 Python 3 说起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-2-的世界"><span class="nav-number">3.</span> <span class="nav-text">Python 2 的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初见茅庐"><span class="nav-number">3.1.</span> <span class="nav-text">初见茅庐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题出在哪里"><span class="nav-number">3.2.</span> <span class="nav-text">问题出在哪里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原来如此"><span class="nav-number">3.3.</span> <span class="nav-text">原来如此</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">4.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串和编码"><span class="nav-number">1.</span> <span class="nav-text">字符串和编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从-python-3-说起"><span class="nav-number">2.</span> <span class="nav-text">从 Python 3 说起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-2-的世界"><span class="nav-number">3.</span> <span class="nav-text">Python 2 的世界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初见茅庐"><span class="nav-number">3.1.</span> <span class="nav-text">初见茅庐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题出在哪里"><span class="nav-number">3.2.</span> <span class="nav-text">问题出在哪里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原来如此"><span class="nav-number">3.3.</span> <span class="nav-text">原来如此</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">4.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
             
 
           </div>

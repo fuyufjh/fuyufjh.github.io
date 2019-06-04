@@ -471,7 +471,7 @@
       
         
           <p>测试方案：</p>
-<ol>
+<ol type="1">
 <li>主线程将一个 Integer 对象发到 Channel 0</li>
 <li>线程 i 将对象从 Channel i 不断搬运到 Channel i+1</li>
 <li>最后一个线程从 Channel N-1 中拿到对象，做加和</li>
@@ -665,7 +665,7 @@
 
       
         
-          <p><img src="/images/2017/05/Solutions-Architect-Associate.png" alt="Solutions-Architect-Associate"></p>
+          <p><img src="/images/2017/05/Solutions-Architect-Associate.png"></p>
 <p>经过一个月的学习，成功通过了 AWS 考试认证。不得不说相比从零开始闷声摸索，学习带来的收获还是很大的，避免了一些 AWS 的大坑，也了解了一些 best practice 的系统设计。</p>
 <p>可惜这个博客并不是在 AWS 上（原因可能是贫穷）。</p>
 <p>以下是我看过的学习资料：</p>
@@ -840,7 +840,7 @@
       
         
           <blockquote>
-<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="noopener">名为 “Don’t fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
+<p>找到这篇文章是在阅读 Kafka 文档时，一个<a href="https://kafka.apache.org/documentation/#persistence" target="_blank" rel="noopener">名为 “Don't fear the filesystem!”的段落</a>中提到的。文档指出，我们总是思维定势地以为磁盘很慢，内存很快。然而今天的计算机体系结构中，并非这么简单：</p>
 <ul>
 <li>因为操作系统 PageCache 的存在，磁盘操作可能很快</li>
 <li>虽然磁盘 IOPS 难以提高，但吞吐量在不断上升；换句话说，顺序读写磁盘非常快</li>
@@ -1021,9 +1021,9 @@
       
         
           <blockquote>
-<p>题目：<a href="https://www.hackerrank.com/contests/w31/challenges/spanning-tree-fraction" target="_blank" rel="noopener">https://www.hackerrank.com/contests/w31/challenges/spanning-tree-fraction</a><br>一张连通图G=(V,E)上，每条边有a和b两个整数，求一个生成树使得Sum(a) / Sum(b) 最大，输出这个最大值的分数形式 p/q</p>
+<p>题目：https://www.hackerrank.com/contests/w31/challenges/spanning-tree-fraction 一张连通图G=(V,E)上，每条边有a和b两个整数，求一个生成树使得Sum(a) / Sum(b) 最大，输出这个最大值的分数形式 p/q</p>
 </blockquote>
-<p>设 $\frac{\sum{a_i}}{\sum{b_i}} \ge c$ ，经过变换可得，$\sum{(a_i - b_i c)} \ge 0$，这种形式下 <code>ai - bi * c</code> 就退化为一条边的 cost，能方便得用 Prim 或 Kruskal 算法求出 cost 最大的生成树。</p>
+<p>设 <span class="math inline">\(\frac{\sum{a\_i}}{\sum{b\_i}} \ge c\)</span> ，经过变换可得，<span class="math inline">\(\sum{(a\_i - b\_i c)} \ge 0\)</span>，这种形式下 <code>ai - bi * c</code> 就退化为一条边的 cost，能方便得用 Prim 或 Kruskal 算法求出 cost 最大的生成树。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1194,7 +1194,7 @@
 
       
         
-          <p><img src="/images/2017/04/tensorflow-and-deep-learning-cover.png" alt="tensorflow-and-deep-learning-cove"></p>
+          <p><img src="/images/2017/04/tensorflow-and-deep-learning-cover.png"></p>
 <blockquote>
 <p>花了一周翻译了 Google Cloud Platform 上的教学课程 <em>TensorFlow and deep learning, without a PhD</em>，分享给大家。</p>
 </blockquote>
@@ -1357,7 +1357,8 @@
 
       
         
-          <h2 id="PID-1-的责任"><a href="#PID-1-的责任" class="headerlink" title="PID 1 的责任"></a>PID 1 的责任</h2><p>我们知道，在 Linux 内核启动的时候会先启动一个 <code>init</code> 进程，这个进程的 PID 始终为 1，通过 <code>ps</code> 命令你会发现这个进程是很多进程的父进程。</p>
+          <h2 id="pid-1-的责任">PID 1 的责任</h2>
+<p>我们知道，在 Linux 内核启动的时候会先启动一个 <code>init</code> 进程，这个进程的 PID 始终为 1，通过 <code>ps</code> 命令你会发现这个进程是很多进程的父进程。</p>
 <p>在 Linux 中，进程是用树来组织的，这个 <code>init</code> 就是根结点，很多重要的系统服务进程例如 <code>sshd</code>，<code>cron</code> 都是 <code>init</code> 的子节点。</p>
 <p><code>init</code> 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起来。经常发生如下的情况，一个进程还没有等到子进程结束（<code>waitpid</code>），自己就因为某些原因退出了，那它的子进程就此时成为孤儿会被 <code>init</code> 接管，<code>init</code> 会很尽责的对他们做 <code>waitpid</code>，从而确保资源不被浪费。</p>
           <!--noindex-->
@@ -1705,7 +1706,7 @@
         
           <p><strong>0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。</strong></p>
 <p>假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。</p>
-<p>如果one by one地做完三件事，总时间是 <code>N * (t1 + t2 + t3)</code><br>如果组成流水线，总时间缩短到 <code>N * min(t1, t2, t3)</code></p>
+<p>如果one by one地做完三件事，总时间是 <code>N * (t1 + t2 + t3)</code> 如果组成流水线，总时间缩短到 <code>N * min(t1, t2, t3)</code></p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1878,7 +1879,7 @@
         
           <p>在本地的Docker上Pull AWS EC2 Container Services的镜像时，遇到如下错误：</p>
 <blockquote>
-<p>Failed to pull image “url”: image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: authentication required)</p>
+<p>Failed to pull image "url": image pull failed for url, this may be because there are no credentials on this request. details: (unauthorized: authentication required)</p>
 </blockquote>
 <p>解决方案是用AWS CLI工具登录Docker</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> `aws ecr get-login`</span><br></pre></td></tr></table></figure>
@@ -2040,7 +2041,8 @@
 
       
         
-          <h2 id="普通做法"><a href="#普通做法" class="headerlink" title="普通做法"></a>普通做法</h2><p>以下是引用自某开源项目的做法：</p>
+          <h2 id="普通做法">普通做法</h2>
+<p>以下是引用自某开源项目的做法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:alpine</span><br><span class="line">RUN apk update &amp;&amp; \</span><br><span class="line">    apk upgrade &amp;&amp; \</span><br><span class="line">    apk add git</span><br><span class="line">RUN go get github.com/author/package</span><br></pre></td></tr></table></figure>
 <p>这样产生的包大约是 100MB，已经很不错了，但是还是浪费了大量空间。</p>
 <p>比如 Golang SDK 在程序运行中根本用不到，<code>Go Get</code>带来的源文件同样用不到。Golang是可以编译到真二进制的的语言，只要保留程序本身和必要的动态链接库（<code>.so</code>）即可。进一步，如果使用静态链接，那库也可以不要。</p>

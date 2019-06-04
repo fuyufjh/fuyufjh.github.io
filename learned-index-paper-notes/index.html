@@ -132,13 +132,13 @@
 
 
 
-  <meta name="description" content="数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。 这些事，似乎拿预测模型都是可以做的。Yes, but…B 树那是精确的映射关系，和预测模型能一样吗？ 所以这就是本论文 NB 的地方了，以上的想法是可以实现的。实验">
+  <meta name="description" content="数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。 这些事，似乎拿预测模型都是可以做的。Yes, but...B 树那是精确的映射关系，和预测模型能一样吗？ 所以这就是本论文 NB 的地方了，以上的想法是可以实现的。">
 <meta name="keywords" content="selected,algorithm,database">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Learned Index Structures 论文解读">
 <meta property="og:url" content="https://ericfu.me/learned-index-paper-notes/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。 这些事，似乎拿预测模型都是可以做的。Yes, but…B 树那是精确的映射关系，和预测模型能一样吗？ 所以这就是本论文 NB 的地方了，以上的想法是可以实现的。实验">
+<meta property="og:description" content="数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。 这些事，似乎拿预测模型都是可以做的。Yes, but...B 树那是精确的映射关系，和预测模型能一样吗？ 所以这就是本论文 NB 的地方了，以上的想法是可以实现的。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2017/12/learned-index-cover.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2017/12/figure-1.jpg">
@@ -151,7 +151,7 @@
 <meta property="og:updated_time" content="2018-03-16T02:49:05.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Learned Index Structures 论文解读">
-<meta name="twitter:description" content="数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。 这些事，似乎拿预测模型都是可以做的。Yes, but…B 树那是精确的映射关系，和预测模型能一样吗？ 所以这就是本论文 NB 的地方了，以上的想法是可以实现的。实验">
+<meta name="twitter:description" content="数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。 这些事，似乎拿预测模型都是可以做的。Yes, but...B 树那是精确的映射关系，和预测模型能一样吗？ 所以这就是本论文 NB 的地方了，以上的想法是可以实现的。">
 <meta name="twitter:image" content="https://ericfu.me/images/2017/12/learned-index-cover.jpg">
 
 
@@ -480,41 +480,44 @@
       
 
       
-        <p><img src="/images/2017/12/learned-index-cover.jpg" alt=""></p>
+        <p><img src="/images/2017/12/learned-index-cover.jpg"></p>
 <p>数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。</p>
-<p>这些事，似乎拿预测模型都是可以做的。Yes, but…B 树那是精确的映射关系，和预测模型能一样吗？</p>
+<p>这些事，似乎拿预测模型都是可以做的。Yes, but...B 树那是精确的映射关系，和预测模型能一样吗？</p>
 <p>所以这就是本论文 NB 的地方了，以上的想法是可以实现的。实验表明，在某些数据集上，用 RM-Index 预测模型代替 B 树之类的数据结构，可以提升 70% 的速度、并节约相当可观的空间。</p>
 <a id="more"></a>
-<h2 id="范围索引"><a href="#范围索引" class="headerlink" title="范围索引"></a>范围索引</h2><p>B 树和一个预测 model 是很相似的：</p>
+<h2 id="范围索引">范围索引</h2>
+<p>B 树和一个预测 model 是很相似的：</p>
 <ul>
 <li>B 树能定位某行数据所在的 page，可以看作是确定了一个区间：[pos, pos + pagesize]</li>
 <li>预测模型也能做相似的事，假设我们把预测错误率成功 bound 在 min/max_err 以内，那么也就可以确定，数据位于区间 [pos - min_err, pos + max_err]</li>
 </ul>
 <p>一图以概之：</p>
-<p><img src="/images/2017/12/figure-1.jpg" alt=""></p>
+<p><img src="/images/2017/12/figure-1.jpg"></p>
 <p>于是问题变成，<strong>如何把预测错误率 bound 在 max_err 以内</strong>？</p>
 <p>答案非常简单！通过训练。你可以把训练集的上的 error 降到多小都行，只要你模型的表现力足够强。这个问题和绝大多数机器学习的问题都不同，<strong>我们只要照顾好训练集（也就是被索引的数据）就可以了，没有测试集！</strong>当然也就不会有过拟合，模型的泛化能力是不用考虑的，比想象的简单吧！</p>
-<p>说到模型表现力强，很容易想到神经网络。除此以外，NN 还带来了另一个好处，在 GPU（或其他专用芯片，比如 Google 的 TPU）上，NN 能获得惊人的计算速度。NN 的结构决定了它并行起来非常快，时间复杂度上把 $O(\log{n})$ 的 B 树等甩在身后。</p>
+<p>说到模型表现力强，很容易想到神经网络。除此以外，NN 还带来了另一个好处，在 GPU（或其他专用芯片，比如 Google 的 TPU）上，NN 能获得惊人的计算速度。NN 的结构决定了它并行起来非常快，时间复杂度上把 <span class="math inline">\(O(\log{n})\)</span> 的 B 树等甩在身后。</p>
 <p>说到这里，我们来做个思维拓展：如果把 key 作为横轴，key 在有序数组中的位置 pos 作为纵轴，画出目标函数的曲线，那应该长成这个样子：</p>
-<p><img src="/images/2017/12/figure-2.jpg" alt=""></p>
+<p><img src="/images/2017/12/figure-2.jpg"></p>
 <p>这是一个 CDF (累积分布函数，累积的是各个 key 对应数据的长度）。从这个角度看，无论是 B 树还是预测模型都是在拟合这个函数，只是 approach 完全不同。</p>
 <p>这时候再回头看我们熟悉的 B 树，有没有一点顿悟—— Aha! 这不是就是决策树吗？</p>
-<h2 id="递归模型索引-RM-Index"><a href="#递归模型索引-RM-Index" class="headerlink" title="递归模型索引 RM-Index"></a>递归模型索引 RM-Index</h2><p>以上已经说完了核心思想，接下来就是要找到一个合适的预测模型来代替 B 树。实验发现，直接上 DNN 效果并不好：单次计算代价太大，只能用 GPU（而调用 GPU 会产生不小的 overhead）；而且网络很庞大，retrain（增删改）代价很大。</p>
+<h2 id="递归模型索引-rm-index">递归模型索引 RM-Index</h2>
+<p>以上已经说完了核心思想，接下来就是要找到一个合适的预测模型来代替 B 树。实验发现，直接上 DNN 效果并不好：单次计算代价太大，只能用 GPU（而调用 GPU 会产生不小的 overhead）；而且网络很庞大，retrain（增删改）代价很大。</p>
 <p>Naive 的预测模型之所以做的不好，一个重要原因是：把如此大量的数据每条误差 bound 在 min/max_err 之内，实在太难了（所谓 <em>last mile</em> 问题）。为解决这个问题，决策树给我们做了个很好的提示，<strong>如果一个模型解决不了问题，就再加几层</strong>。</p>
 <p>举个例子：为 100M 记录训练一个足够精确的预测器太难，那就分成 3 层树状结构。根节点分类器把记录分出 100 份，每份大约有 1M 记录；第二层再分出 100 份，每份大约只剩 10K 记录；第三层再分出 100 份，每份大约有 100 条记录——假设 100 条纪录足够把误差在 min/max_err 之内。</p>
-<p><img src="/images/2017/12/figure-3.jpg" alt=""></p>
+<p><img src="/images/2017/12/figure-3.jpg"></p>
 <p><em>注意，上图并不是一棵树，例如 Model 2.1 和 2.2 都可以选择 Model 3.2 作为下一层的分类模型。</em></p>
 <p>这样做的好处是，每层要做的事情简单多了（每层 precision gain = 100），模型可以变得简单得多。每个 NN 模型就像一个精通自己领域的专家，他只要学习某个很小子集的 keys 就可以了。这也同时解决了 <em>last mile</em> 难题，大不了为这一百左右个 keys 过拟合一下也无妨。</p>
-<h2 id="混合索引"><a href="#混合索引" class="headerlink" title="混合索引"></a>混合索引</h2><p>上图中的三层网络结构还带来一个额外的优势：每个 Model 其实是独立的，我们可以用除了 NN 以外的预测方法代替之，包括线性回归等简单算法，甚至是 B 树。</p>
+<h2 id="混合索引">混合索引</h2>
+<p>上图中的三层网络结构还带来一个额外的优势：每个 Model 其实是独立的，我们可以用除了 NN 以外的预测方法代替之，包括线性回归等简单算法，甚至是 B 树。</p>
 <p>事实上，最后选用了两种 Model：</p>
 <ul>
 <li>简单的神经网络（0～2 层全连接的 hidden layer，ReLU 激发函数，每层最多 32 个神经元）</li>
 <li>当叶节点的 NN 模型 error rate 超过阈值时，替换成 B 树</li>
 </ul>
 <p>训练算法如下，</p>
-<p><img src="/images/2017/12/algorithm-1.jpg" alt=""></p>
+<p><img src="/images/2017/12/algorithm-1.jpg"></p>
 <p>简单说就是：</p>
-<ol>
+<ol type="1">
 <li>固定整个 RM-Index 的结构，比如层数、每层 Model 数量等（可以用网格法调参）；</li>
 <li>用全部数据训练根节点，然后用根节点分类后的数据训练第二层模型，再用第二层分类后的数据训练第三层；</li>
 <li>对于第三层（叶节点），如果 max_error 大于预设的阈值，就换成 B 树。</li>
@@ -523,7 +526,8 @@
 <blockquote>
 <p>索引的 keys 常常是字符串，而我们前文说的 NN 模型的输入是向量。Luckily，字符串向量化是 ML 里研究很多的一个课题了，这里不再讨论，有兴趣的可以看下原论文（抛砖引玉为主）。</p>
 </blockquote>
-<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>为了对比 RM-Index 和 B 树的性能，论文作者找了 4 个数据集，分别用 RM-Index 和 B 树作二级索引。</p>
+<h2 id="测试结果">测试结果</h2>
+<p>为了对比 RM-Index 和 B 树的性能，论文作者找了 4 个数据集，分别用 RM-Index 和 B 树作二级索引。</p>
 <ul>
 <li>Weblogs 数据集：访问时间 timestamp -&gt; log entry （约 200M）</li>
 <li>Maps 数据集：纬度 longitude -&gt; locations （约 200M）</li>
@@ -532,7 +536,7 @@
 </ul>
 <p>测试中用了不同参数的 Learned Index 和 B 树，B 树也用了一个高度优化的实现。</p>
 <p>总体来说，Size savings 都相当可观（下降 1～2 个数量级），而速度也有所优化，最多能快 1 倍。</p>
-<p><img src="/images/2017/12/figure-5.jpg" alt=""></p>
+<p><img src="/images/2017/12/figure-5.jpg"></p>
 <blockquote>
 <p>对于每个数据集，论文都给出了详细的测试结果，有兴趣的同学请看原文。</p>
 </blockquote>
@@ -547,18 +551,22 @@
 <li>如果一定要 retrain，一个简单有效的优化是：把变更数据累积起来先放着，批量训练；</li>
 <li>此外，retrain 可以借鉴一些 warm-start 的方法加快训练过程。</li>
 </ul>
-<h2 id="其他索引结构"><a href="#其他索引结构" class="headerlink" title="其他索引结构"></a>其他索引结构</h2><p>论文中这部分没有详细展开，因为原理和前文几乎没有区别，仅仅换一种用法。</p>
-<h3 id="Point-Index"><a href="#Point-Index" class="headerlink" title="Point Index"></a>Point Index</h3><p>拳打完 B 树再来脚踢 hash-map。大家都知道 hash-map 兼具 $O(1)$ 的高效率和低效的空间使用率，想快就要减少碰撞，于是要牺牲更多的空间。所谓空间换时间。即使是 Google 的 Dense-hashmap 也会有 78% 的 overhead。</p>
+<h2 id="其他索引结构">其他索引结构</h2>
+<p>论文中这部分没有详细展开，因为原理和前文几乎没有区别，仅仅换一种用法。</p>
+<h3 id="point-index">Point Index</h3>
+<p>拳打完 B 树再来脚踢 hash-map。大家都知道 hash-map 兼具 <span class="math inline">\(O(1)\)</span> 的高效率和低效的空间使用率，想快就要减少碰撞，于是要牺牲更多的空间。所谓空间换时间。即使是 Google 的 Dense-hashmap 也会有 78% 的 overhead。</p>
 <p>解决方案如图所示，用 RM-Index 模型替换掉 hash function。其思想是，利用数据的某些内在特征，帮助它找到一个最均匀（uniform）的映射方式，而不是用哈希彻底随机化。</p>
-<p><img src="/images/2017/12/figure-9.jpg" alt=""></p>
+<p><img src="/images/2017/12/figure-9.jpg"></p>
 <p>在三个数据集上的测试表明，这一方法的确提升了 slot 的空间利用率，减少了很多空 slot，减少的比例约 -6% ~ -78%。</p>
-<h3 id="Existence-Index"><a href="#Existence-Index" class="headerlink" title="Existence Index"></a>Existence Index</h3><p>这回轮到的是 bloom filter，有两种思路：</p>
-<ol>
+<h3 id="existence-index">Existence Index</h3>
+<p>这回轮到的是 bloom filter，有两种思路：</p>
+<ol type="1">
 <li>直接用一个二分类模型判断是否存在；</li>
 <li>和上一小节的原理类似，把 hash 函数替换成 RMI 模型。</li>
 </ol>
-<p><img src="/images/2017/12/figure-12.jpg" alt=""></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>在 Jeff Dean 大神的光环之下，这篇文章很快引起热烈的讨论。</p>
+<p><img src="/images/2017/12/figure-12.jpg"></p>
+<h2 id="后记">后记</h2>
+<p>在 Jeff Dean 大神的光环之下，这篇文章很快引起热烈的讨论。</p>
 <p>不得不说，这个脑洞开的很大，令人为之一振。一直在人们心中只能做“模糊”预测的 ML 算法竟然能代替经典的 B 树，放在 10 年前估计会被喷到体无完肤。</p>
 <p>论文的亮点在于，大家一直在“训练——预测”这样一个思维下作 ML 而忽视了一点：至少对于已知的数据，ML 算法也是能输出一个确定的结果的！换句话说，<strong>在全集上训练，把错误率强行 bound 住其实很容易</strong>。</p>
 <p>下面说说优缺点。</p>
@@ -883,7 +891,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#范围索引"><span class="nav-number">1.</span> <span class="nav-text">范围索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归模型索引-RM-Index"><span class="nav-number">2.</span> <span class="nav-text">递归模型索引 RM-Index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#混合索引"><span class="nav-number">3.</span> <span class="nav-text">混合索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试结果"><span class="nav-number">4.</span> <span class="nav-text">测试结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他索引结构"><span class="nav-number">5.</span> <span class="nav-text">其他索引结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Index"><span class="nav-number">5.1.</span> <span class="nav-text">Point Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Existence-Index"><span class="nav-number">5.2.</span> <span class="nav-text">Existence Index</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">6.</span> <span class="nav-text">后记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#范围索引"><span class="nav-number">1.</span> <span class="nav-text">范围索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归模型索引-rm-index"><span class="nav-number">2.</span> <span class="nav-text">递归模型索引 RM-Index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#混合索引"><span class="nav-number">3.</span> <span class="nav-text">混合索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试结果"><span class="nav-number">4.</span> <span class="nav-text">测试结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他索引结构"><span class="nav-number">5.</span> <span class="nav-text">其他索引结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-index"><span class="nav-number">5.1.</span> <span class="nav-text">Point Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#existence-index"><span class="nav-number">5.2.</span> <span class="nav-text">Existence Index</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">6.</span> <span class="nav-text">后记</span></a></li></ol></div>
             
 
           </div>

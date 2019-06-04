@@ -464,10 +464,10 @@
 
       
         <p>为了提高识别准确度，我们将为神经网络增加更多层（Layer）。第二层神经元将计算前一层神经元输出的加权和，而非计算像素的加权和。这里有一个 5 层全连接神经网络的例子：</p>
-<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/77bc41f211c9fb29.png" alt=""></p>
+<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/77bc41f211c9fb29.png"></p>
 <a id="more"></a>
 <p>我们继续用 softmax 来作为最后一层的激活函数，因为它在分类问题中工作的最好。但在中间层，我们要使用最经典的激活函数：sigmoid：</p>
-<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/e5d46c389470df62.png" alt=""></p>
+<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/e5d46c389470df62.png"></p>
 <blockquote>
 <p>在这一节中，你的任务是为模型增加一到两个中间层以提高性能。</p>
 <p>答案可以在 <code>mnist_2.0_five_layers_sigmoid.py</code> 中找到。只有当你卡住的时候再看它！</p>
@@ -476,12 +476,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">W1 = tf.Variable(tf.truncated_normal([<span class="number">28</span>*<span class="number">28</span>, <span class="number">200</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">B1 = tf.Variable(tf.zeros([<span class="number">200</span>]))</span><br><span class="line"></span><br><span class="line">W2 = tf.Variable(tf.truncated_normal([<span class="number">200</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">B2 = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
 <p>权重矩阵的形状是 [N, M]，这里 N 是该层输入值的数量，M 是该层输出值的数量。在上述代码中，我们在中间层放了 200 个神经元，而输出层仍为 10 个神经元。</p>
 <blockquote>
-<p><strong>提示</strong>：随着你学习的深入，把权值初始化为随机值越来越重要，否则 optimiser 可能会一直卡在起始的位置。TensorFlow 函数 <code>tf.truncated_normal</code> 能生成正态（高斯）分布的随机值，范围在 $-2\sigma$ 和 $+2\sigma$ 之间。</p>
+<p><strong>提示</strong>：随着你学习的深入，把权值初始化为随机值越来越重要，否则 optimiser 可能会一直卡在起始的位置。TensorFlow 函数 <code>tf.truncated_normal</code> 能生成正态（高斯）分布的随机值，范围在 <span class="math inline">\(-2\sigma\)</span> 和 <span class="math inline">\(+2\sigma\)</span> 之间。</p>
 </blockquote>
 <p>现在，把单层模型改成二层模型：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">XX = tf.reshape(X, [<span class="number">-1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line"></span><br><span class="line">Y1 = tf.nn.sigmoid(tf.matmul(XX, W1) + B1)</span><br><span class="line">Y  = tf.nn.softmax(tf.matmul(Y1, W2) + B2)</span><br></pre></td></tr></table></figure>
-<p>That’s it! 你现在可以试试增加到 2 个中间层，比如分别有 200 个和 100 个神经元，那将能把准确率提升到 97% 以上（如果达不到，下一节会告诉你几个有用的改进技巧——译者注）。</p>
-<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/dbbf4c8edae90438.png" alt=""></p>
+<p>That's it! 你现在可以试试增加到 2 个中间层，比如分别有 200 个和 100 个神经元，那将能把准确率提升到 97% 以上（如果达不到，下一节会告诉你几个有用的改进技巧——译者注）。</p>
+<p><img src="https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/img/dbbf4c8edae90438.png"></p>
 
       
     </div>

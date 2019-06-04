@@ -132,13 +132,13 @@
 
 
 
-  <meta name="description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的更">
+  <meta name="description" content="需求  用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的">
 <meta name="keywords" content="docker,go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建分布式文件系统">
 <meta property="og:url" content="https://ericfu.me/build-distributed-file-system/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的更">
+<meta property="og:description" content="需求  用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2017/01/DFS---.png">
 <meta property="og:image" content="https://ericfu.me/images/2017/01/Screen-Shot-2016-12-20-at-1.25.02-AM.png">
@@ -146,7 +146,7 @@
 <meta property="og:updated_time" content="2017-01-25T07:23:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建分布式文件系统">
-<meta name="twitter:description" content="需求 用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的更">
+<meta name="twitter:description" content="需求  用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。   该系统由服务器集群（多节点）实现，每个节点能够为多个客户连接请求提供响应，当应用请求较多、节点平均负载较大时，系统会启用新的节点；当集群的总体请求量较少时，应当逐步关闭节点。   每个服务器节点都有自己的存储空间，可以保存客户上传的文件。   所有在线客户应当实时获得系统中文件信息的">
 <meta name="twitter:image" content="https://ericfu.me/images/2017/01/DFS---.png">
 
 
@@ -463,7 +463,8 @@
       
 
       
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><blockquote>
+        <h2 id="需求">需求</h2>
+<blockquote>
 <p>用户在登录之后可以上传文件，也可以看到所有上传的文件（自己或其他用户上传的文件），并可以下载这些文件。</p>
 </blockquote>
 <blockquote>
@@ -479,7 +480,8 @@
 <p>每个服务器节点都可能是不可靠的，k个节点故障（网络中断、节点关闭、节点崩溃……）不会对系统产生影响并介绍了如何设计、实现以及可靠性的分析等内容。</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="系统分析与设计"><a href="#系统分析与设计" class="headerlink" title="系统分析与设计"></a>系统分析与设计</h2><p>根据需求可以看出，这套系统至少可以分为前后端两个部分：</p>
+<h2 id="系统分析与设计">系统分析与设计</h2>
+<p>根据需求可以看出，这套系统至少可以分为前后端两个部分：</p>
 <ul>
 <li>后端拥有一套高可用、可扩展的分布式存储服务</li>
 <li>前端可以为用户（Human）提供服务。</li>
@@ -488,7 +490,8 @@
 <p><strong>分布式文件存储</strong> 提供真正的存储服务，我们期望它能存储从KB到GB级别的文件。为每个文件做2份以上的备份，并能通过一个 File ID 索引文件。</p>
 <p><strong>分布式文件索引</strong> 另一部分提供索引和查询服务，例如获取一个文件夹下所有的文件。对于某个文件（例如 <code>/foo/bar.txt</code>），能够得到它的File ID。索引相比单个文件更为重要，需要更为安全的高可用解决方案。</p>
 <p>下面对三个部分做具体的分析和设计。</p>
-<h3 id="文件索引数据库（Meta-Store）"><a href="#文件索引数据库（Meta-Store）" class="headerlink" title="文件索引数据库（Meta Store）"></a>文件索引数据库（Meta Store）</h3><p>文件索引是文件名（包含路径）到 File ID 的映射，是一个典型的 Key-Value 数据库。它至少需要支持以下方法：</p>
+<h3 id="文件索引数据库meta-store">文件索引数据库（Meta Store）</h3>
+<p>文件索引是文件名（包含路径）到 File ID 的映射，是一个典型的 Key-Value 数据库。它至少需要支持以下方法：</p>
 <ul>
 <li><strong>Put</strong> 新增或更新一个Key对应的Value</li>
 <li><strong>Delete</strong> 删除一个Key以及对应的Value</li>
@@ -498,7 +501,8 @@
 <p>幸运的是，文件索引的大小相比文件本身很小，可以方便的使用多副本的方式来保证数据不丢失，实现高可用。但是多副本带来的代价就是需要维护多个副本的数据一致性。</p>
 <p>Raft 一致性算法可以帮我们完成这件事。即使在部分副本宕机的情况下，剩余的副本可以继续对外提供服务，并保证当机和恢复的过程都不会破坏多副本的一致性。</p>
 <p>使用 Raft 一致性算法的 Key-Value 数据库有 ETCD、Redis Sentinel 等。综合考虑后，选用 Redis Sentinel 作为高可用文件索引的方案。因为 Redis Sentinel 只提供了 Master 选举和切换功能，我们还需要一个代理来将 Redis 连接分发到正确的 Master 上，例如轻量级的 twemproxy。</p>
-<h3 id="文件对象存储（File-Store）"><a href="#文件对象存储（File-Store）" class="headerlink" title="文件对象存储（File Store）"></a>文件对象存储（File Store）</h3><p>文件存储负责存储文件对象，并至少在不同的节点上保留一个备份。只要有一个备份可用，就能通过API获得文件。它至少需要支持以下方法：</p>
+<h3 id="文件对象存储file-store">文件对象存储（File Store）</h3>
+<p>文件存储负责存储文件对象，并至少在不同的节点上保留一个备份。只要有一个备份可用，就能通过API获得文件。它至少需要支持以下方法：</p>
 <ul>
 <li><strong>Post</strong> 新增一个文件，并返回 File ID</li>
 <li><strong>Delete</strong> 根据 File ID 移除一个文件</li>
@@ -508,7 +512,8 @@
 <p>那这里是否需要维护副本的数据一致性呢？因为操作已经很简单，并且 Metadata 全部在 Meta Store 中，这里的一致性维护工作变得容易了：</p>
 <p>存储集群是一个 Master－Slave 架构。如果 Slave 节点当机，那么 Master 上的双备份机制已经可以很好的处理；如果很不幸地 Master 节点意外终止，那需要一个额外的 Failover 机制来保证一个新的 Master 被选出，接替原来 Master 的工作。这一过程恰好是 Raft 一致性算法中 Master 选举的过程。</p>
 <p>符合要求的开源项目很多，最终我们选用了较为轻量级、但性能占优的 SeaweedFS 作为存储后端。</p>
-<h3 id="文件系统接口（Filer）"><a href="#文件系统接口（Filer）" class="headerlink" title="文件系统接口（Filer）"></a>文件系统接口（Filer）</h3><p>文件系统是本实验的主要模块。我们需要编写代码，实现一个支持以下操作的文件系统：</p>
+<h3 id="文件系统接口filer">文件系统接口（Filer）</h3>
+<p>文件系统是本实验的主要模块。我们需要编写代码，实现一个支持以下操作的文件系统：</p>
 <ul>
 <li><strong>CreateFile</strong> 创建文件</li>
 <li><strong>DeleteFile</strong> 删除文件</li>
@@ -519,7 +524,7 @@
 </ul>
 <p>此外，需要提供一个简单的用户界面，便于用户使用。</p>
 <p>以存储一个文件 <code>/foo/bar.txt</code> 为例，需要经过以下步骤：</p>
-<ol>
+<ol type="1">
 <li>检查目录 <code>/foo</code> 是否存在；如果不存在，需要创建目录，并把新目录加入 / 的目录树中。</li>
 <li>检查文件 <code>/foo/bar.txt</code> 是否存在；如果存在，则先从 File Store 中删除文件。</li>
 <li>上传文件 <code>bar.txt</code> 到 File Store，得到 File ID。</li>
@@ -533,10 +538,18 @@
 </ul>
 <p>此外，为了方便使用，引用一个开源的网页文件管理器 angular-filemanager 作为用户界面。我们仅需实现对应的后端 API 即可。</p>
 <p>Filer 本身是无状态的，所以很容易实现根据负载做 Auto Scaling。但实践中发现，Auto Scaling需要基础架构的支持，例如 VMware 虚拟机集群或 AWS 云服务，所以没有在本机（minikube）上试验。</p>
-<h2 id="完整架构"><a href="#完整架构" class="headerlink" title="完整架构"></a>完整架构</h2><p>以下是分布式文件系统项目的整体架构。系统使用 Docker + Kubernetes 来管理各个服务和节点，配合相关工具，很容易在 AWS 或 GCE 上部署。</p>
-<p><img src="/images/2017/01/DFS---.png" alt="DFS Structure"></p>
-<h2 id="实现演示"><a href="#实现演示" class="headerlink" title="实现演示"></a>实现演示</h2><p><img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.02-AM.png" alt="List Files"></p>
-<p><img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.37-AM.png" alt="Upload Files"></p>
+<h2 id="完整架构">完整架构</h2>
+<p>以下是分布式文件系统项目的整体架构。系统使用 Docker + Kubernetes 来管理各个服务和节点，配合相关工具，很容易在 AWS 或 GCE 上部署。</p>
+<figure>
+<img src="/images/2017/01/DFS---.png" alt="DFS Structure"><figcaption>DFS Structure</figcaption>
+</figure>
+<h2 id="实现演示">实现演示</h2>
+<figure>
+<img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.02-AM.png" alt="List Files"><figcaption>List Files</figcaption>
+</figure>
+<figure>
+<img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.37-AM.png" alt="Upload Files"><figcaption>Upload Files</figcaption>
+</figure>
 
       
     </div>
@@ -851,7 +864,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统分析与设计"><span class="nav-number">2.</span> <span class="nav-text">系统分析与设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件索引数据库（Meta-Store）"><span class="nav-number">2.1.</span> <span class="nav-text">文件索引数据库（Meta Store）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件对象存储（File-Store）"><span class="nav-number">2.2.</span> <span class="nav-text">文件对象存储（File Store）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统接口（Filer）"><span class="nav-number">2.3.</span> <span class="nav-text">文件系统接口（Filer）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整架构"><span class="nav-number">3.</span> <span class="nav-text">完整架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现演示"><span class="nav-number">4.</span> <span class="nav-text">实现演示</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统分析与设计"><span class="nav-number">2.</span> <span class="nav-text">系统分析与设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件索引数据库meta-store"><span class="nav-number">2.1.</span> <span class="nav-text">文件索引数据库（Meta Store）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件对象存储file-store"><span class="nav-number">2.2.</span> <span class="nav-text">文件对象存储（File Store）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统接口filer"><span class="nav-number">2.3.</span> <span class="nav-text">文件系统接口（Filer）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整架构"><span class="nav-number">3.</span> <span class="nav-text">完整架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现演示"><span class="nav-number">4.</span> <span class="nav-text">实现演示</span></a></li></ol></div>
             
 
           </div>

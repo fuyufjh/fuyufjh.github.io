@@ -475,17 +475,20 @@
 <p>当然，也有可能是我喜新厌旧，现在看 Ghost 觉得并没有一定要用它的理由了。随着 Markdown 用的越来越熟练，以及购买了用的十分顺手的 <a href="http://zh.mweb.im/" target="_blank" rel="noopener">MWeb 编辑器</a> 之后，Ghost 引以为豪的 Editor 对我而言也优势全无。而 Hexo 近年来发展的很好，精致的主题也越来越多呢！（说白了还是因为脸）</p>
 <p>下面说正经的。</p>
 <a id="more"></a>
-<h2 id="Pros-Hexo-有哪里好？"><a href="#Pros-Hexo-有哪里好？" class="headerlink" title="Pros: Hexo 有哪里好？"></a>Pros: Hexo 有哪里好？</h2><ul>
+<h2 id="pros-hexo-有哪里好">Pros: Hexo 有哪里好？</h2>
+<ul>
 <li>Markdown 格式，方便本地保存以及迁移</li>
 <li>社区活跃，使用问题基本都能 google 到答案</li>
 <li>Hexo + NexT 主题基本不用折腾就能满足我的所有要求，比如自带 MathJax</li>
 <li>最近墙变高了，很容易迁移到国内的静态页面托管平台（比如 coding.net）</li>
 </ul>
-<h2 id="Cons-迁移代价"><a href="#Cons-迁移代价" class="headerlink" title="Cons: 迁移代价"></a>Cons: 迁移代价</h2><ul>
+<h2 id="cons-迁移代价">Cons: 迁移代价</h2>
+<ul>
 <li>因为之前的用了 <a href="https://posativ.org/isso/" target="_blank" rel="noopener">isso 开源评论系统</a>懒得迁过来了，丢失一堆评论</li>
 <li>你可能因此浪费一个周末。</li>
 </ul>
-<h2 id="从-Ghost-导出内容"><a href="#从-Ghost-导出内容" class="headerlink" title="从 Ghost 导出内容"></a>从 Ghost 导出内容</h2><p>Ghost 一直很良心地在实验室页面保留了一个 <code>export</code> 按钮，导出后是一个巨大的 JSON，包含所有文章以及一些元数据：修改日期、Tags 等等。</p>
+<h2 id="从-ghost-导出内容">从 Ghost 导出内容</h2>
+<p>Ghost 一直很良心地在实验室页面保留了一个 <code>export</code> 按钮，导出后是一个巨大的 JSON，包含所有文章以及一些元数据：修改日期、Tags 等等。</p>
 <p>但是 Ghost 1.X 开始启动了一个<a href="https://github.com/bustle/mobiledoc-kit/blob/master/MOBILEDOC.md" target="_blank" rel="noopener">叫 <code>mobiledoc</code> 的文档格式</a>。突然得知这一消息的我是一脸懵逼的，说好的 Markdown 呢？根据<a href="https://github.com/TryGhost/Ghost/issues/7429" target="_blank" rel="noopener">这个 Issue</a>所述：</p>
 <blockquote>
 <p>你知道的，我们现在的编辑器非常烂，不好用，还有一堆 Bug!</p>
@@ -495,18 +498,22 @@
 <p>后果就是无论是 Ghost 导出的 JSON 还是数据库，都只有 mobiledoc 文档而没有 Markdown。所幸的是，Ghost 产生的 mobiledoc 也很奇葩，是把 Markdown 强行塞进去了。</p>
 <p>后面会在导入时处理这个问题，先点实验室里的 <code>export</code> 拿到 JSON。</p>
 <p>对于图片等资源，我们到 <code>assets</code> 文件夹下，打包下载下来即可。</p>
-<h2 id="将内容导入-Hexo"><a href="#将内容导入-Hexo" class="headerlink" title="将内容导入 Hexo"></a>将内容导入 Hexo</h2><p>根据 <a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="noopener">Hexo 官方的安装指引</a>在本地装好 Hexo。</p>
+<h2 id="将内容导入-hexo">将内容导入 Hexo</h2>
+<p>根据 <a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="noopener">Hexo 官方的安装指引</a>在本地装好 Hexo。</p>
 <p>时间充裕的话，可以顺手把 <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">NexT 主题</a>也给装了。</p>
-<h3 id="导入文章-Markdown"><a href="#导入文章-Markdown" class="headerlink" title="导入文章 Markdown"></a>导入文章 Markdown</h3><p>之后我们开始导入文章。Hexo 是留了 migrator 插件接口的，GitHub 上能找到一个名为 hexo-migrator-ghost 的插件，但是已经年久失修。于是我帮他修了一下 bug，其中也包括从 mobiledoc 中解出 Markdown<br>代码。</p>
+<h3 id="导入文章-markdown">导入文章 Markdown</h3>
+<p>之后我们开始导入文章。Hexo 是留了 migrator 插件接口的，GitHub 上能找到一个名为 hexo-migrator-ghost 的插件，但是已经年久失修。于是我帮他修了一下 bug，其中也包括从 mobiledoc 中解出 Markdown 代码。</p>
 <p>你可以直接把<a href="https://github.com/fuyufjh/hexo-migrator-ghost" target="_blank" rel="noopener">我的 Repo</a> <code>git clone</code> 到 node_modules 里：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/fuyufjh/hexo-migrator-ghost.git ./node_modules/hexo-migrator-ghost</span><br></pre></td></tr></table></figure>
 <p>然后运行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo migrate ghost ghost-export.json</span><br></pre></td></tr></table></figure>
-<h3 id="导入图片等资源"><a href="#导入图片等资源" class="headerlink" title="导入图片等资源"></a>导入图片等资源</h3><p>原来的资源都是放在 contents 目录下的，格式大概是 <code>contents/2017/10/29/imagename.jpg</code>。</p>
+<h3 id="导入图片等资源">导入图片等资源</h3>
+<p>原来的资源都是放在 contents 目录下的，格式大概是 <code>contents/2017/10/29/imagename.jpg</code>。</p>
 <p>只要把 contents 改成 images 放到 _post 目录下，然后，用你喜爱的编辑器（或者 <code>sed</code>）对所有文章做一次全局替换：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/images/ -&gt; /contents/</span><br></pre></td></tr></table></figure>
 <p><code>hexo serve</code> 试一下，应该可以看到图片了！</p>
-<h3 id="最后，做一些必要的配置"><a href="#最后，做一些必要的配置" class="headerlink" title="最后，做一些必要的配置"></a>最后，做一些必要的配置</h3><ul>
+<h3 id="最后做一些必要的配置">最后，做一些必要的配置</h3>
+<ul>
 <li><a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="noopener">Hexo 配置</a></li>
 <li><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">NexT 配置</a></li>
 <li><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="noopener">NexT 高级配置</a></li>
@@ -826,7 +833,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pros-Hexo-有哪里好？"><span class="nav-number">1.</span> <span class="nav-text">Pros: Hexo 有哪里好？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cons-迁移代价"><span class="nav-number">2.</span> <span class="nav-text">Cons: 迁移代价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从-Ghost-导出内容"><span class="nav-number">3.</span> <span class="nav-text">从 Ghost 导出内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将内容导入-Hexo"><span class="nav-number">4.</span> <span class="nav-text">将内容导入 Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导入文章-Markdown"><span class="nav-number">4.1.</span> <span class="nav-text">导入文章 Markdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入图片等资源"><span class="nav-number">4.2.</span> <span class="nav-text">导入图片等资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后，做一些必要的配置"><span class="nav-number">4.3.</span> <span class="nav-text">最后，做一些必要的配置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#pros-hexo-有哪里好"><span class="nav-number">1.</span> <span class="nav-text">Pros: Hexo 有哪里好？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cons-迁移代价"><span class="nav-number">2.</span> <span class="nav-text">Cons: 迁移代价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从-ghost-导出内容"><span class="nav-number">3.</span> <span class="nav-text">从 Ghost 导出内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将内容导入-hexo"><span class="nav-number">4.</span> <span class="nav-text">将内容导入 Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导入文章-markdown"><span class="nav-number">4.1.</span> <span class="nav-text">导入文章 Markdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入图片等资源"><span class="nav-number">4.2.</span> <span class="nav-text">导入图片等资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后做一些必要的配置"><span class="nav-number">4.3.</span> <span class="nav-text">最后，做一些必要的配置</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -469,9 +469,9 @@
 <p>Second, in case of raw inline (ie without <code>static</code> or <code>extern</code>) to provide an inline definition as an alternative to an external one, which has to be present in a different translation unit. Not providing the external one is undefined behaviour, which will normally manifest as linking failure.</p>
 </blockquote>
 <a id="more"></a>
-<p>带有<code>static</code>和<code>extern</code>的情况下，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">static inline === static</span><br><span class="line">extern inline === extern</span><br></pre></td></tr></table></figure></p>
-<p>否则，和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inline === extern</span><br></pre></td></tr></table></figure></p>
-<p>Ref: <a href="http://stackoverflow.com/a/16254679" target="_blank" rel="noopener">http://stackoverflow.com/a/16254679</a></p>
+<p>带有<code>static</code>和<code>extern</code>的情况下， <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">static inline === static</span><br><span class="line">extern inline === extern</span><br></pre></td></tr></table></figure></p>
+<p>否则，和 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inline === extern</span><br></pre></td></tr></table></figure></p>
+<p>Ref: http://stackoverflow.com/a/16254679</p>
 
       
     </div>

@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值\初始化语句。其实这些可以用一行漂亮的代码搞定。 先上代码： 1234#define new(type, ...) (&amp;#123;\       type* __t = (type*) malloc(sizeof(type));\       *__t = (type)&amp;#123;__VA_ARGS__&amp;#125;;\">
+  <meta name="description" content="写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值。其实这些可以用一行漂亮的代码搞定。 先上代码： 1234#define new(type, ...) (&amp;#123;\       type* __t = (type*) malloc(sizeof(type));\       *__t = (type)&amp;#123;__VA_ARGS__&amp;#125;;\       __">
 <meta name="keywords" content="cpp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C语言malloc创建struct同时初始化成员变量">
 <meta property="og:url" content="https://ericfu.me/c-struct-malloc-and-initial/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值\初始化语句。其实这些可以用一行漂亮的代码搞定。 先上代码： 1234#define new(type, ...) (&amp;#123;\       type* __t = (type*) malloc(sizeof(type));\       *__t = (type)&amp;#123;__VA_ARGS__&amp;#125;;\">
+<meta property="og:description" content="写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值。其实这些可以用一行漂亮的代码搞定。 先上代码： 1234#define new(type, ...) (&amp;#123;\       type* __t = (type*) malloc(sizeof(type));\       *__t = (type)&amp;#123;__VA_ARGS__&amp;#125;;\       __">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2015-12-08T07:09:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言malloc创建struct同时初始化成员变量">
-<meta name="twitter:description" content="写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值\初始化语句。其实这些可以用一行漂亮的代码搞定。 先上代码： 1234#define new(type, ...) (&amp;#123;\       type* __t = (type*) malloc(sizeof(type));\       *__t = (type)&amp;#123;__VA_ARGS__&amp;#125;;\">
+<meta name="twitter:description" content="写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值。其实这些可以用一行漂亮的代码搞定。 先上代码： 1234#define new(type, ...) (&amp;#123;\       type* __t = (type*) malloc(sizeof(type));\       *__t = (type)&amp;#123;__VA_ARGS__&amp;#125;;\       __">
 
 
 
@@ -471,7 +471,7 @@
       
 
       
-        <p>写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值\初始化语句。其实这些可以用一行漂亮的代码搞定。</p>
+        <p>写过C程序都知道，malloc了新的struct之后，经常跟着一大串的赋值。其实这些可以用一行漂亮的代码搞定。</p>
 <p>先上代码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> new(type, ...) (&#123;\</span></span><br><span class="line">       type* <span class="keyword">__t</span> = (type*) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(type));\</span><br><span class="line">       *<span class="keyword">__t</span> = (type)&#123;__VA_ARGS__&#125;;\</span><br><span class="line">       <span class="keyword">__t</span>; &#125;)</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -480,7 +480,7 @@
 <p>这段代码仅在GCC里work，因为用到了GCC的一个扩展特性，加了括号的block（<code>({ })</code>）可以带有返回值，即最后一个语句的返回值。</p>
 <p>还用到了C99的一个feature，就是那个非常酷炫的<code>.field =</code>的赋值。</p>
 <p>另外三个点的宏定义，看例子就差不多明白了吧。</p>
-<p>Ref.<br><a href="http://stackoverflow.com/questions/2679182/have-macro-return-a-value" target="_blank" rel="noopener">http://stackoverflow.com/questions/2679182/have-macro-return-a-value</a><br><a href="http://stackoverflow.com/questions/3016107/what-is-tagged-structure-initialization-syntax" target="_blank" rel="noopener">http://stackoverflow.com/questions/3016107/what-is-tagged-structure-initialization-syntax</a><br><a href="http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html" target="_blank" rel="noopener">http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html</a></p>
+<p>Ref. http://stackoverflow.com/questions/2679182/have-macro-return-a-value http://stackoverflow.com/questions/3016107/what-is-tagged-structure-initialization-syntax http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html</p>
 
       
     </div>

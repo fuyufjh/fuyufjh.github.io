@@ -473,21 +473,19 @@
       
 
       
-        <p><img src="/images/2016/07/get_thumbnail.jpeg" alt=""></p>
+        <p><img src="/images/2016/07/get_thumbnail.jpeg"></p>
 <p>今天第一次解九连环，觉得这个小玩具还是很有思想的，特把解法整理如下。</p>
 <a id="more"></a>
 <p>首先要明确以下两个事实：</p>
-<ol>
-<li><p>每个环只有两种状态：套在柄上（记作1），取下来（记作0）。很容易联想到二进制，为了表示的方便，我们把一个九连环的状态记作一串9位的二进制数，最低位对应最外侧的环。</p>
-</li>
-<li><p>当且仅当某环是最低位的环，或，它的右一位是1而右边其余位都是0，这两种情况下，该环的状态可以切换（取下或套上）。</p>
-</li>
+<ol type="1">
+<li><p>每个环只有两种状态：套在柄上（记作1），取下来（记作0）。很容易联想到二进制，为了表示的方便，我们把一个九连环的状态记作一串9位的二进制数，最低位对应最外侧的环。</p></li>
+<li><p>当且仅当某环是最低位的环，或，它的右一位是1而右边其余位都是0，这两种情况下，该环的状态可以切换（取下或套上）。</p></li>
 </ol>
 <p>（至于怎么操作……那是你的事情了）</p>
-<p>解法是递归过程。定义解开$n$连环的操作为$solve(n)$，它的逆过程为$rsovle(n)$，即把$n$连环套上去的过程。因为后者只是前者的逆过程，以下只讨论$solve(n)$。</p>
-<p>$n=1$和$n=2$的情形都是trivial的，很容易看出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0 -&gt; 1</span><br><span class="line">00 -&gt; 01 -&gt; 11</span><br></pre></td></tr></table></figure></p>
-<p>$n&gt;2$的过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solve(n - 2);</span><br><span class="line">flip(n - 1); // 翻转最高位</span><br><span class="line">rsolve(n - 2);</span><br><span class="line">solve(n - 1);</span><br></pre></td></tr></table></figure></p>
-<p>举个例子更好懂些：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111 ---&gt; 11000 -&gt; 01000 ---&gt; 01111 ---&gt; 00000</span><br></pre></td></tr></table></figure></p>
+<p>解法是递归过程。定义解开<span class="math inline">\(n\)</span>连环的操作为<span class="math inline">\(solve(n)\)</span>，它的逆过程为<span class="math inline">\(rsovle(n)\)</span>，即把<span class="math inline">\(n\)</span>连环套上去的过程。因为后者只是前者的逆过程，以下只讨论<span class="math inline">\(solve(n)\)</span>。</p>
+<p><span class="math inline">\(n=1\)</span>和<span class="math inline">\(n=2\)</span>的情形都是trivial的，很容易看出： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0 -&gt; 1</span><br><span class="line">00 -&gt; 01 -&gt; 11</span><br></pre></td></tr></table></figure></p>
+<p><span class="math inline">\(n&gt;2\)</span>的过程如下： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solve(n - 2);</span><br><span class="line">flip(n - 1); // 翻转最高位</span><br><span class="line">rsolve(n - 2);</span><br><span class="line">solve(n - 1);</span><br></pre></td></tr></table></figure></p>
+<p>举个例子更好懂些： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111 ---&gt; 11000 -&gt; 01000 ---&gt; 01111 ---&gt; 00000</span><br></pre></td></tr></table></figure></p>
 <p>代码在<a href="https://gist.github.com/fuyufjh/6bb9ead7271d0320077859622b0c9c28" target="_blank" rel="noopener">这里</a>，可以输出解法和步骤。</p>
 
       

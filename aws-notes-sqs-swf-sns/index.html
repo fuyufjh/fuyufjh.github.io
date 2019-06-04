@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="SQS - Simple Queue ServiceSQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。  不保证 FIFO，可能乱序到达 Visibility Timeout 最长 12 小时 保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息 每条消息最大 256 KB 然而，依据 64 KB 的 Ch">
+  <meta name="description" content="SQS - Simple Queue Service SQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。  不保证 FIFO，可能乱序到达 Visibility Timeout 最长 12 小时 保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息 每条消息最大 256 KB  然而，依据 64 KB 的">
 <meta name="keywords" content="aws">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS 学习笔记之 SQS&#x2F;SWF&#x2F;SNS 等">
 <meta property="og:url" content="https://ericfu.me/aws-notes-sqs-swf-sns/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="SQS - Simple Queue ServiceSQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。  不保证 FIFO，可能乱序到达 Visibility Timeout 最长 12 小时 保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息 每条消息最大 256 KB 然而，依据 64 KB 的 Ch">
+<meta property="og:description" content="SQS - Simple Queue Service SQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。  不保证 FIFO，可能乱序到达 Visibility Timeout 最长 12 小时 保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息 每条消息最大 256 KB  然而，依据 64 KB 的">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-19T07:46:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS 学习笔记之 SQS&#x2F;SWF&#x2F;SNS 等">
-<meta name="twitter:description" content="SQS - Simple Queue ServiceSQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。  不保证 FIFO，可能乱序到达 Visibility Timeout 最长 12 小时 保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息 每条消息最大 256 KB 然而，依据 64 KB 的 Ch">
+<meta name="twitter:description" content="SQS - Simple Queue Service SQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。  不保证 FIFO，可能乱序到达 Visibility Timeout 最长 12 小时 保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息 每条消息最大 256 KB  然而，依据 64 KB 的">
 
 
 
@@ -471,20 +471,22 @@
       
 
       
-        <h2 id="SQS-Simple-Queue-Service"><a href="#SQS-Simple-Queue-Service" class="headerlink" title="SQS - Simple Queue Service"></a>SQS - Simple Queue Service</h2><p>SQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。</p>
+        <h2 id="sqs---simple-queue-service">SQS - Simple Queue Service</h2>
+<p>SQS 是 AWS 的消息队列服务，用于暂存消息并等待接收者处理。</p>
 <ul>
 <li>不保证 FIFO，可能乱序到达</li>
 <li>Visibility Timeout 最长 12 小时</li>
 <li>保证每条消息至少被传递一次（At least once），这意味着某些情况下可能传递多次，所以你写程序的时候要注意处理重复的消息</li>
-<li>每条消息最大 256 KB<ul>
+<li>每条消息最大 256 KB
+<ul>
 <li>然而，依据 64 KB 的 Chunk 数量计费</li>
 <li>所以一个 256 KB 的消息可能产生 4 次费用：4 * 64 KB chunks</li>
-</ul>
-</li>
+</ul></li>
 <li>SQS 的消息没有优先级；如果你需要优先级，最佳实践是创建多个 SQS 队列</li>
 </ul>
 <a id="more"></a>
-<h2 id="SWF-Simple-Workflow-service"><a href="#SWF-Simple-Workflow-service" class="headerlink" title="SWF - Simple Workflow service"></a>SWF - Simple Workflow service</h2><p>SWF 提供 Workflow 服务，比如 Amazon 用它来处理客户订单的流程——下单、支付、配货、发货……</p>
+<h2 id="swf---simple-workflow-service">SWF - Simple Workflow service</h2>
+<p>SWF 提供 Workflow 服务，比如 Amazon 用它来处理客户订单的流程——下单、支付、配货、发货……</p>
 <ul>
 <li>一个 Workflow 可以长达 1 年，而 SQS 的消息最多保留 14 天</li>
 <li>SWF 的 API 面向 task，而 SQS 的 API 面向 message</li>
@@ -497,7 +499,8 @@
 <li>Decider - 控制 task 的执行流程，如果某个步骤完成／失败，decider 决定下一步做什么</li>
 <li>Activity Worker - 执行任务，可以是人类</li>
 </ul>
-<h2 id="SNS-Simple-Notification-Service"><a href="#SNS-Simple-Notification-Service" class="headerlink" title="SNS - Simple Notification Service"></a>SNS - Simple Notification Service</h2><p>SNS 提供消息通知服务，例如当 CloudTrail 发出警告时给用户发 Email 通知。</p>
+<h2 id="sns---simple-notification-service">SNS - Simple Notification Service</h2>
+<p>SNS 提供消息通知服务，例如当 CloudTrail 发出警告时给用户发 Email 通知。</p>
 <p>SNS 的订阅者可以是以下这些：</p>
 <ul>
 <li>HTTP / HTTPS</li>
@@ -511,14 +514,16 @@
 <li>相同点：都是消息服务</li>
 <li>不同点：SNS 是 Push，而 SQS 是 Pull (Poll)</li>
 </ul>
-<h2 id="API-Gateway"><a href="#API-Gateway" class="headerlink" title="API Gateway"></a>API Gateway</h2><ul>
+<h2 id="api-gateway">API Gateway</h2>
+<ul>
 <li>API Gateway 很便宜，并能自动伸缩</li>
 <li>API Gateway 可以通过 cache 提升性能，减轻后端服务器的负载</li>
 <li>API Gateway 可以 throttle 流量从而防止被攻击</li>
 <li>可以把所有的访问记到 CloudWatch</li>
 <li>如果你用到了跨域 AJAX，记得开启 CORS (Cross-Origin Resource Sharing)</li>
 </ul>
-<h2 id="Elastic-Transcoder"><a href="#Elastic-Transcoder" class="headerlink" title="Elastic Transcoder"></a>Elastic Transcoder</h2><p>提供云转码服务，将原始视频格式转换到不同的格式，从而方便在电脑、平板或手机上播放。AWS 提供了很多预设的格式，你不用自己调参数，直接选择对应的设备就可以了。</p>
+<h2 id="elastic-transcoder">Elastic Transcoder</h2>
+<p>提供云转码服务，将原始视频格式转换到不同的格式，从而方便在电脑、平板或手机上播放。AWS 提供了很多预设的格式，你不用自己调参数，直接选择对应的设备就可以了。</p>
 <p>根据转码的时间以及分辨率收费。</p>
 
       
@@ -832,7 +837,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQS-Simple-Queue-Service"><span class="nav-number">1.</span> <span class="nav-text">SQS - Simple Queue Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SWF-Simple-Workflow-service"><span class="nav-number">2.</span> <span class="nav-text">SWF - Simple Workflow service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNS-Simple-Notification-Service"><span class="nav-number">3.</span> <span class="nav-text">SNS - Simple Notification Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Gateway"><span class="nav-number">4.</span> <span class="nav-text">API Gateway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elastic-Transcoder"><span class="nav-number">5.</span> <span class="nav-text">Elastic Transcoder</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sqs---simple-queue-service"><span class="nav-number">1.</span> <span class="nav-text">SQS - Simple Queue Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swf---simple-workflow-service"><span class="nav-number">2.</span> <span class="nav-text">SWF - Simple Workflow service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sns---simple-notification-service"><span class="nav-number">3.</span> <span class="nav-text">SNS - Simple Notification Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#api-gateway"><span class="nav-number">4.</span> <span class="nav-text">API Gateway</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elastic-transcoder"><span class="nav-number">5.</span> <span class="nav-text">Elastic Transcoder</span></a></li></ol></div>
             
 
           </div>

@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="函数说明参数都是一样的： make_heap(first ,last) make_heap(first ,last, cmpObject) 将[first, last)范围进行堆排序，默认使用less&amp;lt;int&amp;gt;, 即最大元素放在第一个。 pop_heap(first ,last) pop_heap(first ,last, cmpObject)">
+  <meta name="description" content="函数说明 参数都是一样的： make_heap(first ,last) make_heap(first ,last, cmpObject) 将[first, last)范围进行堆排序，默认使用less&amp;lt;int&amp;gt;, 即最大元素放在第一个。 pop_heap(first ,last) pop_heap(first ,last, cmpObject)">
 <meta name="keywords" content="cpp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="STL中heap相关函数的用法">
 <meta property="og:url" content="https://ericfu.me/stl-heap-usage/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="函数说明参数都是一样的： make_heap(first ,last) make_heap(first ,last, cmpObject) 将[first, last)范围进行堆排序，默认使用less&amp;lt;int&amp;gt;, 即最大元素放在第一个。 pop_heap(first ,last) pop_heap(first ,last, cmpObject)">
+<meta property="og:description" content="函数说明 参数都是一样的： make_heap(first ,last) make_heap(first ,last, cmpObject) 将[first, last)范围进行堆排序，默认使用less&amp;lt;int&amp;gt;, 即最大元素放在第一个。 pop_heap(first ,last) pop_heap(first ,last, cmpObject)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2015-12-03T05:02:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="STL中heap相关函数的用法">
-<meta name="twitter:description" content="函数说明参数都是一样的： make_heap(first ,last) make_heap(first ,last, cmpObject) 将[first, last)范围进行堆排序，默认使用less&amp;lt;int&amp;gt;, 即最大元素放在第一个。 pop_heap(first ,last) pop_heap(first ,last, cmpObject)">
+<meta name="twitter:description" content="函数说明 参数都是一样的： make_heap(first ,last) make_heap(first ,last, cmpObject) 将[first, last)范围进行堆排序，默认使用less&amp;lt;int&amp;gt;, 即最大元素放在第一个。 pop_heap(first ,last) pop_heap(first ,last, cmpObject)">
 
 
 
@@ -459,28 +459,31 @@
       
 
       
-        <h2 id="函数说明"><a href="#函数说明" class="headerlink" title="函数说明"></a>函数说明</h2><p>参数都是一样的：</p>
+        <h2 id="函数说明">函数说明</h2>
+<p>参数都是一样的：</p>
 <pre><code>make_heap(first ,last)
-make_heap(first ,last, cmpObject)
-</code></pre><p>将<code>[first, last)</code>范围进行堆排序，默认使用<code>less&lt;int&gt;</code>, 即最大元素放在第一个。</p>
+make_heap(first ,last, cmpObject)</code></pre>
+<p>将<code>[first, last)</code>范围进行堆排序，默认使用<code>less&lt;int&gt;</code>, 即最大元素放在第一个。</p>
 <pre><code>pop_heap(first ,last)
-pop_heap(first ,last, cmpObject)
-</code></pre><a id="more"></a>
+pop_heap(first ,last, cmpObject)</code></pre>
+<a id="more"></a>
 <p>将front（即第一个最大元素）移动到end的前部，同时将剩下的元素重新构造成(堆排序)一个新的heap。</p>
 <pre><code>push_heap(first ,last)
-push_heap(first ,last, cmpObject)
-</code></pre><p>对刚插入的（尾部）元素做堆排序。</p>
+push_heap(first ,last, cmpObject)</code></pre>
+<p>对刚插入的（尾部）元素做堆排序。</p>
 <pre><code>sort_heap(first ,last)
-sort_heap(first ,last, cmpObject)
-</code></pre><p>将一个堆做排序,最终成为一个有序的系列，可以看到sort_heap时，必须先是一个堆（两个特性：1、最大元素在第一个 2、添加或者删除元素以对数时间），因此必须先做一次make_heap.</p>
-<h3 id="Sample-1"><a href="#Sample-1" class="headerlink" title="Sample 1"></a>Sample 1</h3><blockquote>
+sort_heap(first ,last, cmpObject)</code></pre>
+<p>将一个堆做排序,最终成为一个有序的系列，可以看到sort_heap时，必须先是一个堆（两个特性：1、最大元素在第一个 2、添加或者删除元素以对数时间），因此必须先做一次make_heap.</p>
+<h3 id="sample-1">Sample 1</h3>
+<blockquote>
 <p>如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。</p>
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; min, max; <span class="comment">// as heap</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (((min.size() + max.size()) &amp; <span class="number">0x1</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (max.size() &gt; <span class="number">0</span> &amp;&amp; num &lt; max[<span class="number">0</span>]) &#123;</span><br><span class="line">                max.push_back(num);</span><br><span class="line">                push_heap(max.begin(), max.end(), less&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">                num = max[<span class="number">0</span>];</span><br><span class="line">                pop_heap(max.begin(), max.end(), less&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">                max.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">            min.push_back(num);</span><br><span class="line">            push_heap(min.begin(), min.end(), greater&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (min.size() &gt; <span class="number">0</span> &amp;&amp; num &gt; min[<span class="number">0</span>]) &#123;</span><br><span class="line">                min.push_back(num);</span><br><span class="line">                push_heap(min.begin(), min.end(), greater&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">                num = min[<span class="number">0</span>];</span><br><span class="line">                pop_heap(min.begin(), min.end(), greater&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">                min.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">            max.push_back(num);</span><br><span class="line">            push_heap(max.begin(), max.end(), less&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">GetMedian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (min.size() + max.size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// Error</span></span><br><span class="line">        </span><br><span class="line">    	<span class="keyword">if</span> (((min.size() + max.size()) &amp; <span class="number">0x1</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> ((<span class="keyword">double</span>)min[<span class="number">0</span>] + (<span class="keyword">double</span>)max[<span class="number">0</span>]) * <span class="number">0.5</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">double</span>)min[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="Sample-2"><a href="#Sample-2" class="headerlink" title="Sample 2"></a>Sample 2</h3><p>来自：<a href="http://www.cnblogs.com/coderyoyo/archive/2011/01/21/stl_heap.html" target="_blank" rel="noopener">http://www.cnblogs.com/coderyoyo/archive/2011/01/21/stl_heap.html</a></p>
+<h3 id="sample-2">Sample 2</h3>
+<p>来自：http://www.cnblogs.com/coderyoyo/archive/2011/01/21/stl_heap.html</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> myints[] = &#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">5</span>,<span class="number">15</span>&#125;;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(myints,myints+<span class="number">5</span>);</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it;</span><br><span class="line"> </span><br><span class="line">  make_heap (v.begin(),v.end());</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"initial max heap   : "</span> &lt;&lt; v.front() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">  pop_heap (v.begin(),v.end()); v.pop_back();</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"max heap after pop : "</span> &lt;&lt; v.front() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">  v.push_back(<span class="number">99</span>); push_heap (v.begin(),v.end());</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"max heap after push: "</span> &lt;&lt; v.front() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">  sort_heap (v.begin(),v.end());</span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"final sorted range :"</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">unsigned</span> i=<span class="number">0</span>; i&lt;v.size(); i++) <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i];</span><br><span class="line"> </span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Ref. </p>
-<ol>
+<p>Ref.</p>
+<ol type="1">
 <li><a href="http://www.cnblogs.com/coderyoyo/archive/2011/01/21/stl_heap.html" target="_blank" rel="noopener">堆算法(make_heap,push_heap,pop_heap, sort_heap)</a></li>
 <li>剑指Offer</li>
 <li>Cplusplus.com</li>
@@ -797,7 +800,7 @@ sort_heap(first ,last, cmpObject)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数说明"><span class="nav-number">1.</span> <span class="nav-text">函数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample-1"><span class="nav-number">1.1.</span> <span class="nav-text">Sample 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample-2"><span class="nav-number">1.2.</span> <span class="nav-text">Sample 2</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数说明"><span class="nav-number">1.</span> <span class="nav-text">函数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sample-1"><span class="nav-number">1.1.</span> <span class="nav-text">Sample 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sample-2"><span class="nav-number">1.2.</span> <span class="nav-text">Sample 2</span></a></li></ol></li></ol></div>
             
 
           </div>

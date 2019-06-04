@@ -132,19 +132,19 @@
 
 
 
-  <meta name="description" content="一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。  Emmm… 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。">
+  <meta name="description" content="一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。  Emmm... 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。">
 <meta name="keywords" content="selected,algorithm,java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="获得第三届阿里中间件性能大赛冠军">
 <meta property="og:url" content="https://ericfu.me/aliware-performance-contest-first-prize/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。  Emmm… 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。">
+<meta property="og:description" content="一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。  Emmm... 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2017/07/alibaba-praise.jpg">
 <meta property="og:updated_time" content="2017-08-18T00:48:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="获得第三届阿里中间件性能大赛冠军">
-<meta name="twitter:description" content="一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。  Emmm… 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。">
+<meta name="twitter:description" content="一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。  Emmm... 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。">
 <meta name="twitter:image" content="https://ericfu.me/images/2017/07/alibaba-praise.jpg">
 
 
@@ -474,10 +474,11 @@
 
       
         <p>一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。</p>
-<p><img src="/images/2017/07/alibaba-praise.jpg" alt="alibaba-praise"></p>
-<p>Emmm… 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。</p>
+<p><img src="/images/2017/07/alibaba-praise.jpg"></p>
+<p>Emmm... 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。</p>
 <a id="more"></a>
-<h2 id="第一赛季：消息中间件"><a href="#第一赛季：消息中间件" class="headerlink" title="第一赛季：消息中间件"></a>第一赛季：消息中间件</h2><blockquote>
+<h2 id="第一赛季消息中间件">第一赛季：消息中间件</h2>
+<blockquote>
 <p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/middlewarerace2017/open-messaging-demo" target="_blank" rel="noopener">这里</a>）</p>
 <p>设计一个消息中间件，它支持 Topic 和 Queue，每个 Topic 可以被一个或多个 Queue 订阅。显然，发往 Topic 的消息会被所有的订阅者接收到，而发往某个特定 Queue 的消息只会被它接收到。</p>
 <p>消息不能丢失，且对于各个 Queue 消息要保持有序。在此前提下，吞吐量最优者获胜。</p>
@@ -492,7 +493,8 @@
 <p>此外，序列化的过程中尽可能减少内存拷贝，以及避免不必要的 String 序列化、反序列化。</p>
 <p>做到以上几点，进入前 20 不是问题。初赛只要前 200 名就可以晋级了（吐槽：那很容易啊！！但是一开始不知道初赛成绩也要计入最后评分的）</p>
 <p><a href="https://code.aliyun.com/fuyufjh/open-messaging-demo-zero/" target="_blank" rel="noopener">代码</a>托管在阿里云 code 上。</p>
-<h2 id="第二赛季：数据库同步"><a href="#第二赛季：数据库同步" class="headerlink" title="第二赛季：数据库同步"></a>第二赛季：数据库同步</h2><blockquote>
+<h2 id="第二赛季数据库同步">第二赛季：数据库同步</h2>
+<blockquote>
 <p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/wanshao/IncrementalSync/" target="_blank" rel="noopener">这里</a>）</p>
 <p>模拟数据库的主备复制。给定一批 binlog 文本数据，你的任务是重放所有 binlog 从而得到数据表的最新状态（假设原本状态是空的）。重放的操作包含 Insert/Update/Delete 三种操作，注意主键也可能被更新！</p>
 <p>验证结果的方式是，客户端给定一个 PK 的区间，输出该区间的所有行。</p>
@@ -501,11 +503,15 @@
 <p>思路如下：并行化是一定要的，如何并行呢？答案（当然）是按主键哈希分桶。然而这样主键更新怎么处理？这是最大的难点。</p>
 <p>为此我们想出了一种并行化的算法——可以说这就是最终获得冠军的原因。具体思路在决赛答辩 PPT 里写的很清楚啦。</p>
 <p>答辩PPT（包括完整的解题思路）：</p>
-<p><iframe src="//www.slideshare.net/slideshow/embed_code/key/jURs7pfS57Uz7d" width="100%" height="500" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 700px;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> </div></p>
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/jURs7pfS57Uz7d" width="100%" height="500" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 700px;" allowfullscreen>
+</iframe>
+<div style="margin-bottom:5px">
+
 <p>这题思考了很久，最后交出的答卷含金量也很高。哈希分桶作为经典算法中常见的一种模式，在很多分布式系统中都有应用。</p>
 <p>此外，比赛初期还没有加上“必须顺序读取”这个条件。如果没有这个条件又会有别的奇思妙想的算法来解决。留给读者自己思考（喵）</p>
-<p><a href="https://code.aliyun.com/fuyufjh/IncrementalSyncSequential" target="_blank" rel="noopener">代码</a><br>托管在阿里云上，同时还有<br><a href="https://code.aliyun.com/fuyufjh/tianchi-middleware-doc" target="_blank" rel="noopener">设计文档</a> 也很有帮助（如果你觉得 PPT 还不够细致）。</p>
-<h2 id="24-小时极客-PK-赛"><a href="#24-小时极客-PK-赛" class="headerlink" title="24 小时极客 PK 赛"></a>24 小时极客 PK 赛</h2><blockquote>
+<p><a href="https://code.aliyun.com/fuyufjh/IncrementalSyncSequential" target="_blank" rel="noopener">代码</a> 托管在阿里云上，同时还有 <a href="https://code.aliyun.com/fuyufjh/tianchi-middleware-doc" target="_blank" rel="noopener">设计文档</a> 也很有帮助（如果你觉得 PPT 还不够细致）。</p>
+<h2 id="小时极客-pk-赛">24 小时极客 PK 赛</h2>
+<blockquote>
 <p><strong>题目大意</strong>（完整的请点<a href="https://code.aliyun.com/fuyufjh/topkn_final" target="_blank" rel="noopener">这里</a>）</p>
 <p>分页排序。给定一批数据，求解按顺序从小到大，顺序排名从第k下标序号之后连续的n个数据，类似于 <code>order by id limit k, n</code>，n 会很大，k &lt;= 100</p>
 <p>数据是文本文件，每行是一个长度在 256 字符以内的字符串。排序的方式是：先按长度从小到大、再按字典序。</p>
@@ -515,17 +521,18 @@
 <p>外排序是很容易想到的思路，然而十分复杂，也不能很好的并行。那怎么办？依然是分桶，Bucket Sort。</p>
 <p>假设字符串长度的分布是均匀的，字符出现的概率也是相近的，则我们可以用以下的值作为每个字符串的 key：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;length&gt; &lt;text[0]&gt; &lt;text[1]&gt; &lt;text[2]&gt;</span><br></pre></td></tr></table></figure>
-<p>（如果长度小于 3 就用 ‘\0’ 填充一下）</p>
+<p>（如果长度小于 3 就用 '\0' 填充一下）</p>
 <p>这样我们就能对每个 key 做统计了——有多少个字符串是在这个桶里呢？假设这个结果放在数组 <code>count</code> 中，那再对 <code>count</code> 求一个累计和，就能用二分查找找到第 N 个数应该位于哪一个桶里。</p>
 <p>同样的也可以找到第 N+K-1 个数应该位于哪个桶里。然后就简单了，把区间内的桶里的值都取出来，让 Master 排个序就好了。</p>
 <p>把区间内的桶里的值都取出来？——这个过程可以扫描整个文件。也可以做个预处理的优化：把每个字符串的 key 和 offset 分别存到两个数组里，比如 <code>keys[]</code> 和 <code>offsets[]</code>，这样只要扫描数组就可以了！</p>
 <p>然而我并没有想到这个优化，所以是第二名。哈哈哈！</p>
 <p><a href="https://code.aliyun.com/fuyufjh/topkn_final?spm=a2111a.8458726.0.0.59556667DTd4xf" target="_blank" rel="noopener">代码</a>托管在阿里云上。</p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><ol>
+<h2 id="后记">后记</h2>
+<ol type="1">
 <li>算法是好的，要多刷 HackerRank</li>
 <li>阿里搞的这个比赛啊，Excited ！</li>
 </ol>
-
+</div>
       
     </div>
 
@@ -841,7 +848,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一赛季：消息中间件"><span class="nav-number">1.</span> <span class="nav-text">第一赛季：消息中间件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二赛季：数据库同步"><span class="nav-number">2.</span> <span class="nav-text">第二赛季：数据库同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-小时极客-PK-赛"><span class="nav-number">3.</span> <span class="nav-text">24 小时极客 PK 赛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一赛季消息中间件"><span class="nav-number">1.</span> <span class="nav-text">第一赛季：消息中间件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二赛季数据库同步"><span class="nav-number">2.</span> <span class="nav-text">第二赛季：数据库同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小时极客-pk-赛"><span class="nav-number">3.</span> <span class="nav-text">24 小时极客 PK 赛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
             
 
           </div>

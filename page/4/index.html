@@ -473,7 +473,7 @@
           <blockquote>
 <p>给定的程序 <code>readelf32</code> 存在一个漏洞（想多了，这当然不是Linux里的<code>readelf</code>），它读取文件内容写入到一个局部变量，但没有正确地检查文件大小。</p>
 </blockquote>
-<p>实验中假设 ASLR 已经关闭：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/kernel/randomize_va_space</span><br></pre></td></tr></table></figure></p>
+<p>实验中假设 ASLR 已经关闭： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/kernel/randomize_va_space</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -816,8 +816,10 @@
 
       
         
-          <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行</p>
-<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><p><strong>Step 1</strong>: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程</p>
+          <h2 id="目标">目标</h2>
+<p>在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行</p>
+<h2 id="how">How</h2>
+<p><strong>Step 1</strong>: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程</p>
 <p><strong>Step 2</strong>: 向 <code>build.gradle</code> 中添加插件、依赖等等，例如：</p>
           <!--noindex-->
           
@@ -990,7 +992,7 @@
       
         
           <blockquote>
-<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="noopener">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。<br>如果感到正文不明觉厉请直接跳到最后的patch</p>
+<p>本文转载自好友ZLM大神的<a href="https://blog.zjustin.me/post/esurfing-reverse-engineer/" target="_blank" rel="noopener">博客</a> 。反正几个月前离开学校的时候还能用。备个份，也许能造福后人。 如果感到正文不明觉厉请直接跳到最后的patch</p>
 </blockquote>
           <!--noindex-->
           
@@ -1162,7 +1164,7 @@
 
       
         
-          <p><img src="/images/2016/07/get_thumbnail.jpeg" alt=""></p>
+          <p><img src="/images/2016/07/get_thumbnail.jpeg"></p>
 <p>今天第一次解九连环，觉得这个小玩具还是很有思想的，特把解法整理如下。</p>
           <!--noindex-->
           
@@ -1337,7 +1339,8 @@
           <blockquote>
 <p>这份总结适用于OpenCV 2 以上版本，官方详尽的文档在 <a href="http://docs.opencv.org/2.4.12/modules/core/doc/basic_structures.html" target="_blank" rel="noopener">这里</a>。</p>
 </blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OpenCV 里的矩阵分静态和动态两种：</p>
+<h2 id="概述">概述</h2>
+<p>OpenCV 里的矩阵分静态和动态两种：</p>
 <ul>
 <li>动态就是 Mat 类，已经实现了引用计数，编程时几乎不用考虑内存问题；你可以将Mat看作一个<strong>头</strong>——包含矩阵内存区域的指针和矩阵的大小、类型等信息。</li>
 <li>静态以 Matx 类为代表，需要程序员自己开辟内存区域，其存储方式和数组完全一样，<strong>没有额外的存储空间</strong>，矩阵自身的信息都以模板的方式静态编译了。</li>
@@ -1500,7 +1503,8 @@
 
       
         
-          <h1 id="A-Simple-Class"><a href="#A-Simple-Class" class="headerlink" title="A Simple Class"></a>A Simple Class</h1><p><a href="http://cn.mathworks.com/help/matlab/matlab_oop/getting-familiar-with-classes.html" target="_blank" rel="noopener">Doc Link</a></p>
+          <h1 id="a-simple-class">A Simple Class</h1>
+<p><a href="http://cn.mathworks.com/help/matlab/matlab_oop/getting-familiar-with-classes.html" target="_blank" rel="noopener">Doc Link</a></p>
           <!--noindex-->
           
             <div class="post-button text-center">

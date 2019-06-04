@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。 假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。 如果one by one地做完三件事，总时间是 N * (t1 + t2 + t3)如果组成流水线，总时间缩短到 N * min(t1, t2, t3)">
+  <meta name="description" content="0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。 假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。 如果one by one地做完三件事，总时间是 N * (t1 + t2 + t3) 如果组成流水线，总时间缩短到 N * min(t1, t2, t3)">
 <meta name="keywords" content="selected,golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用 goroutine 和 channel 搭建流水线">
 <meta property="og:url" content="https://ericfu.me/build-pipeline-with-goroutine-and-channel/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。 假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。 如果one by one地做完三件事，总时间是 N * (t1 + t2 + t3)如果组成流水线，总时间缩短到 N * min(t1, t2, t3)">
+<meta property="og:description" content="0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。 假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。 如果one by one地做完三件事，总时间是 N * (t1 + t2 + t3) 如果组成流水线，总时间缩短到 N * min(t1, t2, t3)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-19T08:48:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用 goroutine 和 channel 搭建流水线">
-<meta name="twitter:description" content="0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。 假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。 如果one by one地做完三件事，总时间是 N * (t1 + t2 + t3)如果组成流水线，总时间缩短到 N * min(t1, t2, t3)">
+<meta name="twitter:description" content="0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。 假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。 如果one by one地做完三件事，总时间是 N * (t1 + t2 + t3) 如果组成流水线，总时间缩短到 N * min(t1, t2, t3)">
 
 
 
@@ -473,7 +473,7 @@
       
         <p><strong>0. 将任务按不同的类型分开，例如 DiskIO，NetworkIO，CPU，能够有效地提升性能。</strong></p>
 <p>假设一个循环的任务由 1)下载文件、2)解压缩、3)保存到硬盘三个部分组成，总计运行 N 次。</p>
-<p>如果one by one地做完三件事，总时间是 <code>N * (t1 + t2 + t3)</code><br>如果组成流水线，总时间缩短到 <code>N * min(t1, t2, t3)</code></p>
+<p>如果one by one地做完三件事，总时间是 <code>N * (t1 + t2 + t3)</code> 如果组成流水线，总时间缩短到 <code>N * min(t1, t2, t3)</code></p>
 <a id="more"></a>
 <p><strong>1. 每个阶段从它的上级获取输入channel，如果上级关闭了channel（操作完成或发生了异常），它应当立即结束。</strong></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Stage</span><span class="params">(input &lt;-<span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;  </span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> path := <span class="keyword">range</span> paths &#123;</span><br><span class="line">            <span class="comment">// do something...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -490,7 +490,8 @@
 <p><strong>7.你需要一个通用且优雅的实现</strong></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Stage</span><span class="params">(ctx context.Context, inputc &lt;-<span class="keyword">chan</span> *InputItem)</span> <span class="params">(&lt;-<span class="keyword">chan</span> *OutputItem, &lt;-<span class="keyword">chan</span> error)</span></span> &#123;  </span><br><span class="line">    outputc := <span class="built_in">make</span>(<span class="keyword">chan</span> *OutputItem, BUFFER_SIZE)</span><br><span class="line">    errc := <span class="built_in">make</span>(<span class="keyword">chan</span> error, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    doStage := <span class="function"><span class="keyword">func</span><span class="params">(input *InputItem)</span> <span class="params">(*OutputItem, error)</span></span> &#123;        </span><br><span class="line">        <span class="comment">// Do something just like in a regular function</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">defer</span> <span class="built_in">close</span>(outputc)</span><br><span class="line">        errc &lt;- <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">            <span class="keyword">for</span> input := <span class="keyword">range</span> inputc &#123;</span><br><span class="line">                output, err := doStage(input)</span><br><span class="line">                <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> err</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">select</span> &#123;</span><br><span class="line">                <span class="keyword">case</span> outputc &lt;- output:</span><br><span class="line">                <span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">                    <span class="keyword">return</span> ctx.Err()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;()</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">return</span> outputc, errc</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><a href="https://gist.github.com/fuyufjh/c13a98995c4649335898c5160693d24d?ts=4" target="_blank" rel="noopener">完整的例子：读取文件、解压缩、写入同一个文件</a></p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<h2 id="references">References</h2>
+<ol type="1">
 <li><a href="https://segmentfault.com/a/1190000006261218" target="_blank" rel="noopener">Go语言并发模型：像Unix Pipe那样使用channel</a></li>
 <li><a href="https://blog.golang.org/pipelines" target="_blank" rel="noopener">Go Blog: Go Concurrency Patterns: Pipelines and cancellation</a></li>
 </ol>
@@ -808,7 +809,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">1.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#references"><span class="nav-number">1.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>

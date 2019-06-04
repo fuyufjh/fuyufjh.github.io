@@ -479,22 +479,21 @@
 <li>Policy Documents</li>
 </ul>
 <a id="more"></a>
-<pre><code class="javascript"><span class="comment">// An example policy: allowing any access to any resource</span>
-{
-  <span class="string">"Version"</span>: <span class="string">"2012-10-17"</span>
-  <span class="string">"Statement"</span>: [
-      {
-        <span class="string">"Effect"</span>: <span class="string">"Allow"</span>,
-        <span class="string">"Action"</span>: <span class="string">"*"</span>,
-        <span class="string">"Resource"</span>: <span class="string">"*"</span>
-      }
-  ]
-}
-</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// An example policy: allowing any access to any resource</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="st">&quot;Version&quot;</span><span class="op">:</span> <span class="st">&quot;2012-10-17&quot;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="st">&quot;Statement&quot;</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-6" title="6">      <span class="st">&quot;Effect&quot;</span><span class="op">:</span> <span class="st">&quot;Allow&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-7" title="7">      <span class="st">&quot;Action&quot;</span><span class="op">:</span> <span class="st">&quot;*&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb1-8" title="8">      <span class="st">&quot;Resource&quot;</span><span class="op">:</span> <span class="st">&quot;*&quot;</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  ]</a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="op">}</span></a></code></pre></div>
 <p>IAM 是 Global的，不属于任何一个 region</p>
 <p>Root 账号是你第一次配置账号的时候创建的，它拥有完全的 Admin aceess</p>
 <p>新 User 刚创建时是没有权限的。</p>
-<p>新 User 创建的时候会被分配一对 Access Key ID 和 Secret Access Key </p>
+<p>新 User 创建的时候会被分配一对 Access Key ID 和 Secret Access Key</p>
 <p>与密码不同，Access Key ID 和 Secret Access Key 只能用于 API，SDK 或 CLI 的访问，不能用于登陆 AWS Console</p>
 <p>Secret Access Key 只会在创建的时候显示一次，之后无法再次看到，所以务必把它保存在安全的地方。</p>
 <p>建议一定要给 Root 账号设置 MFA (Multifactor Authentication)</p>

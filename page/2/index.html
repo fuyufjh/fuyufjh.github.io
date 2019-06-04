@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-04-26 12:23:25" itemprop="dateModified" datetime="2018-04-26T12:23:25+08:00">2018-04-26</time>
+                <time title="修改时间：2019-06-04 10:19:09" itemprop="dateModified" datetime="2019-06-04T10:19:09+08:00">2019-06-04</time>
               
             
           </span>
@@ -470,7 +470,7 @@
 
       
         
-          <p><img src="/images/2018/04/banner-warehouse.jpg" alt="banner-warehouse"></p>
+          <p><img src="/images/2018/04/banner-warehouse.jpg"></p>
 <p><strong>列式存储（Column-oriented Storage）</strong>并不是一项新技术，最早可以追溯到 1983 年的论文 Cantor。然而，受限于早期的硬件条件和使用场景，主流的事务型数据库（OLTP）大多采用行式存储，直到近几年分析型数据库（OLAP）的兴起，列式存储这一概念又变得流行。</p>
 <p>总的来说，列式存储的优势一方面体现在存储上能节约空间、减少 IO，另一方面依靠列式数据结构做了计算上的优化。本文中着重介绍列式存储的数据组织方式，包括数据的布局、编码、压缩等。在下一篇文章中将介绍计算层以及 DBMS 整体架构设计。</p>
           <!--noindex-->
@@ -598,7 +598,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-17 00:31:48" itemprop="dateModified" datetime="2018-03-17T00:31:48+08:00">2018-03-17</time>
+                <time title="修改时间：2019-06-04 10:19:09" itemprop="dateModified" datetime="2019-06-04T10:19:09+08:00">2019-06-04</time>
               
             
           </span>
@@ -643,7 +643,7 @@
 
       
         
-          <p>免费 SSL 证书提供商 Let’s Encrypt 去年承诺的 ACME v2 以及通配符证书（Wildcard Certificate）终于在 3 月 14 日<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579" target="_blank" rel="noopener">正式发布</a>了。ACME 全称“自动化证书管理环境”，用于自动验证域名所有权并颁发 SSL 证书；本次发布的新版 ACME v2 添加了通配符证书的支持，再也不用每次添加子域名都重新申请证书。</p>
+          <p>免费 SSL 证书提供商 Let's Encrypt 去年承诺的 ACME v2 以及通配符证书（Wildcard Certificate）终于在 3 月 14 日<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579" target="_blank" rel="noopener">正式发布</a>了。ACME 全称“自动化证书管理环境”，用于自动验证域名所有权并颁发 SSL 证书；本次发布的新版 ACME v2 添加了通配符证书的支持，再也不用每次添加子域名都重新申请证书。</p>
 <p>ACME v2 目前只有一种方案支持通配符证书的验证—— DNS-01 challenge，即：通过向域名添加一条 TXT 记录来证明用户对域名的所有权。一般只要提供了 Token 访问的 DNS 服务商都可以支持，例如 GoDaddy、CloudFlare、DNSPod 等。</p>
           <!--noindex-->
           
@@ -770,7 +770,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-05 10:37:53" itemprop="dateModified" datetime="2019-03-05T10:37:53+08:00">2019-03-05</time>
+                <time title="修改时间：2019-06-04 10:19:09" itemprop="dateModified" datetime="2019-06-04T10:19:09+08:00">2019-06-04</time>
               
             
           </span>
@@ -815,14 +815,14 @@
 
       
         
-          <p><img src="/images/2018/03/banner-google-spanner.jpg" alt="banner-google-spanne"></p>
+          <p><img src="/images/2018/03/banner-google-spanner.jpg"></p>
 <p>F1/Spanner 的论文于 2012 年发表，至今仍是世界上最先进的、规模最大的分布式数据库架构，毫无疑问对现代数据库设计产生了深远影响。其最大的亮点莫过于 TrueTime API，凭借原子钟和 GPS 的加持在全球范围实现了单调递增的时间戳，从而达到外部一致性；其次则是验证了分布式 MVCC 的高性能实现，为业界指明一条发展方向。</p>
 <p>不过，<strong>论文对存储层实现只作了模糊的阐述</strong>：原文中说到 tablet 的实现类似于 Bigtable（复用了不少 Bigtable 的代码），底层基于 Colossus —— 继承 GFS 的下一代分布式文件系统。可以确定的一点是，存储层要为 read-only 和 read-write 事务提供支持：</p>
 <ul>
-<li><strong>read-only 事务</strong>: 读取最新或给定时间戳 $t_{read}$ 的快照，也就是 snapshot read</li>
-<li><strong>read-write 事务</strong>：读取事务开始时间戳 $t_{start}$ 的快照，而写入操作在提交时间戳 $t_{commit}$ 生效</li>
+<li><strong>read-only 事务</strong>: 读取最新或给定时间戳 <span class="math inline">\(t_{read}\)</span> 的快照，也就是 snapshot read</li>
+<li><strong>read-write 事务</strong>：读取事务开始时间戳 <span class="math inline">\(t_{start}\)</span> 的快照，而写入操作在提交时间戳 <span class="math inline">\(t_{commit}\)</span> 生效</li>
 </ul>
-<p>本文从 F1/Spanner 论文出发，结合开源实现 TiDB 和 CockroachDB，谈谈如何设计一个具备 ACID 事务存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google’s Globally-Distributed Database</a>。</p>
+<p>本文从 F1/Spanner 论文出发，结合开源实现 TiDB 和 CockroachDB，谈谈如何设计一个具备 ACID 事务存储层。本文假设读者阅读过原论文 <a href="https://research.google.com/archive/spanner.html" target="_blank" rel="noopener">Spanner: Google's Globally-Distributed Database</a>。</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -993,7 +993,7 @@
 
       
         
-          <p><img src="/images/2018/02/index-fund-guide-book.jpg" alt=""></p>
+          <p><img src="/images/2018/02/index-fund-guide-book.jpg"></p>
 <p>最近程序员圈子悄悄流行起斯坦福的 <a href="https://cs007.blog/" target="_blank" rel="noopener">CS 007: Personal Finance For Engineers</a> 课程，每个人都应该有所了解。但在如何投资的问题上，课程并没有给出适合我国国情的操作建议。</p>
 <p>在雪球潜水多年，其中有位大 V 近期出版了适合所有人的《指数基金投资指南》，读后收益良多，故将读书笔记分享到这里，备忘。</p>
           <!--noindex-->
@@ -1166,9 +1166,9 @@
 
       
         
-          <p><img src="/images/2017/12/learned-index-cover.jpg" alt=""></p>
+          <p><img src="/images/2017/12/learned-index-cover.jpg"></p>
 <p>数据库的索引和机器学习里的预测模型其实有一些相似之处，比如 B 树是把 key 映射到一个有序数组中的某个位置，Hash 索引是把 key 映射到一个无序数组中的某个位置，bitmap 是把 key 映射成是一个布尔值（存在与否）。</p>
-<p>这些事，似乎拿预测模型都是可以做的。Yes, but…B 树那是精确的映射关系，和预测模型能一样吗？</p>
+<p>这些事，似乎拿预测模型都是可以做的。Yes, but...B 树那是精确的映射关系，和预测模型能一样吗？</p>
 <p>所以这就是本论文 NB 的地方了，以上的想法是可以实现的。实验表明，在某些数据集上，用 RM-Index 预测模型代替 B 树之类的数据结构，可以提升 70% 的速度、并节约相当可观的空间。</p>
           <!--noindex-->
           
@@ -1330,16 +1330,17 @@
         
           <p>Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。</p>
 <p>本文主要介绍 Sharding-JDBC 的事务处理。</p>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><blockquote>
+<h2 id="overview">Overview</h2>
+<blockquote>
 <p>Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未来会支持最终一致性的柔性事务。</p>
 </blockquote>
 <ul>
 <li>默认使用 “弱XA” 事务</li>
-<li>可选使用柔性事务：<ul>
+<li>可选使用柔性事务：
+<ul>
 <li>BED（最大努力送达型）事务</li>
 <li>TCC（补偿型）事务</li>
-</ul>
-</li>
+</ul></li>
 </ul>
           <!--noindex-->
           
@@ -1673,13 +1674,14 @@
       
         
           <p><strong>Tips:</strong> 如果您已经充分理解问题是什么，请直接跳到 <a href="#问题出在哪里">#问题出在哪里</a> 一节。</p>
-<h2 id="字符串和编码"><a href="#字符串和编码" class="headerlink" title="字符串和编码"></a>字符串和编码</h2><p>先从概念说起，字符串和它的编码是两个不同的概念：</p>
+<h2 id="字符串和编码">字符串和编码</h2>
+<p>先从概念说起，字符串和它的编码是两个不同的概念：</p>
 <ul>
 <li><strong>字符串</strong>是一段文字本身，可以是中文可以是英文，以及各种语言</li>
 <li>字符串的<strong>编码</strong>是计算机存储、处理字符串的方式；作为一种<strong>数据</strong>，它和其他数据一样，都是以一串0和1组成的，通常我们用字节数组来表示它。</li>
 </ul>
 <p>字符串经过<strong>编码（encode）</strong> 就成为了一堆数据，反过来，数据经过<strong>解码（decode）</strong> 就变回我们认识的字符串。</p>
-<p><img src="/images/2017/09/encode_decode.png" alt="encode_decode"></p>
+<p><img src="/images/2017/09/encode_decode.png"></p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1850,7 +1852,8 @@
 
       
         
-          <h2 id="Bandit-是什么？"><a href="#Bandit-是什么？" class="headerlink" title="Bandit 是什么？"></a>Bandit 是什么？</h2><p>Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。</p>
+          <h2 id="bandit-是什么">Bandit 是什么？</h2>
+<p>Bandit 是一个用来检查 Python 代码中常见安全问题的工具，它会处理各个源代码文件，解析出 AST（抽象语法树），然后对 AST 节点执行一组对应的插件。当 Bandit 完成检查之后，它能生成一封安全报告。</p>
 <p>安装说明：参见 <a href="https://github.com/openstack/bandit" target="_blank" rel="noopener">GitHub 项目主页</a>。</p>
           <!--noindex-->
           
@@ -2023,8 +2026,8 @@
       
         
           <p>一不小心拿到了天池阿里中间件性能大赛的冠军，准确的说还有个 24 小时即刻挑战赛（个人赛）的亚军。</p>
-<p><img src="/images/2017/07/alibaba-praise.jpg" alt="alibaba-praise"></p>
-<p>Emmm… 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。</p>
+<p><img src="/images/2017/07/alibaba-praise.jpg"></p>
+<p>Emmm... 过去太久了，不知道说什么感言了。以下是是比赛的题目以及我的解答，备忘。</p>
           <!--noindex-->
           
             <div class="post-button text-center">

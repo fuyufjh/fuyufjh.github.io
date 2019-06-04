@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="目标在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行 HowStep 1: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程 Step 2: 向 build.gradle 中添加插件、依赖等等，例如：">
+  <meta name="description" content="目标 在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行 How Step 1: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程 Step 2: 向 build.gradle 中添加插件、依赖等等，例如：">
 <meta name="keywords" content="selected,java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在IntelliJ IDEA中使用Gradle的最佳实践">
 <meta property="og:url" content="https://ericfu.me/best-practice-to-use-gradle-in-idea/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="目标在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行 HowStep 1: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程 Step 2: 向 build.gradle 中添加插件、依赖等等，例如：">
+<meta property="og:description" content="目标 在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行 How Step 1: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程 Step 2: 向 build.gradle 中添加插件、依赖等等，例如：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-05-11T18:53:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在IntelliJ IDEA中使用Gradle的最佳实践">
-<meta name="twitter:description" content="目标在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行 HowStep 1: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程 Step 2: 向 build.gradle 中添加插件、依赖等等，例如：">
+<meta name="twitter:description" content="目标 在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行 How Step 1: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程 Step 2: 向 build.gradle 中添加插件、依赖等等，例如：">
 
 
 
@@ -471,8 +471,10 @@
       
 
       
-        <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行</p>
-<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><p><strong>Step 1</strong>: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程</p>
+        <h2 id="目标">目标</h2>
+<p>在IDEA中建立一个带有Spring框架等依赖的Java工程，并用Gradle作为包管理器，该项目在Tomcat中运行</p>
+<h2 id="how">How</h2>
+<p><strong>Step 1</strong>: 使用 Gradle 或者 IDEA 自带的向导，建立 Gradle 工程</p>
 <p><strong>Step 2</strong>: 向 <code>build.gradle</code> 中添加插件、依赖等等，例如：</p>
 <a id="more"></a>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">group <span class="string">'me.ericfu'</span></span><br><span class="line">version <span class="string">'1.0-SNAPSHOT'</span></span><br><span class="line"></span><br><span class="line">apply <span class="string">plugin:</span> <span class="string">'java'</span></span><br><span class="line">apply <span class="string">plugin:</span> <span class="string">'war'</span></span><br><span class="line"></span><br><span class="line">sourceCompatibility = <span class="number">1.8</span></span><br><span class="line"></span><br><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile <span class="string">group:</span> <span class="string">'org.springframework'</span>, <span class="string">name:</span> <span class="string">'spring-core'</span>, <span class="string">version:</span> <span class="string">'4.3.2.RELEASE'</span></span><br><span class="line">    compile <span class="string">group:</span> <span class="string">'org.springframework'</span>, <span class="string">name:</span> <span class="string">'spring-context'</span>, <span class="string">version:</span> <span class="string">'4.3.2.RELEASE'</span></span><br><span class="line">    compile <span class="string">group:</span> <span class="string">'org.springframework'</span>, <span class="string">name:</span> <span class="string">'spring-webmvc'</span>, <span class="string">version:</span> <span class="string">'4.3.2.RELEASE'</span></span><br><span class="line">    compile <span class="string">group:</span> <span class="string">'org.springframework'</span>, <span class="string">name:</span> <span class="string">'spring-jdbc'</span>, <span class="string">version:</span> <span class="string">'4.3.2.RELEASE'</span></span><br><span class="line"></span><br><span class="line">    providedCompile <span class="string">group:</span> <span class="string">'javax.servlet'</span>, <span class="string">name:</span> <span class="string">'javax.servlet-api'</span>, <span class="string">version:</span> <span class="string">'3.1.0'</span></span><br><span class="line"></span><br><span class="line">    testCompile <span class="string">group:</span> <span class="string">'junit'</span>, <span class="string">name:</span> <span class="string">'junit'</span>, <span class="string">version:</span> <span class="string">'4.11'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -793,7 +795,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How"><span class="nav-number">2.</span> <span class="nav-text">How</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how"><span class="nav-number">2.</span> <span class="nav-text">How</span></a></li></ol></div>
             
 
           </div>

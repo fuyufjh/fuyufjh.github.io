@@ -132,19 +132,19 @@
 
 
 
-  <meta name="description" content="Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。 本文主要介绍 Sharding-JDBC 的事务处理。 Overview Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未来">
+  <meta name="description" content="Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。 本文主要介绍 Sharding-JDBC 的事务处理。 Overview  Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未">
 <meta name="keywords" content="selected,database">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sharding-JDBC 的事务处理小结">
 <meta property="og:url" content="https://ericfu.me/sharding-jdbc-transaction-overview/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。 本文主要介绍 Sharding-JDBC 的事务处理。 Overview Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未来">
+<meta property="og:description" content="Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。 本文主要介绍 Sharding-JDBC 的事务处理。 Overview  Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/sharding-jdbc-transaction-overview/media/15130580762465/15130630328613.png">
 <meta property="og:updated_time" content="2017-12-13T02:40:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sharding-JDBC 的事务处理小结">
-<meta name="twitter:description" content="Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。 本文主要介绍 Sharding-JDBC 的事务处理。 Overview Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未来">
+<meta name="twitter:description" content="Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。 本文主要介绍 Sharding-JDBC 的事务处理。 Overview  Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未">
 <meta name="twitter:image" content="https://ericfu.me/sharding-jdbc-transaction-overview/media/15130580762465/15130630328613.png">
 
 
@@ -463,19 +463,21 @@
       
         <p>Sharding-JDBC 是由当当网推出的一款开源的分布式数据库中间件。它以 JDBC 的形式嵌入到应用程序中，无需额外部署。Sharding-JDBC 实现了分库分表、读写分离和分布式主键功能，并初步实现了柔性事务。</p>
 <p>本文主要介绍 Sharding-JDBC 的事务处理。</p>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><blockquote>
+<h2 id="overview">Overview</h2>
+<blockquote>
 <p>Sharding-JDBC 由于性能方面的考量，决定不支持强一致性分布式事务。我们已明确规划线路图，未来会支持最终一致性的柔性事务。</p>
 </blockquote>
 <ul>
 <li>默认使用 “弱XA” 事务</li>
-<li>可选使用柔性事务：<ul>
+<li>可选使用柔性事务：
+<ul>
 <li>BED（最大努力送达型）事务</li>
 <li>TCC（补偿型）事务</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <a id="more"></a>
-<h2 id="“弱XA”事务"><a href="#“弱XA”事务" class="headerlink" title="“弱XA”事务"></a>“弱XA”事务</h2><p>之所以加引号，是因为这个和 MySQL 的 XA 其实没有关系。</p>
+<h2 id="弱xa事务">“弱XA”事务</h2>
+<p>之所以加引号，是因为这个和 MySQL 的 XA 其实没有关系。</p>
 <p>它的实现是很自然的：</p>
 <ul>
 <li><strong>Prepare 阶段</strong>（执行 SQL）过程遇到异常，则中止当前事务，对所有分库上的事务连接执行 <code>conn.rollback()</code></li>
@@ -485,20 +487,24 @@
 <blockquote>
 <p>不支持因网络、硬件异常导致的跨库事务。例如：同一事务中，跨两个库更新，更新完毕后、未提交之前，第一个库死机，则只有第二个库数据提交。</p>
 </blockquote>
-<h2 id="柔性事务"><a href="#柔性事务" class="headerlink" title="柔性事务"></a>柔性事务</h2><p>分布式场景下传统数据库 ACID 无法满足业务的性能要求，所以诞生了 BASE 理论。BASE是 Basically Available（基本可用）、Soft state（软状态）和 Eventually consistent（最终一致性）三个短语的简写，其中<em>软状态</em>是指允许系统中的数据存在中间状态。</p>
+<h2 id="柔性事务">柔性事务</h2>
+<p>分布式场景下传统数据库 ACID 无法满足业务的性能要求，所以诞生了 BASE 理论。BASE是 Basically Available（基本可用）、Soft state（软状态）和 Eventually consistent（最终一致性）三个短语的简写，其中<em>软状态</em>是指允许系统中的数据存在中间状态。</p>
 <p>Sharding-JDBC 的柔性事务是需要调用者显式开启的。以 BED 事务为例，客户需要先通过柔性事务管理器创建出 <em>BEDSoftTransaction</em> 对象，然后使用 <code>begin()</code> 开始柔性事务。</p>
-<h2 id="BED（最大努力送达型）事务"><a href="#BED（最大努力送达型）事务" class="headerlink" title="BED（最大努力送达型）事务"></a>BED（最大努力送达型）事务</h2><p>用户保证该数据库的操作最终一定可以成功，所以通过最大努力<strong>反复尝试</strong>。</p>
-<p><img src="media/15130580762465/15130630328613.png" alt=""></p>
+<h2 id="bed最大努力送达型事务">BED（最大努力送达型）事务</h2>
+<p>用户保证该数据库的操作最终一定可以成功，所以通过最大努力<strong>反复尝试</strong>。</p>
+<p><img src="media/15130580762465/15130630328613.png"></p>
 <p>结合上图，执行过程可以分为 4 种情况：</p>
-<ol>
+<ol type="1">
 <li>同步执行成功</li>
 <li>同步执行失败，同步重试成功</li>
 <li>同步执行失败，同步重试失败，异步重试成功</li>
 <li>同步执行失败，同步重试失败，异步重试失败，事务日志保留（人工介入处理）</li>
 </ol>
 <p>BED 不保证 exactly once，所以使用 BED 的 SQL 需要满足幂等性，例如不能用 <code>UPDATE SET x = x + 1</code> 这样的 SQL。</p>
-<h2 id="TCC（补偿型）事务"><a href="#TCC（补偿型）事务" class="headerlink" title="TCC（补偿型）事务"></a>TCC（补偿型）事务</h2><p>目前还在规划中，没有实现。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<h2 id="tcc补偿型事务">TCC（补偿型）事务</h2>
+<p>目前还在规划中，没有实现。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
 <li><a href="http://shardingjdbc.io/docs/02-guide/transaction/" target="_blank" rel="noopener">Sharding-JDBC 文档 - 事务支持</a></li>
 <li><a href="http://blog.csdn.net/yanyan19880509/article/details/78335935" target="_blank" rel="noopener">sharding-jdbc 事务解读</a></li>
 <li><a href="http://www.iocoder.cn/Sharding-JDBC/transaction-bed/" target="_blank" rel="noopener">Sharding-JDBC 源码分析 —— 分布式事务（一）之最大努力型</a></li>
@@ -817,7 +823,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“弱XA”事务"><span class="nav-number">2.</span> <span class="nav-text">“弱XA”事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#柔性事务"><span class="nav-number">3.</span> <span class="nav-text">柔性事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BED（最大努力送达型）事务"><span class="nav-number">4.</span> <span class="nav-text">BED（最大努力送达型）事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCC（补偿型）事务"><span class="nav-number">5.</span> <span class="nav-text">TCC（补偿型）事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弱xa事务"><span class="nav-number">2.</span> <span class="nav-text">“弱XA”事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#柔性事务"><span class="nav-number">3.</span> <span class="nav-text">柔性事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bed最大努力送达型事务"><span class="nav-number">4.</span> <span class="nav-text">BED（最大努力送达型）事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcc补偿型事务"><span class="nav-number">5.</span> <span class="nav-text">TCC（补偿型）事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

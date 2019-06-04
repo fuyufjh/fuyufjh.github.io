@@ -132,19 +132,19 @@
 
 
 
-  <meta name="description" content="PID 1 的责任我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。 在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。 init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起">
+  <meta name="description" content="PID 1 的责任 我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。 在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。 init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管">
 <meta name="keywords" content="selected,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker 容器中 PID 1 导致的 zombie 进程">
 <meta property="og:url" content="https://ericfu.me/docker-pid-1-process-and-zombie-process/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="PID 1 的责任我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。 在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。 init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起">
+<meta property="og:description" content="PID 1 的责任 我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。 在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。 init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2017/03/adoption.png">
 <meta property="og:updated_time" content="2017-03-20T08:24:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker 容器中 PID 1 导致的 zombie 进程">
-<meta name="twitter:description" content="PID 1 的责任我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。 在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。 init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起">
+<meta name="twitter:description" content="PID 1 的责任 我们知道，在 Linux 内核启动的时候会先启动一个 init 进程，这个进程的 PID 始终为 1，通过 ps 命令你会发现这个进程是很多进程的父进程。 在 Linux 中，进程是用树来组织的，这个 init 就是根结点，很多重要的系统服务进程例如 sshd，cron 都是 init 的子节点。 init 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管">
 <meta name="twitter:image" content="https://ericfu.me/images/2017/03/adoption.png">
 
 
@@ -461,18 +461,21 @@
       
 
       
-        <h2 id="PID-1-的责任"><a href="#PID-1-的责任" class="headerlink" title="PID 1 的责任"></a>PID 1 的责任</h2><p>我们知道，在 Linux 内核启动的时候会先启动一个 <code>init</code> 进程，这个进程的 PID 始终为 1，通过 <code>ps</code> 命令你会发现这个进程是很多进程的父进程。</p>
+        <h2 id="pid-1-的责任">PID 1 的责任</h2>
+<p>我们知道，在 Linux 内核启动的时候会先启动一个 <code>init</code> 进程，这个进程的 PID 始终为 1，通过 <code>ps</code> 命令你会发现这个进程是很多进程的父进程。</p>
 <p>在 Linux 中，进程是用树来组织的，这个 <code>init</code> 就是根结点，很多重要的系统服务进程例如 <code>sshd</code>，<code>cron</code> 都是 <code>init</code> 的子节点。</p>
 <p><code>init</code> 进程天生有个重要的任务，就是做好这个父节点的角色，把系统里所有的进程管起来。经常发生如下的情况，一个进程还没有等到子进程结束（<code>waitpid</code>），自己就因为某些原因退出了，那它的子进程就此时成为孤儿会被 <code>init</code> 接管，<code>init</code> 会很尽责的对他们做 <code>waitpid</code>，从而确保资源不被浪费。</p>
 <a id="more"></a>
-<p><img src="/images/2017/03/adoption.png" alt="adoption"></p>
-<h2 id="容器中的世界"><a href="#容器中的世界" class="headerlink" title="容器中的世界"></a>容器中的世界</h2><p>容器中的进程位于一个独立的 PID Namepsace 中，容器启动时的进程就是这个 Namespace 中的第一个进程，也就是 PID = 1。多数情况下，这个启动进程就是我们自己写的程序，或者 Nginx 之类的程序。</p>
+<p><img src="/images/2017/03/adoption.png"></p>
+<h2 id="容器中的世界">容器中的世界</h2>
+<p>容器中的进程位于一个独立的 PID Namepsace 中，容器启动时的进程就是这个 Namespace 中的第一个进程，也就是 PID = 1。多数情况下，这个启动进程就是我们自己写的程序，或者 Nginx 之类的程序。</p>
 <p>Unluckily，这些程序通常都不会有任何对于孤儿进程的妥善处理。也就是说，因为没有对这些接管过来的子进程做 <code>waitpid</code>，它们会一直存在。尽管内存已经释放了，但是会占用一个 PID 成为所谓的僵尸进程；如果这一行为不断发生，会耗尽系统的 PID 资源。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>对于大多数只有一级子进程的应用程序来说，这不是个很大的问题。</p>
+<h2 id="解决方案">解决方案</h2>
+<p>对于大多数只有一级子进程的应用程序来说，这不是个很大的问题。</p>
 <p>如果你的业务程序变得复杂，并且有必要产生两级子进程，那最好写一个 <code>init</code> 替代品来作为启动进程。<a href="https://github.com/phusion/baseimage-docker" target="_blank" rel="noopener">这个项目</a>可能会有帮助。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/" target="_blank" rel="noopener">Docker and the PID 1 zombie reaping problem
-</a></li>
+<h2 id="reference">Reference</h2>
+<ol type="1">
+<li><a href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/" target="_blank" rel="noopener">Docker and the PID 1 zombie reaping problem</a></li>
 </ol>
 
       
@@ -788,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PID-1-的责任"><span class="nav-number">1.</span> <span class="nav-text">PID 1 的责任</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器中的世界"><span class="nav-number">2.</span> <span class="nav-text">容器中的世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#pid-1-的责任"><span class="nav-number">1.</span> <span class="nav-text">PID 1 的责任</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器中的世界"><span class="nav-number">2.</span> <span class="nav-text">容器中的世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>

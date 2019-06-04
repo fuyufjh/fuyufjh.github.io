@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="EC2 - Elastic Compute Cloud付费方式了解不同付费方式的区别：  On Demand 比如：需要Auto Scaling Spot 比如：有大量计算任务，可以随时开始和停止 Reserved 比如：必须要很多主机常开 Dedicated Hosts 比如：不接受多租户  对于 Spot instances  如果你终止了这些instance，你需要为最后一个小时付费 如果A">
+  <meta name="description" content="EC2 - Elastic Compute Cloud 付费方式 了解不同付费方式的区别：  On Demand 比如：需要Auto Scaling Spot 比如：有大量计算任务，可以随时开始和停止 Reserved 比如：必须要很多主机常开 Dedicated Hosts 比如：不接受多租户  对于 Spot instances  如果你终止了这些instance，你需要为最后一个小时付费 如">
 <meta name="keywords" content="aws">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS 学习笔记之 EC2">
 <meta property="og:url" content="https://ericfu.me/aws-notes-ec2/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="EC2 - Elastic Compute Cloud付费方式了解不同付费方式的区别：  On Demand 比如：需要Auto Scaling Spot 比如：有大量计算任务，可以随时开始和停止 Reserved 比如：必须要很多主机常开 Dedicated Hosts 比如：不接受多租户  对于 Spot instances  如果你终止了这些instance，你需要为最后一个小时付费 如果A">
+<meta property="og:description" content="EC2 - Elastic Compute Cloud 付费方式 了解不同付费方式的区别：  On Demand 比如：需要Auto Scaling Spot 比如：有大量计算任务，可以随时开始和停止 Reserved 比如：必须要很多主机常开 Dedicated Hosts 比如：不接受多租户  对于 Spot instances  如果你终止了这些instance，你需要为最后一个小时付费 如">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-04-03T08:09:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS 学习笔记之 EC2">
-<meta name="twitter:description" content="EC2 - Elastic Compute Cloud付费方式了解不同付费方式的区别：  On Demand 比如：需要Auto Scaling Spot 比如：有大量计算任务，可以随时开始和停止 Reserved 比如：必须要很多主机常开 Dedicated Hosts 比如：不接受多租户  对于 Spot instances  如果你终止了这些instance，你需要为最后一个小时付费 如果A">
+<meta name="twitter:description" content="EC2 - Elastic Compute Cloud 付费方式 了解不同付费方式的区别：  On Demand 比如：需要Auto Scaling Spot 比如：有大量计算任务，可以随时开始和停止 Reserved 比如：必须要很多主机常开 Dedicated Hosts 比如：不接受多租户  对于 Spot instances  如果你终止了这些instance，你需要为最后一个小时付费 如">
 
 
 
@@ -459,7 +459,9 @@
       
 
       
-        <h2 id="EC2-Elastic-Compute-Cloud"><a href="#EC2-Elastic-Compute-Cloud" class="headerlink" title="EC2 - Elastic Compute Cloud"></a>EC2 - Elastic Compute Cloud</h2><h3 id="付费方式"><a href="#付费方式" class="headerlink" title="付费方式"></a>付费方式</h3><p>了解不同付费方式的区别：</p>
+        <h2 id="ec2---elastic-compute-cloud">EC2 - Elastic Compute Cloud</h2>
+<h3 id="付费方式">付费方式</h3>
+<p>了解不同付费方式的区别：</p>
 <ul>
 <li>On Demand 比如：需要Auto Scaling</li>
 <li>Spot 比如：有大量计算任务，可以随时开始和停止</li>
@@ -472,21 +474,245 @@
 <li>如果AWS终止了这些instance（当前价格大于出价），你无需为这个小时付费</li>
 </ul>
 <a id="more"></a>
-<h3 id="Instance-分类"><a href="#Instance-分类" class="headerlink" title="Instance 分类"></a>Instance 分类</h3><table><br>  <tr><br>    <th>Family</th><br>    <th>Speciality</th><br>    <th>Use Case</th><br>    <th>Remarks</th><br>  </tr><br>  <tr><br>    <td>D2</td><br>    <td>存储密集</td><br>    <td>文件服务，数据仓库，Hadoop</td><br>    <td><b>D</b>ense Storage</td><br>  </tr><br>  <tr><br>    <td>R4</td><br>    <td>内存优化</td><br>    <td>内存密集型应用，数据库</td><br>    <td><b>R</b>AM</td><br>  </tr><br>  <tr><br>    <td>M4</td><br>    <td>通用</td><br>    <td>应用服务器</td><br>    <td><b>M</b>ain</td><br>  </tr><br>  <tr><br>    <td>C4</td><br>    <td>运算优化</td><br>    <td>CPU密集型应用，数据库</td><br>    <td><b>C</b>ompute</td><br>  </tr><br>  <tr><br>    <td>G2</td><br>    <td>图形计算</td><br>    <td>视频编码，3D应用程序</td><br>    <td><b>G</b>raphic</td><br>  </tr><br>  <tr><br>    <td>I2</td><br>    <td>高速存储</td><br>    <td>NoSQL数据库，数据仓库</td><br>    <td><b>I</b>O</td><br>  </tr><br>  <tr><br>    <td>F1</td><br>    <td>FPGA</td><br>    <td>硬件加速</td><br>    <td><b>F</b>PGA</td><br>  </tr><br>  <tr><br>    <td>T2</td><br>    <td>便宜通用</td><br>    <td>Web服务器，小型数据库</td><br>    <td>“t2.micro”</td><br>  </tr><br>  <tr><br>    <td>P2</td><br>    <td>GPU加速</td><br>    <td>机器学习，挖矿</td><br>    <td><b>P</b>owerful</td><br>  </tr><br>  <tr><br>    <td>X1</td><br>    <td>超大内存</td><br>    <td>SAP HANA，Spark</td><br>    <td><b>E</b>xtreme</td><br>  </tr><br></table>
-
+<h3 id="instance-分类">Instance 分类</h3>
+<table>
+<tr>
+<th>
+Family
+</th>
+<th>
+Speciality
+</th>
+<th>
+Use Case
+</th>
+<th>
+Remarks
+</th>
+</tr>
+<tr>
+<td>
+D2
+</td>
+<td>
+存储密集
+</td>
+<td>
+文件服务，数据仓库，Hadoop
+</td>
+<td>
+<b>D</b>ense Storage
+</td>
+</tr>
+<tr>
+<td>
+R4
+</td>
+<td>
+内存优化
+</td>
+<td>
+内存密集型应用，数据库
+</td>
+<td>
+<b>R</b>AM
+</td>
+</tr>
+<tr>
+<td>
+M4
+</td>
+<td>
+通用
+</td>
+<td>
+应用服务器
+</td>
+<td>
+<b>M</b>ain
+</td>
+</tr>
+<tr>
+<td>
+C4
+</td>
+<td>
+运算优化
+</td>
+<td>
+CPU密集型应用，数据库
+</td>
+<td>
+<b>C</b>ompute
+</td>
+</tr>
+<tr>
+<td>
+G2
+</td>
+<td>
+图形计算
+</td>
+<td>
+视频编码，3D应用程序
+</td>
+<td>
+<b>G</b>raphic
+</td>
+</tr>
+<tr>
+<td>
+I2
+</td>
+<td>
+高速存储
+</td>
+<td>
+NoSQL数据库，数据仓库
+</td>
+<td>
+<b>I</b>O
+</td>
+</tr>
+<tr>
+<td>
+F1
+</td>
+<td>
+FPGA
+</td>
+<td>
+硬件加速
+</td>
+<td>
+<b>F</b>PGA
+</td>
+</tr>
+<tr>
+<td>
+T2
+</td>
+<td>
+便宜通用
+</td>
+<td>
+Web服务器，小型数据库
+</td>
+<td>
+“t2.micro”
+</td>
+</tr>
+<tr>
+<td>
+P2
+</td>
+<td>
+GPU加速
+</td>
+<td>
+机器学习，挖矿
+</td>
+<td>
+<b>P</b>owerful
+</td>
+</tr>
+<tr>
+<td>
+X1
+</td>
+<td>
+超大内存
+</td>
+<td>
+SAP HANA，Spark
+</td>
+<td>
+<b>E</b>xtreme
+</td>
+</tr>
+</table>
 <blockquote>
 <p>记忆方法：<em>Dr Mc Gift Px</em></p>
 </blockquote>
-<h3 id="EBS-Elastic-Block-Storage"><a href="#EBS-Elastic-Block-Storage" class="headerlink" title="EBS - Elastic Block Storage"></a>EBS - Elastic Block Storage</h3><p>EBS包含以下几种类型：</p>
-<table><br>  <tr><br>    <th>Name</th><br>    <th>Description</th><br>    <th>Remarks</th><br>  </tr><br>  <tr><br>    <td>GP2</td><br>    <td>SSD, General Purpose</td><br>    <td>最多 10,000 IOPS</td><br>  </tr><br>  <tr><br>    <td>IO1</td><br>    <td>SSD, Provisioned IOPS</td><br>    <td>高于 10,000 IOPS</td><br>  </tr><br>  <tr><br>    <td>ST1</td><br>    <td>HDD, Throughput Optimized</td><br>    <td>经常访问（不能用于Boot Volume）</td><br>  </tr><br>  <tr><br>    <td>SC1</td><br>    <td>HDD, Cold</td><br>    <td>不经常访问（不能用于Boot Volume）</td><br>  </tr><br>  <tr><br>    <td>Standard</td><br>    <td>HDD, Magnetic</td><br>    <td>便宜，不经常访问</td><br>  </tr><br></table>
-
+<h3 id="ebs---elastic-block-storage">EBS - Elastic Block Storage</h3>
+<p>EBS包含以下几种类型：</p>
+<table>
+<tr>
+<th>
+Name
+</th>
+<th>
+Description
+</th>
+<th>
+Remarks
+</th>
+</tr>
+<tr>
+<td>
+GP2
+</td>
+<td>
+SSD, General Purpose
+</td>
+<td>
+最多 10,000 IOPS
+</td>
+</tr>
+<tr>
+<td>
+IO1
+</td>
+<td>
+SSD, Provisioned IOPS
+</td>
+<td>
+高于 10,000 IOPS
+</td>
+</tr>
+<tr>
+<td>
+ST1
+</td>
+<td>
+HDD, Throughput Optimized
+</td>
+<td>
+经常访问（不能用于Boot Volume）
+</td>
+</tr>
+<tr>
+<td>
+SC1
+</td>
+<td>
+HDD, Cold
+</td>
+<td>
+不经常访问（不能用于Boot Volume）
+</td>
+</tr>
+<tr>
+<td>
+Standard
+</td>
+<td>
+HDD, Magnetic
+</td>
+<td>
+便宜，不经常访问
+</td>
+</tr>
+</table>
 <p>注意！你不能把一个EBS mount到多个EC2 Instance，如果你想这么做，应该用EFS。</p>
-<h3 id="一些注意点"><a href="#一些注意点" class="headerlink" title="一些注意点"></a>一些注意点</h3><ul>
+<h3 id="一些注意点">一些注意点</h3>
+<ul>
 <li>Termination Protection 默认情况下是关闭的，建议打开</li>
 <li>对于 EBS-backed instance，默认情况下 root EBS 会随着 instance 的终止一同被删除</li>
 <li>默认情况下，Root volume 不能加密，如果你一定要加密可能得求助于第三方工具，比如 BitLocker</li>
 </ul>
-<h3 id="Volumes-和-Snapshot"><a href="#Volumes-和-Snapshot" class="headerlink" title="Volumes 和 Snapshot"></a>Volumes 和 Snapshot</h3><ul>
+<h3 id="volumes-和-snapshot">Volumes 和 Snapshot</h3>
+<ul>
 <li>Volume 存在 EBS 上，就是虚拟磁盘</li>
 <li>Snapshot 存在 S3 上</li>
 <li>为 Volume 做一个 Snapshot，这会把 Volume 当前的内容存到 S3 上</li>
@@ -498,23 +724,25 @@
 <ul>
 <li>加密 Volume 的 Snapshot 也会自动加密</li>
 <li>从加密 Snapshot 恢复出来的 Volume 也会自动加密</li>
-<li>你可以分享未加密的 Snapshot，加密的不可以分享<ul>
+<li>你可以分享未加密的 Snapshot，加密的不可以分享
+<ul>
 <li>分享给其他的 AWS 账号，或者公开</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <p>特别注意 Root Volume 的快照：</p>
 <ul>
 <li>如果要创建 Root Volume 的 Snapshot，你应该先 stop 这个 instance</li>
 </ul>
-<h3 id="EBS-vs-Instance-Store"><a href="#EBS-vs-Instance-Store" class="headerlink" title="EBS vs Instance Store"></a>EBS vs Instance Store</h3><ul>
+<h3 id="ebs-vs-instance-store">EBS vs Instance Store</h3>
+<ul>
 <li>Instance Store Volumes 也被称作 Ephemeral Storage</li>
 <li>Instance Store instance 是不能 stop 的，如果这个 instance 当机，数据就会丢失</li>
 <li>EBS-backed instance 可以 stop，不会丢数据（显然的）</li>
 <li>对于二者，你都可以 reboot，不会丢失数据</li>
 <li>默认情况下，Root volume 都会随着 instance 被 terminate 而被删除，但是对于 EBS Volume 你可以让 AWS 保留</li>
 </ul>
-<h3 id="RAID-的-Snapshot"><a href="#RAID-的-Snapshot" class="headerlink" title="RAID 的 Snapshot"></a>RAID 的 Snapshot</h3><p>对于一般的 Volume，快照不会管那些被 cache 的数据，这个是 OK 的；但是对于 RAID，这就会导致问题，因为阵列里的各个磁盘互相独立。</p>
+<h3 id="raid-的-snapshot">RAID 的 Snapshot</h3>
+<p>对于一般的 Volume，快照不会管那些被 cache 的数据，这个是 OK 的；但是对于 RAID，这就会导致问题，因为阵列里的各个磁盘互相独立。</p>
 <p>你不能简单的像之前一样创建快照，应该去创建 Application Cosistent Snapshot。为此，创建快照之前，你需要</p>
 <ul>
 <li>停止所有的磁盘写入</li>
@@ -526,8 +754,10 @@
 <li>Unmount 这个RAID</li>
 <li>关机（最简单的）</li>
 </ul>
-<h3 id="AMI-Amazon-Machine-Images"><a href="#AMI-Amazon-Machine-Images" class="headerlink" title="AMI - Amazon Machine Images"></a>AMI - Amazon Machine Images</h3><p>AMI 是有区域性的，只能在它所在的 region 上 launch 新的机器。但是你可以通过 Console 或者 CLI 把 AMI 从一个 region 拷贝到另一个 region。</p>
-<h2 id="CloudWatch"><a href="#CloudWatch" class="headerlink" title="CloudWatch"></a>CloudWatch</h2><ul>
+<h3 id="ami---amazon-machine-images">AMI - Amazon Machine Images</h3>
+<p>AMI 是有区域性的，只能在它所在的 region 上 launch 新的机器。但是你可以通过 Console 或者 CLI 把 AMI 从一个 region 拷贝到另一个 region。</p>
+<h2 id="cloudwatch">CloudWatch</h2>
+<ul>
 <li>Standard Monitoring: 每 5 分钟一次</li>
 <li>Detailed Monitoring: 每 1 分钟一次</li>
 </ul>
@@ -543,18 +773,21 @@
 <li>Events - 帮助你对某些 AWS 资源的状态改变作出反应</li>
 <li>Logs - 帮助你收集，监视和存储日志</li>
 </ul>
-<h2 id="IAM-Roles"><a href="#IAM-Roles" class="headerlink" title="IAM Roles"></a>IAM Roles</h2><ul>
+<h2 id="iam-roles">IAM Roles</h2>
+<ul>
 <li>比起把 Access Key / Secret Access Key 设置到 EC2 instance 上，使用 Roles 更为安全</li>
 <li>Roles 更容易管理</li>
 <li>Roles 可以在 EC2 创建之后再 assign 上去，但是到目前为止只能用 CLI 做这件事</li>
 <li>Roles 是全局的（IAM都是）</li>
 </ul>
-<h2 id="Instance-Metadata"><a href="#Instance-Metadata" class="headerlink" title="Instance Metadata"></a>Instance Metadata</h2><ul>
+<h2 id="instance-metadata">Instance Metadata</h2>
+<ul>
 <li>用于获取当前 instance 的信息</li>
 <li>地址：<code>http://169.254.169.254/latest/meta-data</code></li>
 <li>没有用户数据</li>
 </ul>
-<h2 id="EFS-Elastic-File-System"><a href="#EFS-Elastic-File-System" class="headerlink" title="EFS (Elastic File System)"></a>EFS (Elastic File System)</h2><ul>
+<h2 id="efs-elastic-file-system">EFS (Elastic File System)</h2>
+<ul>
 <li>支持 Network File System v4 (NFSv4) 协议</li>
 <li>只需要为使用的存储空间付费，无需 pre-provisioning</li>
 <li>易扩展，支持 PB 级别数据</li>
@@ -562,7 +795,8 @@
 <li>数据跨 AZ 存储</li>
 <li>保证读写一致性（Read-after-write consistency）</li>
 </ul>
-<h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><p>AWS Lambda 是一个计算服务，你只需要上传你的代码，创建一个 Lambda 函数，AWS Lambda 会帮你搞定所需的服务器，你完全不用关心操作系统、补丁、扩展之类的事情。</p>
+<h2 id="lambda">Lambda</h2>
+<p>AWS Lambda 是一个计算服务，你只需要上传你的代码，创建一个 Lambda 函数，AWS Lambda 会帮你搞定所需的服务器，你完全不用关心操作系统、补丁、扩展之类的事情。</p>
 <p>你可以用以下两种方式使用 Lambda：</p>
 <ul>
 <li>作为一个 event-driven 的服务，响应某些 event，比如 S3 Bucket 的新文件，DynamoDB 表的变化等</li>
@@ -880,7 +1114,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#EC2-Elastic-Compute-Cloud"><span class="nav-number">1.</span> <span class="nav-text">EC2 - Elastic Compute Cloud</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#付费方式"><span class="nav-number">1.1.</span> <span class="nav-text">付费方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Instance-分类"><span class="nav-number">1.2.</span> <span class="nav-text">Instance 分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EBS-Elastic-Block-Storage"><span class="nav-number">1.3.</span> <span class="nav-text">EBS - Elastic Block Storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些注意点"><span class="nav-number">1.4.</span> <span class="nav-text">一些注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Volumes-和-Snapshot"><span class="nav-number">1.5.</span> <span class="nav-text">Volumes 和 Snapshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EBS-vs-Instance-Store"><span class="nav-number">1.6.</span> <span class="nav-text">EBS vs Instance Store</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RAID-的-Snapshot"><span class="nav-number">1.7.</span> <span class="nav-text">RAID 的 Snapshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMI-Amazon-Machine-Images"><span class="nav-number">1.8.</span> <span class="nav-text">AMI - Amazon Machine Images</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudWatch"><span class="nav-number">2.</span> <span class="nav-text">CloudWatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IAM-Roles"><span class="nav-number">3.</span> <span class="nav-text">IAM Roles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instance-Metadata"><span class="nav-number">4.</span> <span class="nav-text">Instance Metadata</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EFS-Elastic-File-System"><span class="nav-number">5.</span> <span class="nav-text">EFS (Elastic File System)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lambda"><span class="nav-number">6.</span> <span class="nav-text">Lambda</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ec2---elastic-compute-cloud"><span class="nav-number">1.</span> <span class="nav-text">EC2 - Elastic Compute Cloud</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#付费方式"><span class="nav-number">1.1.</span> <span class="nav-text">付费方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#instance-分类"><span class="nav-number">1.2.</span> <span class="nav-text">Instance 分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ebs---elastic-block-storage"><span class="nav-number">1.3.</span> <span class="nav-text">EBS - Elastic Block Storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些注意点"><span class="nav-number">1.4.</span> <span class="nav-text">一些注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volumes-和-snapshot"><span class="nav-number">1.5.</span> <span class="nav-text">Volumes 和 Snapshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ebs-vs-instance-store"><span class="nav-number">1.6.</span> <span class="nav-text">EBS vs Instance Store</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#raid-的-snapshot"><span class="nav-number">1.7.</span> <span class="nav-text">RAID 的 Snapshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ami---amazon-machine-images"><span class="nav-number">1.8.</span> <span class="nav-text">AMI - Amazon Machine Images</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cloudwatch"><span class="nav-number">2.</span> <span class="nav-text">CloudWatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iam-roles"><span class="nav-number">3.</span> <span class="nav-text">IAM Roles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#instance-metadata"><span class="nav-number">4.</span> <span class="nav-text">Instance Metadata</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#efs-elastic-file-system"><span class="nav-number">5.</span> <span class="nav-text">EFS (Elastic File System)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda"><span class="nav-number">6.</span> <span class="nav-text">Lambda</span></a></li></ol></div>
             
 
           </div>

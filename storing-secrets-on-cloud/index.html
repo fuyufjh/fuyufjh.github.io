@@ -132,13 +132,13 @@
 
 
 
-  <meta name="description" content="翻译自： TURTLES ALL THE WAY DOWN  Storing Secrets in the Cloud and in the Data Center  Daniel Somerfield Homepage | YouTube | Slides  引言乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问，">
+  <meta name="description" content="翻译自： TURTLES ALL THE WAY DOWN - Storing Secrets in the Cloud and in the Data Center Daniel Somerfield Homepage | YouTube | Slides  引言 乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问">
 <meta name="keywords" content="security,cloud">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在云平台上存储 Secret">
 <meta property="og:url" content="https://ericfu.me/storing-secrets-on-cloud/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="翻译自： TURTLES ALL THE WAY DOWN  Storing Secrets in the Cloud and in the Data Center  Daniel Somerfield Homepage | YouTube | Slides  引言乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问，">
+<meta property="og:description" content="翻译自： TURTLES ALL THE WAY DOWN - Storing Secrets in the Cloud and in the Data Center Daniel Somerfield Homepage | YouTube | Slides  引言 乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ericfu.me/images/2016/11/orchestrator-decryption.png">
 <meta property="og:image" content="https://ericfu.me/images/2016/11/application-decryption.png">
@@ -146,7 +146,7 @@
 <meta property="og:updated_time" content="2016-11-20T07:52:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在云平台上存储 Secret">
-<meta name="twitter:description" content="翻译自： TURTLES ALL THE WAY DOWN  Storing Secrets in the Cloud and in the Data Center  Daniel Somerfield Homepage | YouTube | Slides  引言乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问，">
+<meta name="twitter:description" content="翻译自： TURTLES ALL THE WAY DOWN - Storing Secrets in the Cloud and in the Data Center Daniel Somerfield Homepage | YouTube | Slides  引言 乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问">
 <meta name="twitter:image" content="https://ericfu.me/images/2016/11/orchestrator-decryption.png">
 
 
@@ -477,35 +477,39 @@
       
         <blockquote>
 <p>翻译自：</p>
-<p>TURTLES ALL THE WAY DOWN</p>
-<ul>
-<li>Storing Secrets in the Cloud and in the Data Center</li>
-</ul>
-<p>Daniel Somerfield</p>
+<p>TURTLES ALL THE WAY DOWN - Storing Secrets in the Cloud and in the Data Center</p>
+<p>Daniel Somerfield</p>
 <p><a href="http://danielsomerfield.github.io/turtles/" target="_blank" rel="noopener">Homepage</a> | <a href="https://www.youtube.com/watch?v=OUSvv2maMYI" target="_blank" rel="noopener">YouTube</a> | <a href="http://schd.ws/hosted_files/appsecusa2015/a5/Turtles.pdf" target="_blank" rel="noopener">Slides</a></p>
 </blockquote>
-<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问，那这个乌龟站在哪里呢？老太太说，你傻叉吗，乌龟站在另一个更大的乌龟上。</p>
+<h1 id="引言">引言</h1>
+<p>乌龟的梗是这么来的：某次霍金发表了一个关于宇宙起源的演讲，有个老太太说，你讲的都是 rubbish，宇宙是一个大乌龟扛着的！有人问，那这个乌龟站在哪里呢？老太太说，你傻叉吗，乌龟站在另一个更大的乌龟上。</p>
 <a id="more"></a>
 <p>这个解释恰好也是 Secret Store 面临的一个问题。数据通过密钥来保护，那密钥通过什么来保护呢？通常我们别无选择，只能再设置一个 Master Key 来加密密钥。更 General 地说，每次我们试图把一个东西弄得安全，都不得不假设假设另一个东西（例如Master Key，信道，etc.）是安全的。</p>
 <p>似乎是无解的。那应该怎样做？这就是以下要讨论的。</p>
-<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><h2 id="Security-Goals"><a href="#Security-Goals" class="headerlink" title="Security Goals"></a>Security Goals</h2><ul>
+<h1 id="目标">目标</h1>
+<h2 id="security-goals">Security Goals</h2>
+<ul>
 <li><strong>Secrets are secrets</strong> Secret 应该以加密的方式存储</li>
 <li><strong>Auditing</strong> 所有的访问和操作都应该被记录，以便出问题时审查</li>
-<li><strong>No reliance on heroes</strong> 不能让整个系统依赖某一个人（比如某个 DBA）</li>
+<li><strong>No reliance on heroes</strong> 不能让整个系统依赖某一个人（比如某个 DBA）</li>
 <li><strong>Standard practices</strong> 遵守某些既定的业界标准，比如协议、算法等。但这不是让你在 Github 上随便下载一个开源工具，就以为他已经身经百战了，Naive!</li>
 </ul>
-<h2 id="Operational-Goals"><a href="#Operational-Goals" class="headerlink" title="Operational Goals"></a>Operational Goals</h2><ul>
+<h2 id="operational-goals">Operational Goals</h2>
+<ul>
 <li><strong>Automated</strong> 可以自动化部署，就像其他的任何组件一样</li>
 <li><strong>Scales operationally</strong> 在数据量慢慢变大以后，也有方法能应对这种变化</li>
 </ul>
-<h2 id="Easy-to-Use"><a href="#Easy-to-Use" class="headerlink" title="Easy to Use"></a>Easy to Use</h2><p>它一定要容易被别的开发者所使用，不然占用的都是自己的时间。这一点对于任何组件的开发同样适用。</p>
-<h1 id="第一只乌龟"><a href="#第一只乌龟" class="headerlink" title="第一只乌龟"></a>第一只乌龟</h1><p>首先，不管那么多了——Secret 需要是安全的。目标：</p>
+<h2 id="easy-to-use">Easy to Use</h2>
+<p>它一定要容易被别的开发者所使用，不然占用的都是自己的时间。这一点对于任何组件的开发同样适用。</p>
+<h1 id="第一只乌龟">第一只乌龟</h1>
+<p>首先，不管那么多了——Secret 需要是安全的。目标：</p>
 <ul>
 <li>Secrets 是加密的</li>
 <li>受权限控制的分发</li>
 <li>自动化地部署到应用程序</li>
 </ul>
-<h2 id="策略1：-orchestrator-decryption"><a href="#策略1：-orchestrator-decryption" class="headerlink" title="策略1： orchestrator decryption"></a>策略1： orchestrator decryption</h2><p><img src="/images/2016/11/orchestrator-decryption.png" alt=""></p>
+<h2 id="策略1-orchestrator-decryption">策略1： orchestrator decryption</h2>
+<p><img src="/images/2016/11/orchestrator-decryption.png"></p>
 <p>如果你用了 Git-crypt 或者 ansible vault 那你多数是这种情况。</p>
 <p>优势：</p>
 <ul>
@@ -518,7 +522,8 @@
 <li>会导致产生很多不用的 Secret</li>
 <li>更多的“乌龟”，Provision可靠吗？传输信道可靠吗？</li>
 </ul>
-<h2 id="策略2：application-decryption"><a href="#策略2：application-decryption" class="headerlink" title="策略2：application decryption"></a>策略2：application decryption</h2><p><img src="/images/2016/11/application-decryption.png" alt=""></p>
+<h2 id="策略2application-decryption">策略2：application decryption</h2>
+<p><img src="/images/2016/11/application-decryption.png"></p>
 <p>优势：</p>
 <ul>
 <li>orchestrator 和 Secret Store 解耦</li>
@@ -530,7 +535,8 @@
 <li>会导致产生很多不用的 Secret</li>
 <li>更多的“乌龟”，Provision可靠吗？传输信道可靠吗？</li>
 </ul>
-<h2 id="策略3：operational-compartmentalization"><a href="#策略3：operational-compartmentalization" class="headerlink" title="策略3：operational compartmentalization"></a>策略3：operational compartmentalization</h2><p><img src="/images/2016/11/operational-compartmentalization.png" alt=""></p>
+<h2 id="策略3operational-compartmentalization">策略3：operational compartmentalization</h2>
+<p><img src="/images/2016/11/operational-compartmentalization.png"></p>
 <p>优势：</p>
 <ul>
 <li>清晰的责任划分</li>
@@ -541,7 +547,9 @@
 <li>清晰的划分也导致了组织孤岛（organizational silos）</li>
 <li>缺少透明性</li>
 </ul>
-<h1 id="实现上述策略的工具"><a href="#实现上述策略的工具" class="headerlink" title="实现上述策略的工具"></a>实现上述策略的工具</h1><h2 id="1-SCM-加密"><a href="#1-SCM-加密" class="headerlink" title="1. SCM 加密"></a>1. SCM 加密</h2><p>加密整个 Source Repo，或者只加密相关的项目。</p>
+<h1 id="实现上述策略的工具">实现上述策略的工具</h1>
+<h2 id="scm-加密">1. SCM 加密</h2>
+<p>加密整个 Source Repo，或者只加密相关的项目。</p>
 <p>优点：</p>
 <ul>
 <li>容易集成</li>
@@ -875,7 +883,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目标"><span class="nav-number">2.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Security-Goals"><span class="nav-number">2.1.</span> <span class="nav-text">Security Goals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operational-Goals"><span class="nav-number">2.2.</span> <span class="nav-text">Operational Goals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Easy-to-Use"><span class="nav-number">2.3.</span> <span class="nav-text">Easy to Use</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一只乌龟"><span class="nav-number">3.</span> <span class="nav-text">第一只乌龟</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#策略1：-orchestrator-decryption"><span class="nav-number">3.1.</span> <span class="nav-text">策略1： orchestrator decryption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略2：application-decryption"><span class="nav-number">3.2.</span> <span class="nav-text">策略2：application decryption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略3：operational-compartmentalization"><span class="nav-number">3.3.</span> <span class="nav-text">策略3：operational compartmentalization</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现上述策略的工具"><span class="nav-number">4.</span> <span class="nav-text">实现上述策略的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-SCM-加密"><span class="nav-number">4.1.</span> <span class="nav-text">1. SCM 加密</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目标"><span class="nav-number">2.</span> <span class="nav-text">目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#security-goals"><span class="nav-number">2.1.</span> <span class="nav-text">Security Goals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#operational-goals"><span class="nav-number">2.2.</span> <span class="nav-text">Operational Goals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#easy-to-use"><span class="nav-number">2.3.</span> <span class="nav-text">Easy to Use</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第一只乌龟"><span class="nav-number">3.</span> <span class="nav-text">第一只乌龟</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#策略1-orchestrator-decryption"><span class="nav-number">3.1.</span> <span class="nav-text">策略1： orchestrator decryption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略2application-decryption"><span class="nav-number">3.2.</span> <span class="nav-text">策略2：application decryption</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略3operational-compartmentalization"><span class="nav-number">3.3.</span> <span class="nav-text">策略3：operational compartmentalization</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现上述策略的工具"><span class="nav-number">4.</span> <span class="nav-text">实现上述策略的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#scm-加密"><span class="nav-number">4.1.</span> <span class="nav-text">1. SCM 加密</span></a></li></ol></li></ol></div>
             
 
           </div>
