@@ -476,9 +476,7 @@
         <p>最近小米商城 App 里推出了一个游戏，大概是酱紫的：</p>
 <p>左图是游戏初始状态，右图是游戏完成的样子，点左下角的图就能看到。规则是，利用唯一的那个空格移动所有的小块，直到恢复原图。不用担心，缺的一块一定是最后那一块儿，所以你也要保证最后缺口还在右下角的地方。</p>
 <a id="more"></a>
-<figure>
-<img src="/images/2015/12/puzzlegamejoined.jpg" alt="Puzzle Game"><figcaption>Puzzle Game</figcaption>
-</figure>
+<p><img src="/images/2015/12/puzzlegamejoined.jpg"></p>
 <p>为了方便处理，把每一块（按照在完成图上的位置）编上号，如此以后，问题就变成了：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">11   8   5   6</span><br><span class="line">10   9   0   4</span><br><span class="line">13   1   2   7</span><br><span class="line">14  12   3 [15]</span><br></pre></td></tr></table></figure>
 <p>这样的一个矩阵，只有 <code>[15]</code> 可以和四领域的元素交换。求一个方案，使得若干次交换之后，变成：</p>

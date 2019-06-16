@@ -540,16 +540,10 @@
 <p>Filer 本身是无状态的，所以很容易实现根据负载做 Auto Scaling。但实践中发现，Auto Scaling需要基础架构的支持，例如 VMware 虚拟机集群或 AWS 云服务，所以没有在本机（minikube）上试验。</p>
 <h2 id="完整架构">完整架构</h2>
 <p>以下是分布式文件系统项目的整体架构。系统使用 Docker + Kubernetes 来管理各个服务和节点，配合相关工具，很容易在 AWS 或 GCE 上部署。</p>
-<figure>
-<img src="/images/2017/01/DFS---.png" alt="DFS Structure"><figcaption>DFS Structure</figcaption>
-</figure>
+<p><img src="/images/2017/01/DFS---.png"></p>
 <h2 id="实现演示">实现演示</h2>
-<figure>
-<img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.02-AM.png" alt="List Files"><figcaption>List Files</figcaption>
-</figure>
-<figure>
-<img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.37-AM.png" alt="Upload Files"><figcaption>Upload Files</figcaption>
-</figure>
+<p><img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.02-AM.png"></p>
+<p><img src="/images/2017/01/Screen-Shot-2016-12-20-at-1.25.37-AM.png"></p>
 
       
     </div>

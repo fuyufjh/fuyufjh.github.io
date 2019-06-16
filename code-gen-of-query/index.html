@@ -146,7 +146,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/03/code-gen-example-2.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/03/code-gen-interface-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/03/code-gen-demo-animated.gif">
-<meta property="og:updated_time" content="2019-06-04T02:19:09.414Z">
+<meta property="og:updated_time" content="2019-06-16T05:26:28.513Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JIT 代码生成技术（二）查询编译执行">
 <meta name="twitter:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。 上一篇文章 代码生成技术（一）表达式编译 中提到，虽然表面上都叫“代码生成”，但是实际可以分出几种粒度的实现方式，比如表达式的代码生成、查询的代码生成、存储过程的代码生成等。今天我们要讲的是查询级别的代码生成，">
@@ -434,7 +434,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-04 10:19:09" itemprop="dateModified" datetime="2019-06-04T10:19:09+08:00">2019-06-04</time>
+                <time title="修改时间：2019-06-16 13:26:28" itemprop="dateModified" datetime="2019-06-16T13:26:28+08:00">2019-06-16</time>
               
             
           </span>
@@ -534,9 +534,7 @@
 <p>用例子来说明。下面是一个伪代码版本的若干算子实现。<code>produce()</code> 和 <code>consume()</code> 返回的类型都是生成的代码片段，这里为了方便演示直接用字符串表示。真实世界中当然要更复杂一些。</p>
 <p><img src="/images/2019/03/code-gen-interface-example.png"></p>
 <p>表中红色的字符串是生成的代码，黑色的则是 code-gen 本身的代码。回忆一下：代码生成其实就是用各种手段拼出代码（字符串）来，没什么神秘的。</p>
-<figure>
-<img src="/images/2019/03/code-gen-demo-animated.gif" alt="ezgif.com-gif-maker -1-"><figcaption>ezgif.com-gif-maker -1-</figcaption>
-</figure>
+<p><img src="/images/2019/03/code-gen-demo-animated.gif"></p>
 <p>不满足于伪代码的同学可以尝试阅读 HyPer 的 <a href="https://www.vldb.org/pvldb/vol4/p539-neumann.pdf" target="_blank" rel="noopener">论文</a>（生成 LLVM IR） 或者 Spark SQL 中的 <a href="https://github.com/apache/spark/blob/master/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/expressions/codegen/CodeGenerator.scala" target="_blank" rel="noopener">CodeGenerator 实现</a>（生成 Java 代码），后者的代码相对更容易理解些。</p>
 <h2 id="思考这是唯一的解法吗">思考：这是唯一的解法吗？*</h2>
 <p>为什么是 produce/consume 呢？是否存在更简单的解呢？<strong>这里给出我的推导思路，你可以跳过这一段</strong>，毕竟每个人的脑回路是不一样的。</p>

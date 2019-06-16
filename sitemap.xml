@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/code-gen-of-expression/</loc>
+    
+    <lastmod>2019-06-16T05:26:28.541Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/completable-future-not-so-bad/</loc>
+    
+    <lastmod>2019-06-16T05:26:28.528Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/code-gen-of-query/</loc>
+    
+    <lastmod>2019-06-16T05:26:28.513Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/columnar-storage-overview-storage/</loc>
+    
+    <lastmod>2019-06-16T05:26:28.513Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/subquery-optimization/</loc>
+    
+    <lastmod>2019-06-16T05:26:28.513Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/f1-query-and-approaches-of-sql-execution/</loc>
     
     <lastmod>2019-06-04T02:27:28.699Z</lastmod>
@@ -9,23 +44,9 @@
   </url>
   
   <url>
-    <loc>https://ericfu.me/subquery-optimization/</loc>
-    
-    <lastmod>2019-06-04T02:19:09.416Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://ericfu.me/google-spanner-storage-impl/</loc>
     
     <lastmod>2019-06-04T02:19:09.415Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/code-gen-of-query/</loc>
-    
-    <lastmod>2019-06-04T02:19:09.414Z</lastmod>
     
   </url>
   
@@ -38,13 +59,6 @@
   
   <url>
     <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
-    
-    <lastmod>2019-06-04T02:19:09.414Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/columnar-storage-overview-storage/</loc>
     
     <lastmod>2019-06-04T02:19:09.414Z</lastmod>
     
@@ -72,13 +86,6 @@
   </url>
   
   <url>
-    <loc>https://ericfu.me/code-gen-of-expression/</loc>
-    
-    <lastmod>2019-06-04T02:19:09.413Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://ericfu.me/apache-spark-in-nutshell/</loc>
     
     <lastmod>2019-06-04T02:19:09.413Z</lastmod>
@@ -89,13 +96,6 @@
     <loc>https://ericfu.me/about/index.html</loc>
     
     <lastmod>2019-05-16T02:36:23.080Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/completable-future-not-so-bad/</loc>
-    
-    <lastmod>2019-01-17T09:14:24.382Z</lastmod>
     
   </url>
   

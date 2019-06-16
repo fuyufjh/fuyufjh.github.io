@@ -144,7 +144,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2018/12/three-levels-of-code-gen.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/ast-to-algebra-tree.png">
 <meta property="og:image" content="https://ericfu.me/images/2018/12/algebra-node-uml.png">
-<meta property="og:updated_time" content="2019-06-04T02:19:09.413Z">
+<meta property="og:updated_time" content="2019-06-16T05:26:28.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JIT 代码生成技术（一）表达式编译">
 <meta name="twitter:description" content="代码生成（Code Generation）技术广泛应用于现代的数据系统中。代码生成是将用户输入的表达式、查询、存储过程等现场编译成二进制代码再执行，相比解释执行的方式，运行效率要高得多。尤其是对于计算密集型查询、或频繁重复使用的计算过程，运用代码生成技术能达到数十倍的性能提升。">
@@ -432,7 +432,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-04 10:19:09" itemprop="dateModified" datetime="2019-06-04T10:19:09+08:00">2019-06-04</time>
+                <time title="修改时间：2019-06-16 13:26:28" itemprop="dateModified" datetime="2019-06-16T13:26:28+08:00">2019-06-16</time>
               
             
           </span>
@@ -520,9 +520,7 @@
 <p>AlgebraNode 接口定义如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AlgebraNode</span> </span>&#123;</span><br><span class="line">    <span class="function">DataType <span class="title">getType</span><span class="params">()</span></span>; <span class="comment">// Validate 和 CodeGen 都会用到</span></span><br><span class="line">    <span class="function">String <span class="title">generateCode</span><span class="params">()</span></span>; <span class="comment">// CodeGen 使用</span></span><br><span class="line">    <span class="function">List&lt;AlgebraNode&gt; <span class="title">getInputs</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实现类大致与 AST 的中的节点相对应，如下图。</p>
-<figure>
-<img src="/images/2018/12/algebra-node-uml.png" alt="Package algebra"><figcaption>Package algebra</figcaption>
-</figure>
+<p><img src="/images/2018/12/algebra-node-uml.png"></p>
 <p>对于加法，类型推导的过程很简单——如果两个操作数都是 Long 则结果为 Long，否则为 Double。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> DataType <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (dataType == <span class="keyword">null</span>) &#123;</span><br><span class="line">        dataType = inferTypeFromInputs();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dataType;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> DataType <span class="title">inferTypeFromInputs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (AlgebraNode input : getInputs()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (input.getType() == DataType.DOUBLE) &#123;</span><br><span class="line">            <span class="keyword">return</span> DataType.DOUBLE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> DataType.LONG;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="生成代码">生成代码</h2>
