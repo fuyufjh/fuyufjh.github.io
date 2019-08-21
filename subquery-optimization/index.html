@@ -157,7 +157,7 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-outer-join-example.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-general-unnesting.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/04/hyper-general-unnesting-example.png">
-<meta property="og:updated_time" content="2019-06-16T05:26:28.513Z">
+<meta property="og:updated_time" content="2019-08-21T15:23:23.649Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL 子查询的优化">
 <meta name="twitter:description" content=".image-captain {     margin-top: -20px; } .marked-code {     color:red;     font-weight:bold; }  子查询（Subquery）的优化一直以来都是 SQL 查询优化中的难点之一。关联子查询的基本执行方式类似于 Nested-Loop，但是这种执行方式的效率常常低到难以忍受。当数据量稍大时，必须在优化器中">
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-16 13:26:28" itemprop="dateModified" datetime="2019-06-16T13:26:28+08:00">2019-06-16</time>
+                <time title="修改时间：2019-08-21 23:23:23" itemprop="dateModified" datetime="2019-08-21T23:23:23+08:00">2019-08-21</time>
               
             
           </span>
@@ -674,7 +674,7 @@ WHERE 200000 < (
 <p><img src="/images/2019/04/hyper-outer-join-example.png"></p>
 <p>另一个细节是，HyPer 中还存在这样一条规则：</p>
 <p><img src="/images/2019/04/hyper-general-unnesting.png"></p>
-<p>其中，<span class="math inline">\(D=\Pi_{F(T_2)\cap A(T_1)} (T_1)\)</span>，表示对 <span class="math inline">\(T_1\)</span> 的 Distinct Project 结果。直接看等式比较晦涩，看下面的例子就容易理解了：</p>
+<p>其中，<span class="math inline">\(D=\Pi_{F(T_2)\cap A(T_1)} (T_1)\)</span>，表示对 <span class="math inline">\(T_1\)</span> 的 Distinct Project 结果（所谓的 <em>Magic Set</em>）。直接看等式比较晦涩，看下面的例子就容易理解了：</p>
 <p><img src="/images/2019/04/hyper-general-unnesting-example.png"></p>
 <p>图中，在做 Apply 之前，先拿到需要 Apply 的列的 Distinct 值集合，拿这些值做 Apply，之后再用普通的 Join 把 Apply 的结果连接上去。</p>
 <p>这样做的好处是：如果被 Apply 的数据存在大量重复，则 Distinct Project 之后需要 Apply 的行数大大减少。这样一来，即使之后 Apply 没有被优化掉，迭代执行的代价也会减小不少。</p>

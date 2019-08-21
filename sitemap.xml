@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/subquery-optimization/</loc>
+    
+    <lastmod>2019-08-21T15:23:23.649Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/about/index.html</loc>
+    
+    <lastmod>2019-08-21T15:22:32.098Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/code-gen-of-expression/</loc>
     
     <lastmod>2019-06-16T05:26:28.541Z</lastmod>
@@ -24,13 +38,6 @@
   
   <url>
     <loc>https://ericfu.me/columnar-storage-overview-storage/</loc>
-    
-    <lastmod>2019-06-16T05:26:28.513Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/subquery-optimization/</loc>
     
     <lastmod>2019-06-16T05:26:28.513Z</lastmod>
     
@@ -89,13 +96,6 @@
     <loc>https://ericfu.me/apache-spark-in-nutshell/</loc>
     
     <lastmod>2019-06-04T02:19:09.413Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/about/index.html</loc>
-    
-    <lastmod>2019-05-16T02:36:23.080Z</lastmod>
     
   </url>
   
