@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/sql-window-function/</loc>
+    
+    <lastmod>2019-08-22T02:03:53.237Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/subquery-optimization/</loc>
     
     <lastmod>2019-08-21T15:23:23.649Z</lastmod>
