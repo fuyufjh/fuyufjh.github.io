@@ -132,18 +132,18 @@
 
 
 
-  <meta name="description" content="Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。  本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
+  <meta name="description" content="本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。 Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
 <meta name="keywords" content="selected">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Javadoc 最佳实践">
 <meta property="og:url" content="https://ericfu.me/javadoc-coding-standards/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。  本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
+<meta property="og:description" content="本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。 Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-08T09:15:39.514Z">
+<meta property="og:updated_time" content="2019-09-08T09:22:21.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javadoc 最佳实践">
-<meta name="twitter:description" content="Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。  本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
+<meta name="twitter:description" content="本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。 Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
 
 
 
@@ -427,7 +427,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-08 17:15:39" itemprop="dateModified" datetime="2019-09-08T17:15:39+08:00">2019-09-08</time>
+                <time title="修改时间：2019-09-08 17:22:21" itemprop="dateModified" datetime="2019-09-08T17:22:21+08:00">2019-09-08</time>
               
             
           </span>
@@ -471,12 +471,13 @@
       
 
       
-        <p>Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。</p>
-<blockquote>
+        <blockquote>
 <p>本文翻译自 <a href="https://blog.joda.org/2012/11/javadoc-coding-standards.html" target="_blank" rel="noopener">Javadoc coding standards - Stephen Colebourne's blog</a></p>
 </blockquote>
+<p>Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。</p>
 <h3 id="javadoc-代码规范">Javadoc 代码规范</h3>
 <p>我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另外，我们只讨论 Javadoc 的<strong>格式</strong>，其内容不在本文范围之内。</p>
+<a id="more"></a>
 <p>这里有一份 <a href="http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html" target="_blank" rel="noopener">Oracle 家的指南</a>要比这详细的多。相比起来绝大部份要求都是一致的。</p>
 <p>以下所有的规范都尽可能地简明，并用一些例子去说明。</p>
 <p><strong>让 Javadoc 像代码一样可读</strong></p>
@@ -501,7 +502,7 @@
 <p>虽然没有强制要求，我们建议首句自成一个段落，这样源代码看起来更清晰。</p>
 <p>对于英文注释，推荐使用第三人称来描述，比如 “Gets the foo”、“Sets the bar”、“Consumes the baz”。避免使用第二人称，比如 “Get the foo”。</p>
 <p><strong>用 “this” 指代类的对象</strong></p>
-<p>当你想描述这个类的一个实例（对象）的时候，用 “this” 来指代它，比如：“Returns a copy of this foo with the bar value updated”</p>
+<p>当你想描述这个类的一个实例（对象）的时候，用 “this” 来指代它，比如 “Returns a copy of this foo with the bar value updated”</p>
 <p><strong>别写太长的句子</strong></p>
 <p>尽量让一句话能容纳在一行中，一般来说一行有 80 到 120 个字符。</p>
 <p>新的句子就另起一行，这会让代码可读性上个台阶，也会让以后改写 Javadoc 容易很多。</p>
