@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Gloria Hallelujah:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=6.7.0" color="#222">
+
+
+  <link rel="manifest" href="/icons/manifest.json">
+
+
+  <meta name="msapplication-config" content="/icons/browserconfig.xml">
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。  本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
+<meta name="keywords" content="selected">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javadoc 最佳实践">
+<meta property="og:url" content="https://ericfu.me/javadoc-coding-standards/index.html">
+<meta property="og:site_name" content="Coding Husky">
+<meta property="og:description" content="Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。  本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-08T09:15:39.514Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javadoc 最佳实践">
+<meta name="twitter:description" content="Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。  本文翻译自 Javadoc coding standards - Stephen Colebourne&apos;s blog  Javadoc 代码规范 我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另">
+
+
+
+
+
+
+  <link rel="canonical" href="https://ericfu.me/javadoc-coding-standards/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Javadoc 最佳实践 | Coding Husky</title>
+  
+
+
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71209065-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-71209065-1');
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding Husky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ericfu.me/javadoc-coding-standards/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eric Fu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/2015/12/HuskyAvatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding Husky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Javadoc 最佳实践
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-06 00:34:10" itemprop="dateCreated datePublished" datetime="2019-09-06T00:34:10+08:00">2019-09-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-08 17:15:39" itemprop="dateModified" datetime="2019-09-08T17:15:39+08:00">2019-09-08</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/javadoc-coding-standards/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="javadoc-coding-standards/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Javadoc 是 Java 编程中很关键的一部分，然而却很少有人谈论如何去写好一个的 Javadoc，做到这一点，最好需要一份代码规范。</p>
+<blockquote>
+<p>本文翻译自 <a href="https://blog.joda.org/2012/11/javadoc-coding-standards.html" target="_blank" rel="noopener">Javadoc coding standards - Stephen Colebourne's blog</a></p>
+</blockquote>
+<h3 id="javadoc-代码规范">Javadoc 代码规范</h3>
+<p>我之前尝试过一些 Javadoc 的标准。考虑到每个人喜好不同，我这里讲的更多的是最基本的规范，而非个人选择。另外，我们只讨论 Javadoc 的<strong>格式</strong>，其内容不在本文范围之内。</p>
+<p>这里有一份 <a href="http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html" target="_blank" rel="noopener">Oracle 家的指南</a>要比这详细的多。相比起来绝大部份要求都是一致的。</p>
+<p>以下所有的规范都尽可能地简明，并用一些例子去说明。</p>
+<p><strong>让 Javadoc 像代码一样可读</strong></p>
+<p>当你想到 “Javadoc” 这个词的时候你可能首先想到的是 Javadoc 生成的 HTML 网页，然而实际情况绝非如此。多数情况下，其他人都是在看源代码的时候用到这些 Javadoc，比如你看同事的代码、或是研究第三方库的代码。时刻要记住：让 Javadoc 像其他代码一样保持可读性。</p>
+<p><strong>Public 和 Protected</strong></p>
+<p>所有 Public 和 Protected 方法都应当相应的 Javadoc。Package 和 Private 方法不强求，但是如果有帮助的话加上也很好。</p>
+<p>如果子类覆盖了父类中的某个方法，一般来说不需要 Javadoc，除非这个覆盖的实现和原有的差别很大，这时候需要用 Javadoc 说明差异的那部分。<span class="citation" data-cites="Override">@Override</span> 注解不仅标记了方法覆盖，另一方面也是暗示读者要参考原来方法上的文档一起看。</p>
+<p><strong>使用标准的 Javadoc 风格注释</strong></p>
+<p>Javadoc 以 <code>/**</code> 开头、以 <code>*/</code> 结尾，并且每行要以星号开头：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Standard comment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ...</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Compressed comment. */</span></span><br><span class="line"><span class="keyword">public</span> ...</span><br></pre></td></tr></table></figure>
+<p>注意别用 <code>**/</code> 作结尾。</p>
+<p><strong>用简单的 HTML tags 就行了，不需要 XHTML</strong></p>
+<p>Javadoc 用 HTML tags 来识别段落、列表等等。很多开发者可能觉得 <a href="https://zh.wikipedia.org/wiki/XHTML" target="_blank" rel="noopener">XHTML</a>（HTML 的一种“严格版本”）会更好，其实不然。XHTML 常常会多出一些 tag，这会导致代码变得更复杂了，可读性更差。另外 Javadoc 的 parser 其实会帮你把没闭合的 tags 自动闭合的，别担心。</p>
+<p><strong>用单个 <code>&lt;p&gt;</code> tag 来分割段落</strong></p>
+<p>Javadoc 经常会需要分成好几段。所以问题来了：怎样优雅地加上段落标记？答案是，在两段之间写上一行 <code>&lt;p&gt;</code> 就可以了，不用加 <code>&lt;/p&gt;</code> 闭合它。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * First paragraph.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Second paragraph.</span></span><br><span class="line"><span class="comment"> * May be on multiple lines.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Third paragraph.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ...</span><br></pre></td></tr></table></figure>
+<p><strong>用单个 <code>&lt;li&gt;</code> 来标记列表</strong></p>
+<p>列表在 Javadoc 中也很常用，比如用来表示一组选项、一些问题等等。推荐的做法是用一个 <code>&lt;li&gt;</code> 作为每项的开头，同样不需要闭合。此外，别忘了加段落的 tag：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * First paragraph.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;&lt;ul&gt;</span></span><br><span class="line"><span class="comment"> * &lt;li&gt;the first item</span></span><br><span class="line"><span class="comment"> * &lt;li&gt;the second item</span></span><br><span class="line"><span class="comment"> * &lt;li&gt;the third item</span></span><br><span class="line"><span class="comment"> * &lt;/ul&gt;&lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Second paragraph.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ...</span><br></pre></td></tr></table></figure>
+<p><strong>首句很重要</strong></p>
+<p>Javadoc 的第一句话（用英文句号结束）也被作为这个 Javadoc 的摘要，在折叠的时候只会显示这一句。因此第一句话必须是个总结性的描述，它最好简洁有力，不能太长。</p>
+<p>虽然没有强制要求，我们建议首句自成一个段落，这样源代码看起来更清晰。</p>
+<p>对于英文注释，推荐使用第三人称来描述，比如 “Gets the foo”、“Sets the bar”、“Consumes the baz”。避免使用第二人称，比如 “Get the foo”。</p>
+<p><strong>用 “this” 指代类的对象</strong></p>
+<p>当你想描述这个类的一个实例（对象）的时候，用 “this” 来指代它，比如：“Returns a copy of this foo with the bar value updated”</p>
+<p><strong>别写太长的句子</strong></p>
+<p>尽量让一句话能容纳在一行中，一般来说一行有 80 到 120 个字符。</p>
+<p>新的句子就另起一行，这会让代码可读性上个台阶，也会让以后改写 Javadoc 容易很多。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This is the first paragraph, on one line.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * This is the first sentence of the second paragraph, on one line.</span></span><br><span class="line"><span class="comment"> * This is the second sentence of the second paragraph, on one line.</span></span><br><span class="line"><span class="comment"> * This is the third sentence of the second paragraph which is a bit longer so has been</span></span><br><span class="line"><span class="comment"> * split onto a second line, as that makes sense.</span></span><br><span class="line"><span class="comment"> * This is the fourth sentence, which starts a new line, even though there is space above.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ...</span><br></pre></td></tr></table></figure>
+<p><strong>正确使用 <span class="citation" data-cites="link">@link</span> 和 <span class="citation" data-cites="code">@code</span></strong></p>
+<p>很多地方的描述需要涉及到其他类或方法，这时最好用 <span class="citation" data-cites="link">@link</span> 和 <span class="citation" data-cites="code">@code</span>。</p>
+<p><span class="citation" data-cites="link">@link</span> 会最终变成一个超链接，它有以下几种形式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * First paragraph.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Link to a class named 'Foo': &#123;<span class="doctag">@link</span> Foo&#125;.</span></span><br><span class="line"><span class="comment"> * Link to a method 'bar' on a class named 'Foo': &#123;<span class="doctag">@link</span> Foo#bar&#125;.</span></span><br><span class="line"><span class="comment"> * Link to a method 'baz' on this class: &#123;<span class="doctag">@link</span> #baz&#125;.</span></span><br><span class="line"><span class="comment"> * Link specifying text of the hyperlink after a space: &#123;<span class="doctag">@link</span> Foo the Foo class&#125;.</span></span><br><span class="line"><span class="comment"> * Link to a method handling method overload &#123;<span class="doctag">@link</span> Foo#bar(String,int)&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ...</span><br></pre></td></tr></table></figure>
+<p><span class="citation" data-cites="code">@code</span> 用来标记一小段等宽字体，也可以用来标记某个类或方法（但不会生成超链接）。</p>
+<p>建议在第一次提到某个类或方法的时候用 <span class="citation" data-cites="link">@link</span>，此后直接用 <span class="citation" data-cites="code">@code</span> 即可。</p>
+<p><strong>不要在首句中使用 <span class="citation" data-cites="link">@link</span></strong></p>
+<p>之前提到，Javadoc 的首句也被用作概要，首句中的超链接会让读者感觉到奇怪。如果一定要在第一句话中引用其它类或方法，始终用 <span class="citation" data-cites="code">@code</span> 而不是 <span class="citation" data-cites="link">@link</span>，第二句开始再用 <span class="citation" data-cites="link">@link</span>。</p>
+<p><strong>null、true、false 不必用 <span class="citation" data-cites="code">@code</span> 标记</strong></p>
+<p>null、true、false 这些词在 Javadoc 中太常用了，如果每次都加上 <span class="citation" data-cites="code">@code</span>，无论是对读者还是作者都是个负担。</p>
+<p><strong>使用 <span class="citation" data-cites="param">@param</span>, <span class="citation" data-cites="return">@return</span> 和 <span class="citation" data-cites="throws">@throws</span></strong></p>
+<p>几乎所有方法都会输入几个参数、输出一个结果，<span class="citation" data-cites="param">@param</span> 和 <span class="citation" data-cites="return">@return</span> 就是用来描述这些输入输出参数的，<span class="citation" data-cites="throws">@throws</span> 用于描述方法抛出的异常。</p>
+<p>如果有多个输入参数，<span class="citation" data-cites="param">@param</span> 的顺序也要和参数一致。<span class="citation" data-cites="return">@return</span> 应当始终放在 <span class="citation" data-cites="param">@param</span> 之后，然后才是 <span class="citation" data-cites="throws">@throws</span>。</p>
+<p><strong>为范型参数加上 <span class="citation" data-cites="param">@param</span></strong></p>
+<p>如果一个类或方法有范型参数（例如 <code>&lt;T&gt;</code>），这些参数也应当被文档化，推荐的做法是给 <code>&lt;T&gt;</code> 也加上一个 <span class="citation" data-cites="param">@param</span> 说明。</p>
+<p><strong>在 <span class="citation" data-cites="param">@param</span> 之前空一行</strong></p>
+<p>始终在 Javadoc 的内容和 <span class="citation" data-cites="param">@param</span>、<span class="citation" data-cites="return">@return</span> 之间留个空行，这让代码的可读性更佳。</p>
+<p><strong>用短语来描述 <span class="citation" data-cites="param">@param</span> 和 <span class="citation" data-cites="return">@return</span></strong></p>
+<p><span class="citation" data-cites="param">@param</span> 和 <span class="citation" data-cites="return">@return</span> 后面跟的的描述是个短语，而非完整的句子，因此它得用小写字母开头（经常是 the），结尾也不需要用句号。</p>
+<p><strong>用 if-句来描述 <span class="citation" data-cites="throws">@throws</span></strong></p>
+<p><span class="citation" data-cites="throws">@throws</span> 通常跟着一个 “if” 句子来描述抛异常的情形，比如 “<span class="citation" data-cites="throws">@throws</span> IllegalArgumentException if the file could not be found”。</p>
+<p><strong><span class="citation" data-cites="param">@param</span> 里面参数名之后空两格</strong></p>
+<p>在源代码中阅读 Javadoc 的时候，如果参数名后面只有一个空格，读起来会有点困难，2 个空格就好很多。另外，避免把参数按列对齐，否则参数改名、增减参数的时候会很麻烦。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Javadoc text.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> foo  the foo parameter</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> bar  the bar parameter</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the baz content</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">process</span><span class="params">(String foo, String bar)</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>写明各参数和返回值的 null 处理情况</strong></p>
+<p>一个方法是否接受 null、会不会返回 null 对于构建大型应用是十分重要的信息。除非是原始类型，<span class="citation" data-cites="param">@param</span> 和 <span class="citation" data-cites="return">@return</span> 都应该注明它是否接受或返回 null。以下标准若适用请务必遵循：</p>
+<ul>
+<li>“not null” 表明不接受 null，若输入 null 可能导致异常，例如 NullPointerException</li>
+<li>“may be null” 表明可以传入 null 参数</li>
+<li>“null treated as xxx” 表明 null 值等价于某个值</li>
+<li>“null returns xxx” 表明如果输入 null 则一定会返回某个值</li>
+</ul>
+<p>定义清楚这些之后，<strong>不</strong>要再为 NullPointerException 写 <span class="citation" data-cites="throws">@throws</span>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Javadoc text.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> foo  the foo parameter, not null</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> bar  the bar parameter, null returns null</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the baz content, null if not processed</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">process</span><span class="params">(String foo, String bar)</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p>有人可能想在某个地方（像是类或包的 Javadoc）集中定义 null 相关行为，但我们不建议你这么做，因为这对其他开发者并没有帮助。方法上的 Javadoc 很容易就能被读到，而类或包层级的 Javadoc 要去翻一遍才能找到。</p>
+<p>其他简单的约束条件也建议写到 Javadoc 里，比如 “not empty, not null”。原始类型也可以加上边界约束，比如 “from 1 to 5” 或 “not negative”</p>
+<p><strong>给 Specification 加上 implementation notes</strong></p>
+<p>如果某个接口允许第三方来实现，而你为这个接口写了个正式的规格说明（specification），这时候考虑加个 “implementation notes” 章节。这通常出现在类的 Javadoc 上，用于描述一些不太好写在特定方法上的东西，或者一些其他人不感兴趣的东西。参考<a href="https://github.com/ThreeTen/threeten/blob/0b071a60997f409e44b9bbccde013b004f24fe22/src/main/java/javax/time/Clock.java#L74" target="_blank" rel="noopener">这个例子</a>。</p>
+<p><strong>不要用 <span class="citation" data-cites="author">@author</span></strong></p>
+<p><span class="citation" data-cites="author">@author</span> 用来标记类的作者，这个功能已经过时了，不要用。版本控制系统（例如 git）会记住作者的。</p>
+<p><strong>例子</strong></p>
+<p>这个 <a href="https://github.com/ThreeTen/threeten" target="_blank" rel="noopener">ThreeTen</a> 项目里有一些更完整的<a href="https://github.com/ThreeTen/threeten/blob/0b071a60997f409e44b9bbccde013b004f24fe22/src/main/java/javax/time/LocalDate.java#L73" target="_blank" rel="noopener">例子</a></p>
+<h3 id="总结">总结</h3>
+<p>希望这些建议能帮你写出更好的 Javadoc。当然，这只是一份建议，你也可以选择其他标准来参考。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Eric Fu</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://ericfu.me/javadoc-coding-standards/" title="Javadoc 最佳实践">https://ericfu.me/javadoc-coding-standards/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/selected/" rel="tag"># selected</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/sql-window-function/" rel="next" title="SQL 窗口函数的优化和执行">
+                <i class="fa fa-chevron-left"></i> SQL 窗口函数的优化和执行
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/2015/12/HuskyAvatar.jpg" alt="Eric Fu">
+            
+              <p class="site-author-name" itemprop="name">Eric Fu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">93</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/fuyufjh" title="GitHub &rarr; https://github.com/fuyufjh" rel="noopener" target="_blank"><i class="iconfont icon-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/fuyufjh" title="Zhihu &rarr; https://www.zhihu.com/people/fuyufjh" rel="noopener" target="_blank"><i class="iconfont icon-zhihu"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/fuyufjh" title="Twitter &rarr; https://twitter.com/fuyufjh" rel="noopener" target="_blank"><i class="iconfont icon-twitter"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/njufuyu/" title="LinkedIn &rarr; https://www.linkedin.com/in/njufuyu/" rel="noopener" target="_blank"><i class="iconfont icon-linkedin"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#javadoc-代码规范"><span class="nav-number">1.</span> <span class="nav-text">Javadoc 代码规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eric Fu</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+    
+  <script id="dsq-count-scr" src="https://ericfu.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function () {
+    this.page.url = "https://ericfu.me/javadoc-coding-standards/";
+    this.page.identifier = "javadoc-coding-standards/";
+    this.page.title = 'Javadoc 最佳实践';
+    };
+  function loadComments () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ericfu.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+</body>
+</html>

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/javadoc-coding-standards/</loc>
+    
+    <lastmod>2019-09-08T09:15:39.514Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/sql-window-function/</loc>
     
     <lastmod>2019-08-26T12:16:14.588Z</lastmod>
@@ -65,14 +72,14 @@
   </url>
   
   <url>
-    <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
+    <loc>https://ericfu.me/several-ways-to-aync/</loc>
     
     <lastmod>2019-06-04T02:19:09.414Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://ericfu.me/several-ways-to-aync/</loc>
+    <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
     
     <lastmod>2019-06-04T02:19:09.414Z</lastmod>
     
