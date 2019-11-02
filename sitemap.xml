@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ericfu.me/g1-garbage-collector/</loc>
+    
+    <lastmod>2019-11-01T03:30:11.565Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ericfu.me/javadoc-coding-standards/</loc>
     
-    <lastmod>2019-09-08T09:41:03.778Z</lastmod>
+    <lastmod>2019-09-08T09:41:27.402Z</lastmod>
     
   </url>
   
