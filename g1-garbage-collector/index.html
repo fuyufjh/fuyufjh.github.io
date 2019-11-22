@@ -132,14 +132,15 @@
 
 
 
-  <meta name="description" content="在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。 本文主要从 G1 的论文 Garbage-First Garbage Collection 出发">
+  <meta name="description" content="在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。 本文主要从 G1 的论文 Garbage-First Garbage Collection 出">
 <meta name="keywords" content="selected,java,jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="G1 垃圾收集器">
 <meta property="og:url" content="https://ericfu.me/g1-garbage-collector/index.html">
 <meta property="og:site_name" content="Coding Husky">
-<meta property="og:description" content="在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。 本文主要从 G1 的论文 Garbage-First Garbage Collection 出发">
+<meta property="og:description" content="在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。 本文主要从 G1 的论文 Garbage-First Garbage Collection 出">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ericfu.me/images/2019/10/g1-banner.jpg">
 <meta property="og:image" content="https://ericfu.me/images/2019/10/hotspot-legacy-heap-structure.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/10/g1-heap-regions.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/10/g1-remember-sets.png">
@@ -150,11 +151,11 @@
 <meta property="og:image" content="https://ericfu.me/images/2019/10/g1-generation-regions-mixed-gc.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/10/illustrate-why-need-satb.png">
 <meta property="og:image" content="https://ericfu.me/images/2019/10/concurrent-marking.jpg">
-<meta property="og:updated_time" content="2019-11-02T09:23:23.116Z">
+<meta property="og:updated_time" content="2019-11-22T08:21:13.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="G1 垃圾收集器">
-<meta name="twitter:description" content="在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。 本文主要从 G1 的论文 Garbage-First Garbage Collection 出发">
-<meta name="twitter:image" content="https://ericfu.me/images/2019/10/hotspot-legacy-heap-structure.png">
+<meta name="twitter:description" content="在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。 本文主要从 G1 的论文 Garbage-First Garbage Collection 出">
+<meta name="twitter:image" content="https://ericfu.me/images/2019/10/g1-banner.jpg">
 
 
 
@@ -438,7 +439,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-02 17:23:23" itemprop="dateModified" datetime="2019-11-02T17:23:23+08:00">2019-11-02</time>
+                <time title="修改时间：2019-11-22 16:21:13" itemprop="dateModified" datetime="2019-11-22T16:21:13+08:00">2019-11-22</time>
               
             
           </span>
@@ -482,11 +483,12 @@
       
 
       
-        <p>在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。</p>
+        <p><img src="/images/2019/10/g1-banner.jpg"></p>
+<p>在过去很长一段时间内，HotSpot JVM 的首选垃圾收集器都是 ParNew + CMS 组合。直到 JDK7 中 Hotspot 团队首次公布了 G1（Garbage-First），并在 JDK9 中用 G1 作为默认的垃圾收集器。我们团队最近也将用了很多年的 CMS 换成了 G1 垃圾收集器。</p>
 <p>本文主要从 G1 的论文 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.6386&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener">Garbage-First Garbage Collection</a> 出发，结合其他较新的白皮书等，讲解 G1 垃圾收集器的工作原理。</p>
 <a id="more"></a>
 <h2 id="motivation">Motivation</h2>
-<p>论文中给出的理由相当简单：现有的垃圾收集器无法满足<strong>软实时（Soft Real-time）</strong>特性：即让 GC 停顿能大致控制在某个阈值以内，但是又不必像实时系统那样非常严格。这也是很多业务系统都有的诉求。</p>
+<p>关于为什么要重新设计一个 G1 垃圾收集器，论文中给出的理由相当简单：现有的垃圾收集器无法满足<strong>软实时（Soft Real-time）</strong>特性：即让 GC 停顿能大致控制在某个阈值以内，但是又不必像实时系统那样非常严格。这也是很多业务系统都有的诉求。</p>
 <p>在过去的 JVM 设计中，如下图所示，堆内存被分割成几个区域 —— Eden、Survivor、Old 的大小都是预先划分好的。对于总内存 64GB 的机器，可能 Old 区大小就有 32GB，即使用并行的方式收集一次仍然需要数秒。近十年，随着内存越来越大，这一问题也变得更为严重。</p>
 <figure>
 <img src="/images/2019/10/hotspot-legacy-heap-structure.png" alt="Hotspot JVM 经典内存布局"><figcaption>Hotspot JVM 经典内存布局</figcaption>
@@ -502,12 +504,12 @@
 <p>要特别注意的是，<strong>巨型对象（Humongous Object）</strong>，即大小超过 3/4 的 Region 大小的对象会作特殊处理，分配到由一个或多个连续 Region 构成的区域。巨型对象会引起其他一些问题，不过这些已经超出了本文的范畴，总之记得尽量别用就好了。</p>
 <p>默认配置下，在满足 Region Size 是 2 的整数幂的前提下，G1 将总内存尽量划分成大约 2048 个 Region。</p>
 <h3 id="remember-set-rset">Remember Set (RSet)</h3>
-<p>为什么要把堆空间分成 Region 呢？<strong>其主要目的是让各个 Region 相对独立，可以分别进行 GC</strong>，而不是一次性地把所有垃圾收集掉。我们知道现代 GC 算法都是基于可达性标记，而这个过程必须遍历所有 Live Objects 才能完成。那问题来了，如果为了收集一个 Region 的垃圾，却完整的遍历所有 Live Objects，这太奢侈了！</p>
-<p>所以，我们需要一个机制来让各个 Region 能独立地进行垃圾收集，这也就是 Remember Set 存在的意义。每个 Region 会有一个对应的 Remember Set，它记录了<strong>哪些内存区域中存在引用当前 Region 中对象的对象。</strong>（<em>all locations that might contain pointers to (live) objects within the region</em>）</p>
+<p>为什么要把堆空间分成 Region 呢？<strong>其主要目的是让各个 Region 相对独立，可以分别进行 GC</strong>，而不是一次性地把所有垃圾收集掉。我们知道现代 GC 算法都是基于可达性标记，而这个过程必须遍历所有 Live Objects 才能完成。那问题来了，如果为了收集一个 Region 的垃圾，却完整的遍历所有 Live Objects，这也太浪费了！</p>
+<p>所以，我们需要一个机制来让各个 Region 能独立地进行垃圾收集，这也就是 Remember Set 存在的意义。每个 Region 会有一个对应的 Remember Set，它记录了<strong>哪些内存区域中存在对当前 Region 中对象的引用。</strong>（<em>all locations that might contain pointers to (live) objects within the region</em>）</p>
 <figure>
 <img src="/images/2019/10/g1-remember-sets.png" alt="Remember Set 记录引用当前 Region 中对象的 Cards"><figcaption>Remember Set 记录引用当前 Region 中对象的 Cards</figcaption>
 </figure>
-<p>注意 Remember Set 不是直接记录对象地址，而是记录了那些对象所在的 Card 编号。所谓 Card 就是表示一小块 512 bytes 的内存空间，这里面很可能存在不止一个对象。但是这已经足够了：当我们需要确定当前 Region 有那些对象存在外部引用时（这些对象不能被回收），只要扫描一下这块 Card 中的所有对象即可，这比扫描所有 live objects 要容易的多。</p>
+<p>注意 Remember Set 不是直接记录对象地址，而是记录了那些对象所在的 Card 编号。所谓 Card 就是表示一小块（512 bytes）的内存空间，这里面很可能存在不止一个对象。但是这已经足够了：当我们需要确定当前 Region 有哪些对象存在外部引用时（这些对象是可达的，不能被回收），只要扫描一下这块 Card 中的所有对象即可，这比扫描所有 live objects 要容易的多。</p>
 <p>实现上，Remember Set 的实现就是一个 Card 的 Hash Set，并且为每个 GC 线程都有一个本地的 Hash Set，最后的 Remember Set 实际上是这些 Hash Set 的并集。当 Card 数量特别多的时候会退化到 Region 粒度，这时候就要扫描更多的区域来寻找引用，时间换空间。</p>
 <h3 id="remember-set-的维护">Remember Set 的维护</h3>
 <p>维护上面所说的 Remember Set 势必需要记录对象的引用，通常的做法是在 set 一个引用的时候插入一段代码，这称为 Write Barrier。为了尽可能降低对 Mutator 线程的影响，Write Barrier 的代码应当尽可能简化。G1 的 Write Barrier 实际上只是一个“通知”：将当前 set 引用的事件放到 Remember Set Log 队列中，交给后台专门的 GC 线程处理。</p>
@@ -521,7 +523,7 @@
 <p>极端情况下，如果后台的 GC 进程追不上 Mutator 进程写入的速度，这时候 Mutator 线程会退化到自己处理更新，形成反压机制。</p>
 <h2 id="generational-garbage-first">Generational Garbage-First</h2>
 <p>G1 名字来自于 Garbage-First 这个理念，即，<strong>以收集到尽可能多的垃圾为第一目标</strong>。每次收集时 G1 会选出垃圾最多的几个 Region，进行一次 Stop-the-world 的收集过程。</p>
-<p>但是有趣的是，另一方面 G1 又是一个 Generational （分代）的垃圾收集器，它会从逻辑上将 Region 分成 Young、Old 等不同的 Generation，然后针对它们各自特点应用不同的策略。</p>
+<p>有趣的是，另一方面 G1 又是一个 Generational （分代）的垃圾收集器，它会从逻辑上将 Region 分成 Young、Old 等不同的 Generation，然后针对它们各自特点应用不同的策略。</p>
 <p>G1 论文中提到它有一个 Pure Garbage-First 的模式，但在现在的资料中已经很难看到它的踪影，我猜测实际使用中 Generational 模式要效果好的多。以下我们也会只讨论 Generational 模式的工作方式。</p>
 <p>经典的内存布局中，各代的内存区域是完全分开的，而 G1 中的 Generation 只是 Region 的一个动态标志，下图是一个标记了 Generation 的例子。各个 Region 的 Generation 是随着 GC 的进行而不断变化的，甚至各个代有多少 Region 这个比例也是随时调整的。</p>
 <figure>
