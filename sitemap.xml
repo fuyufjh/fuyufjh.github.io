@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://ericfu.me/g1-garbage-collector/</loc>
+    <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
     
-    <lastmod>2019-11-26T05:35:17.169Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/javadoc-coding-standards/</loc>
-    
-    <lastmod>2019-09-08T09:41:27.402Z</lastmod>
+    <lastmod>2019-11-30T06:04:57.557Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://ericfu.me/sql-window-function/</loc>
     
-    <lastmod>2019-08-26T12:16:14.588Z</lastmod>
+    <lastmod>2019-11-30T06:04:49.375Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/javadoc-coding-standards/</loc>
+    
+    <lastmod>2019-11-30T06:04:32.158Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ericfu.me/g1-garbage-collector/</loc>
+    
+    <lastmod>2019-11-26T05:35:17.169Z</lastmod>
     
   </url>
   
@@ -80,13 +87,6 @@
   
   <url>
     <loc>https://ericfu.me/several-ways-to-aync/</loc>
-    
-    <lastmod>2019-06-04T02:19:09.414Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ericfu.me/weld-the-query-exeution-engine/</loc>
     
     <lastmod>2019-06-04T02:19:09.414Z</lastmod>
     
